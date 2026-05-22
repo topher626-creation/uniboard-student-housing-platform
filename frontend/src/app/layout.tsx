@@ -13,8 +13,9 @@ export const metadata: Metadata = {
   title: 'UniBoard — Find Student Accommodation Near Your University',
   description:
     'UniBoard connects students with verified boarding houses, hostels, and rental rooms near universities. Search, compare, and book your perfect student home.',
+  themeColor: '#14532d',
   icons: {
-    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+    icon: [{ url: '/assets/images/app_logo.png', type: 'image/png' }],
   },
 };
 

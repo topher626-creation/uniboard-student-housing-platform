@@ -37,6 +37,7 @@ export type Property = {
 export type FilterState = {
   location: string;
   roomTypes: string[];
+  bedspaceTypes?: string[];
   minPrice: number;
   maxPrice: number;
   amenities: string[];
@@ -49,6 +50,7 @@ export type FilterState = {
 const defaultFilters: FilterState = {
   location: '',
   roomTypes: [],
+  bedspaceTypes: [],
   minPrice: 0,
   maxPrice: 8000,
   amenities: [],

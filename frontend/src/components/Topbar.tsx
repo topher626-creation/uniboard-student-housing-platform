@@ -71,10 +71,10 @@ export default function Topbar() {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/home" className="flex items-center gap-2 flex-shrink-0">
-            <AppLogo size={36} />
+          <Link href="/home" className="flex items-center gap-3 flex-shrink-0">
+            <AppLogo size={44} />
             <span
-              className={`font-bold text-xl tracking-tight transition-colors duration-300 ${
+              className={`font-bold text-2xl tracking-tight transition-colors duration-300 ${
                 isTransparent ? 'text-white' : 'text-gray-900'
               }`}
             >

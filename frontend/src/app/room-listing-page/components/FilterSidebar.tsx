@@ -13,6 +13,7 @@ type Props = {
 };
 
 const roomTypeOptions = ['Single Room', 'Shared Room', 'En-Suite', 'Studio', 'Apartment'];
+const bedspaceTypeOptions = ['Standard', 'Bankers', 'Luxury', 'Economy'];
 const amenityOptions = [
   { value: 'wifi', label: 'Wi-Fi' },
   { value: 'laundry', label: 'Laundry' },
@@ -23,7 +24,7 @@ const amenityOptions = [
   { value: 'garden', label: 'Garden' },
 ];
 
-const universityOptions = ['UCT', 'Wits', 'UP', 'UJ', 'UKZN', 'SU', 'CPUT'];
+const universityOptions = ['University of Zambia (UNZA)', 'Copperbelt University (CBU)', 'Mukuba University (MUKUBA)', 'Mulungushi University', 'Kwame Nkrumah University', 'University of Lusaka (UNILUS)'];
 
 export default function FilterSidebar({ filters, onUpdate, onClear, isOpen, onClose }: Props) {
   const toggleRoomType = (rt: string) => {
@@ -134,6 +135,38 @@ export default function FilterSidebar({ filters, onUpdate, onClear, isOpen, onCl
               />
               <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors">
                 {rt}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Bedspace Type */}
+      <div>
+        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">
+          Bedspace Type
+        </label>
+        <div className="space-y-2">
+          {bedspaceTypeOptions.map((bt) => (
+            <label
+              key={`bt-filter-${bt}`}
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              <input
+                type="checkbox"
+                checked={filters.bedspaceTypes?.includes(bt) || false}
+                onChange={() => {
+                  const current = filters.bedspaceTypes || [];
+                  if (current.includes(bt)) {
+                    onUpdate('bedspaceTypes', current.filter((t) => t !== bt));
+                  } else {
+                    onUpdate('bedspaceTypes', [...current, bt]);
+                  }
+                }}
+                className="w-4 h-4 accent-blue-600 cursor-pointer rounded"
+              />
+              <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors">
+                {bt}
               </span>
             </label>
           ))}

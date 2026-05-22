@@ -8,12 +8,13 @@ import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 const contactInfo = [
   { icon: Mail, label: 'Email Us', value: 'hello@uniboard.zm', href: 'mailto:hello@uniboard.zm', color: 'bg-green-100 text-green-700' },
   { icon: Phone, label: 'Call Us', value: '+260 97 000 1234', href: 'tel:+260970001234', color: 'bg-amber-100 text-amber-700' },
-  { icon: MapPin, label: 'Visit Us', value: 'Cairo Road, Lusaka, Zambia', href: '#', color: 'bg-blue-100 text-blue-700' },
+  { icon: MapPin, label: 'Visit Us', value: 'Kitwe, Zambia', href: '#', color: 'bg-blue-100 text-blue-700' },
 ];
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -155,3 +156,4 @@ export default function ContactPage() {
     </main>
   );
 }
+

@@ -1,95 +1,91 @@
-# UniBoard - Student Housing Marketplace (Monorepo)
+﻿# UniBoard Student Housing Platform
 
-UniBoard connects students with verified landlords near universities in Zambia (UNZA, CBU, MUKUBA, etc.).
+This repository contains the current `api/` and `web/` implementations for UniBoard.
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Local Development
 
 ### Prerequisites
-- Node.js 20+
-- Docker (for Postgres) or PostgreSQL
-- Git
+- Node.js 18+ installed
+- MySQL or compatible database for `api/` (default MySQL)
 
-### 1. Clone & Install
+### Install packages
 ```bash
-git clone <repo>
-cd uniboard
+cd api
 npm install
-npm run install:all
+cd ../web
+npm install
 ```
 
-### 2. Database Setup
+### Start the backend API
 ```bash
-# Option A: Docker (recommended)
-docker-compose up -d db
-
-# Option B: Local Postgres or cloud (update backend/.env DB_URL)
+cd api
+npm run dev
 ```
+The API will run on `http://localhost:5000`.
 
-### 3. Backend Setup
+### Start the frontend web app
 ```bash
-npm run db:push    # Create tables
-npm run db:seed    # Add demo data
-npm run dev:backend  # Start API on http://localhost:5000
+cd web
+npm run dev
 ```
+The UI will run on `http://localhost:5173` and proxy API calls to the backend.
 
-### 4. Frontend Development
+### Smoke test
+- API health: `http://localhost:5000/api/health`
+- Web app: `http://localhost:5173`
+
+## 🧪 Tests
+
+### API integration tests
 ```bash
-npm run dev:frontend  # Start Next.js on http://localhost:4028
+cd api
+npm test
 ```
 
-### 5. Full Stack (Both Servers)
+### Frontend tests
 ```bash
-npm run dev  # Backend:5000 + Frontend:4028
+cd web
+npm test
 ```
 
-Open [http://localhost:4028](http://localhost:4028)
+## 📦 Build
 
-## 🛠 Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start frontend + backend |
-| `npm run dev:backend` | Backend only (API server) |
-| `npm run dev:frontend` | Frontend only (Next.js) |
-| `npm run db:push` | Sync DB schema |
-| `npm run db:seed` | Load demo properties/users |
-| `npm run db:studio` | Open Prisma Studio |
-| `npm run lint` | Lint all packages |
-| `npm run format` | Format code |
-
-## 📁 Structure
-
-```
-uniboard/
-├── frontend/          # Next.js 15 App (React/TS/Tailwind)
-├── backend/           # Express + Prisma + Postgres API
-├── docker-compose.yml # Postgres DB
-├── package.json       # Monorepo workspaces
-└── README.md
+### Build backend
+```bash
+cd api
+npm run build
 ```
 
-## 🔐 Demo Accounts
+### Build frontend
+```bash
+cd web
+npm run build
 ```
-Student: chipo@student.unza.zm / UniBoard@2026
-Landlord: chanda@mwaleresidences.zm / LandlordPass#88
-Admin: admin@uniboard.zm / AdminSecure$99
+
+## 📁 Project Structure
+
+```
+uniboard-student-housing-platform/
+├── api/           # Express + Sequelize API
+├── web/           # Vite + React frontend
+├── package.json   # root scripts / workspace helper
+└── README.md      # this file
 ```
 
-## 🌐 API Docs
-Backend API at `http://localhost:5000/api`
-- `POST /api/auth/login`
-- `GET /api/properties`
-- `GET /api/properties/:id`
-- `GET /api/providers`
+## Useful root commands
 
-## 🚀 Production
-**Frontend**: Vercel/Netlify  
-**Backend + DB**: Render/Heroku + Neon/Supabase/Postgres
+From the repository root:
+```bash
+npm run dev:api      # Start API dev server
+npm run dev:web      # Start web dev server
+npm run dev:new      # Start both API and web together
+```
 
-## Tech Stack
-- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Express, Prisma ORM, PostgreSQL, JWT + bcrypt
-- **Tools**: Docker, concurrently, Prettier, ESLint
+## Notes
+- The frontend proxy in `web/vite.config.ts` forwards `/api` requests to `http://localhost:5000`.
+- `api/src/server.ts` is the runtime entrypoint for development.
+- `api/src/tests/` contains a lightweight backend integration test.
+- `web/src/tests/` contains a simple React render test.
 
 ## License
 MIT

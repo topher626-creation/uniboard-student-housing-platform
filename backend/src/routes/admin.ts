@@ -77,7 +77,8 @@ router.post('/admins', isSuperAdmin, async (req, res) => {
         password: hashedPassword,
         role: 'ADMIN',
         status: 'ACTIVE',
-        adminLevel: 'ASSISTANT'
+        adminLevel: 'ASSISTANT',
+        nrcImages: []
       }
     });
 

@@ -1,0 +1,80 @@
+﻿src/config/database.ts(1,27): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/config/database.ts(8,7): error TS6133: '__dirname' is declared but its value is never read.
+src/controllers/adminController.ts(3,1): error TS6133: 'AppError' is declared but its value is never read.
+src/controllers/adminController.ts(42,29): error TS6133: 'req' is declared but its value is never read.
+src/controllers/adminController.ts(51,30): error TS6133: 'req' is declared but its value is never read.
+src/controllers/providerController.ts(48,21): error TS6133: 'req' is declared but its value is never read.
+src/database/seed.ts(17,30): error TS2339: Property 'create' does not exist on type 'typeof User'.
+src/database/seed.ts(28,32): error TS2339: Property 'create' does not exist on type 'typeof User'.
+src/database/seed.ts(40,37): error TS2339: Property 'create' does not exist on type 'typeof User'.
+src/database/seed.ts(51,37): error TS2339: Property 'create' does not exist on type 'typeof Provider'.
+src/database/seed.ts(66,39): error TS2339: Property 'create' does not exist on type 'typeof Property'.
+src/index.ts(1,47): error TS6133: 'NextFunction' is declared but its value is never read.
+src/index.ts(3,20): error TS2307: Cannot find module 'helmet' or its corresponding type declarations.
+src/index.ts(4,25): error TS2307: Cannot find module 'compression' or its corresponding type declarations.
+src/index.ts(40,25): error TS6133: 'req' is declared but its value is never read.
+src/index.ts(45,10): error TS6133: 'req' is declared but its value is never read.
+src/middleware/errorHandler.ts(12,40): error TS6133: 'req' is declared but its value is never read.
+src/middleware/errorHandler.ts(12,69): error TS6133: 'next' is declared but its value is never read.
+src/models/Booking.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Booking.ts(32,9): error TS2339: Property 'init' does not exist on type 'typeof Booking'.
+src/models/Favorite.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Favorite.ts(22,10): error TS2339: Property 'init' does not exist on type 'typeof Favorite'.
+src/models/Payment.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Payment.ts(36,9): error TS2339: Property 'init' does not exist on type 'typeof Payment'.
+src/models/Property.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Property.ts(58,10): error TS2339: Property 'init' does not exist on type 'typeof Property'.
+src/models/Provider.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Provider.ts(38,10): error TS2339: Property 'init' does not exist on type 'typeof Provider'.
+src/models/Review.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/Review.ts(34,8): error TS2339: Property 'init' does not exist on type 'typeof Review'.
+src/models/User.ts(1,44): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/models/User.ts(34,6): error TS2339: Property 'init' does not exist on type 'typeof User'.
+src/services/adminService.ts(8,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Provider'.
+src/services/adminService.ts(18,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/adminService.ts(28,29): error TS2339: Property 'findByPk' does not exist on type 'typeof User'.
+src/services/adminService.ts(38,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Provider'.
+src/services/adminService.ts(48,21): error TS2339: Property 'findAll' does not exist on type 'typeof Provider'.
+src/services/adminService.ts(55,21): error TS2339: Property 'findAll' does not exist on type 'typeof Property'.
+src/services/authService.ts(7,37): error TS2339: Property 'findOne' does not exist on type 'typeof User'.
+src/services/authService.ts(13,29): error TS2339: Property 'create' does not exist on type 'typeof User'.
+src/services/authService.ts(26,29): error TS2339: Property 'findOne' does not exist on type 'typeof User'.
+src/services/authService.ts(45,29): error TS2339: Property 'findByPk' does not exist on type 'typeof User'.
+src/services/authService.ts(53,40): error TS2339: Property 'toJSON' does not exist on type 'User'.
+src/services/bookingService.ts(2,1): error TS6133: 'Payment' is declared but its value is never read.
+src/services/bookingService.ts(8,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/bookingService.ts(17,35): error TS2339: Property 'create' does not exist on type 'typeof Booking'.
+src/services/bookingService.ts(28,35): error TS2339: Property 'findByPk' does not exist on type 'typeof Booking'.
+src/services/bookingService.ts(36,20): error TS2339: Property 'findAll' does not exist on type 'typeof Booking'.
+src/services/bookingService.ts(43,20): error TS2339: Property 'findAll' does not exist on type 'typeof Booking'.
+src/services/bookingService.ts(56,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/favoriteService.ts(7,39): error TS2339: Property 'create' does not exist on type 'typeof Favorite'.
+src/services/favoriteService.ts(18,35): error TS2339: Property 'destroy' does not exist on type 'typeof Favorite'.
+src/services/favoriteService.ts(28,21): error TS2339: Property 'findAll' does not exist on type 'typeof Favorite'.
+src/services/paymentService.ts(7,35): error TS2339: Property 'findByPk' does not exist on type 'typeof Booking'.
+src/services/paymentService.ts(12,35): error TS2339: Property 'create' does not exist on type 'typeof Payment'.
+src/services/paymentService.ts(23,35): error TS2339: Property 'findByPk' does not exist on type 'typeof Payment'.
+src/services/propertyService.ts(3,20): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/services/propertyService.ts(7,37): error TS2339: Property 'create' does not exist on type 'typeof Property'.
+src/services/propertyService.ts(15,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/propertyService.ts(47,39): error TS2339: Property 'findAll' does not exist on type 'typeof Property'.
+src/services/propertyService.ts(58,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/propertyService.ts(70,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Property'.
+src/services/providerService.ts(7,45): error TS2339: Property 'findOne' does not exist on type 'typeof Provider'.
+src/services/providerService.ts(12,37): error TS2339: Property 'create' does not exist on type 'typeof Provider'.
+src/services/providerService.ts(21,37): error TS2339: Property 'findByPk' does not exist on type 'typeof Provider'.
+src/services/providerService.ts(29,37): error TS2339: Property 'findOne' does not exist on type 'typeof Provider'.
+src/services/providerService.ts(39,29): error TS2339: Property 'findByPk' does not exist on type 'typeof User'.
+src/services/providerService.ts(49,21): error TS2339: Property 'findAll' does not exist on type 'typeof Provider'.
+src/services/reviewService.ts(7,35): error TS2339: Property 'findByPk' does not exist on type 'typeof Booking'.
+src/services/reviewService.ts(16,33): error TS2339: Property 'create' does not exist on type 'typeof Review'.
+src/services/reviewService.ts(27,19): error TS2339: Property 'findAll' does not exist on type 'typeof Review'.
+src/services/reviewService.ts(34,33): error TS2339: Property 'findByPk' does not exist on type 'typeof Review'.
+src/services/reviewService.ts(48,33): error TS2339: Property 'findByPk' does not exist on type 'typeof Review'.
+src/utils/auth.ts(8,14): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.

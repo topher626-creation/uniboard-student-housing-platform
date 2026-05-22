@@ -2,10 +2,10 @@ import React from 'react';
 import { Home, Users, CheckCircle, Star } from 'lucide-react';
 
 const stats = [
-  { key: 'stat-listings', icon: Home, value: '1,240+', label: 'Active Bedspaces', color: 'text-green-700', bg: 'bg-green-50' },
-  { key: 'stat-students', icon: Users, value: '8,500+', label: 'Students Housed', color: 'text-amber-600', bg: 'bg-amber-50' },
-  { key: 'stat-providers', icon: CheckCircle, value: '340+', label: 'Verified Providers', color: 'text-green-600', bg: 'bg-green-50' },
-  { key: 'stat-rating', icon: Star, value: '4.8/5', label: 'Student Rating', color: 'text-amber-600', bg: 'bg-amber-50' },
+  { key: 'stat-properties', icon: Home, value: '1,240+', label: 'Properties', color: 'text-green-700', bg: 'bg-green-50' },
+  { key: 'stat-students', icon: Users, value: '8,500+', label: 'Students', color: 'text-amber-600', bg: 'bg-amber-50' },
+  { key: 'stat-landlords', icon: CheckCircle, value: '340+', label: 'Verified Landlords', color: 'text-green-600', bg: 'bg-green-50' },
+  { key: 'stat-contact', icon: Star, value: 'Direct', label: 'Direct Contact', color: 'text-amber-600', bg: 'bg-amber-50' },
 ];
 
 export default function StatsBar() {
@@ -15,7 +15,7 @@ export default function StatsBar() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats?.map((stat) => (
             <div key={stat?.key} className="flex items-center gap-4">
-              <div className={`w-12 h-12 ${stat?.bg} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+                <div className={`w-12 h-12 ${stat?.bg} rounded-full flex items-center justify-center flex-shrink-0`}>
                 <stat.icon size={22} className={stat?.color} />
               </div>
               <div>

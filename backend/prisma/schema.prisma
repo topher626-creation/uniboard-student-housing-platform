@@ -21,8 +21,7 @@ model User {
   compoundName  String?
   avatar        String?
 
-  // FIX: must be optional because user may not upload NRC at signup
-  nrcImages Json?
+  nrcImages Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

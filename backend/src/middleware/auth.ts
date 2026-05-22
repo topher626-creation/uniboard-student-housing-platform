@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+
+type AuthRequest = Request & { user?: { id: string; role: import('@prisma/client').Role; status: import('@prisma/client').UserStatus; adminLevel?: import('@prisma/client').AdminLevel | null } };
+
 import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/db';
 
-const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -28,28 +31,28 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
 };
 
 // Role guards
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
   if (req.user?.role !== 'ADMIN') {
     return res.status(403).json({ error: 'Admin access required' });
   }
   next();
 };
 
-export const isSuperAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const isSuperAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
   if (req.user?.role !== 'ADMIN' || req.user?.adminLevel !== 'SUPER') {
     return res.status(403).json({ error: 'Super Admin access required' });
   }
   next();
 };
 
-export const isLandlord = (req: Request, res: Response, next: NextFunction) => {
+export const isLandlord = (req: AuthRequest, res: Response, next: NextFunction) => {
   if (req.user?.role !== 'LANDLORD') {
     return res.status(403).json({ error: 'Landlord access required' });
   }
   next();
 };
 
-export const isLandlordOrManager = (req: Request, res: Response, next: NextFunction) => {
+export const isLandlordOrManager = (req: AuthRequest, res: Response, next: NextFunction) => {
   if (req.user?.role !== 'LANDLORD' && req.user?.role !== 'MANAGER') {
     return res.status(403).json({ error: 'Landlord/Manager access required' });
   }

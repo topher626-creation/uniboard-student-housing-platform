@@ -7,9 +7,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   images: {
     remotePatterns: imageHosts,
     minimumCacheTTL: 60,
@@ -50,5 +48,6 @@ const nextConfig = {
     }
     return config;
   },
+  turbopack: {},
 };
 export default nextConfig;

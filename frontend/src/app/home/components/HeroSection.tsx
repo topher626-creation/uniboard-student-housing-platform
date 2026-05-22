@@ -1,29 +1,22 @@
-'use client';
+ 'use client';
 
 import React, { useState } from 'react';
-import { Search, MapPin, Home, Shield, Users, Star } from 'lucide-react';
+import { ArrowRight, MapPin, Search, Shield, Users, Star, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import AppImage from '@/components/ui/AppImage';
 
-const universities = ['UNZA', 'CBU', 'MUKUBA', 'Mulungushi', 'Kwame Nkrumah', 'UNILUS'];
-const roomTypes = ['Any Type', 'Shared Room', 'Private Room', 'En-Suite', 'Studio'];
-const trustBadges = [
-  { icon: Shield, text: '340+ Verified Providers', key: 'trust-verified' },
-  { icon: Users, text: '8,500+ Students Housed', key: 'trust-students' },
-  { icon: Star, text: '4.8/5 Average Rating', key: 'trust-rating' },
-];
+const propertyFilters = ['All Properties', 'En-Suite', 'Shared Room', 'Private Room', 'Studio'];
 
 export default function HeroSection() {
   const router = useRouter();
-  const [university, setUniversity] = useState('');
-  const [roomType, setRoomType] = useState('Any Type');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [location, setLocation] = useState('');
+  const [propertyFilter, setPropertyFilter] = useState('All Properties');
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (university) params?.set('campus', university);
-    if (roomType !== 'Any Type') params?.set('type', roomType);
-    if (maxPrice) params?.set('maxPrice', maxPrice);
-    router?.push(`/room-listing-page?${params?.toString()}`);
+    if (location.trim()) params.set('location', location.trim());
+    if (propertyFilter && propertyFilter !== 'All Properties') params.set('property', propertyFilter);
+    router.push(`/room-listing-page?${params.toString()}`);
   };
 
   return (
@@ -38,7 +31,7 @@ export default function HeroSection() {
       <div
         className="absolute inset-0 opacity-5"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(11, 253, 55, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
         }}
       />
@@ -46,48 +39,42 @@ export default function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           {/* Left — Text */}
           <div className="lg:col-span-3">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-white/90 text-sm font-medium">1,240 bedspaces available right now</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5">
-              Find trusted student
-              <br />
-              <span className="text-amber-400">accommodation</span>
-              <br />
-              near your campus
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5">
+              <span className="block text-white/95">
+                Find{' '}
+                <span className="text-orange-500">Verified</span>{' '}
+                Student
+              </span>
+              <span className="block text-white/95">Accommodation Near Your Campus</span>
             </h1>
 
-            <p className="text-lg text-white/70 max-w-xl mb-8 leading-relaxed">
-              Discover verified off-campus bedspaces near your university. Connect directly with trusted landlords and providers across Zambia.
+            <p className="text-base sm:text-lg text-cream white-500 max-w-xl mb-8 leading-relaxed">
+              UniBoard connects students with <span className="text-green-600 font-semibold">verified landlords</span>, real-time availability, safer housing, and everything you need in one place.
             </p>
 
-            {/* Search Card */}
-            <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl max-w-2xl">
+            {/* subtle “card” behind the title for better visual hierarchy */}
+
+
+            {/* Search system */}
+            <div className="bg-white/95 backdrop-blur-md rounded-[20px] p-4 shadow-2xl max-w-2xl">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                 <div className="relative">
-                  <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-600 pointer-events-none" />
-                  <select
-                    value={university}
-                    onChange={(e) => setUniversity(e?.target?.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 appearance-none cursor-pointer"
-                  >
-                    <option value="">Select University</option>
-                    {universities?.map((u) => (
-                      <option key={`hero-univ-${u}`} value={u}>{u}</option>
-                    ))}
-                  </select>
+                  <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-700 pointer-events-none" />
+                  <input
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Search by location or compound"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500"
+                  />
                 </div>
                 <div className="relative">
-                  <Home size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-600 pointer-events-none" />
                   <select
-                    value={roomType}
-                    onChange={(e) => setRoomType(e?.target?.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 appearance-none cursor-pointer"
+                    value={propertyFilter}
+                    onChange={(e) => setPropertyFilter(e.target.value)}
+                    className="w-full pl-3 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 appearance-none cursor-pointer"
                   >
-                    {roomTypes?.map((rt) => (
-                      <option key={`hero-rt-${rt}`} value={rt}>{rt}</option>
+                    {propertyFilters.map((pf) => (
+                      <option key={`hero-pf-${pf}`} value={pf}>{pf}</option>
                     ))}
                   </select>
                 </div>
@@ -96,68 +83,112 @@ export default function HeroSection() {
                   className="flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-150 active:scale-95"
                 >
                   <Search size={16} />
-                  Browse Bedspaces
+                  Search
                 </button>
               </div>
-              <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
-                <span className="text-xs text-gray-400 font-medium self-center">Popular:</span>
-                {['Under K2,000/mo', 'Near UNZA', 'En-Suite', 'Female Only', 'Available Now']?.map((tag) => (
-                  <button
-                    key={`quick-${tag}`}
-                    onClick={() => router?.push('/room-listing-page')}
-                    className="text-xs bg-green-50 text-green-700 hover:bg-green-100 px-3 py-1.5 rounded-full font-medium transition-colors"
-                  >
-                    {tag}
-                  </button>
-                ))}
+
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={handleSearch}
+                  className="flex-1 flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-150 active:scale-95"
+                >
+                  Find Accommodation
+                  <ArrowRight size={16} />
+                </button>
+                <button
+                  onClick={() => router.push('/sign-up-login-screen')}
+                  className="flex-1 flex items-center justify-center gap-2 bg-white text-green-700 border border-green-200 hover:bg-green-50 font-semibold py-2.5 px-4 rounded-xl transition-all duration-150"
+                >
+                  <User size={16} />
+                  Register as Landlord
+                </button>
               </div>
             </div>
 
             {/* Trust badges */}
             <div className="flex flex-wrap items-center gap-5 mt-7">
-              {trustBadges?.map((badge) => (
-                <div key={badge?.key} className="flex items-center gap-2 text-white/75">
-                  <badge.icon size={15} className="text-green-400" />
-                  <span className="text-sm font-medium">{badge?.text}</span>
-                </div>
-              ))}
+              <div className="flex items-center gap-2 text-white/75">
+                <Shield size={15} className="text-green-400" />
+                <span className="text-sm font-medium">340+ Verified Providers</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/75">
+                <Users size={15} className="text-green-400" />
+                <span className="text-sm font-medium">8,500+ Students Housed</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/75">
+                <Star size={15} className="text-green-400" />
+                <span className="text-sm font-medium">4.8/5 Average Rating</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right — Premium image */}
+          <div className="lg:col-span-2 hidden lg:flex">
+            <div className="w-full relative h-[460px] rounded-[28px] overflow-hidden shadow-2xl">
+
+              {/* Dotted grid decoration */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none opacity-40"
+                style={{
+                  backgroundImage:
+                    'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
+                  backgroundSize: '22px 22px',
+                }}
+              />
+              {/* Subtle mesh */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none opacity-20"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.25) 1px, transparent 1px)',
+                  backgroundSize: '28px 28px',
+                }}
+              />
+
+              <AppImage
+                src="/assets/images/UniBoard home page image .jpeg"
+                alt="UniBoard student accommodation"
+                fill
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+
+              {/* Top-right verified badge */}
+              <div className="absolute top-4 right-4 bg-white/90 border border-gray-100 rounded-full px-3 py-1.5 flex items-center gap-2 shadow-sm">
+                <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">✓</span>
+                <span className="text-xs font-semibold text-gray-900">Verified listings</span>
+              </div>
+
+              {/* Soft vignette */}
+              <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 -120px 180px rgba(0,0,0,0.10)' }} />
             </div>
           </div>
 
-          {/* Right — Visual */}
-          <div className="lg:col-span-2 hidden lg:flex flex-col gap-4">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center">
-                  <Shield size={20} className="text-green-400" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm">Verified Provider</p>
-                  <p className="text-white/60 text-xs">Mwale Student Residences</p>
-                </div>
-                <span className="ml-auto text-xs bg-green-500/20 text-green-400 border border-green-500/30 px-2 py-0.5 rounded-full">✓ Verified</span>
-              </div>
-              <p className="text-white/60 text-xs leading-relaxed">Northmead Student Lodge — En-Suite Rooms near UNZA</p>
-              <div className="flex items-center justify-between mt-3">
-                <span className="text-amber-400 font-bold text-lg">K2,800<span className="text-white/40 text-xs font-normal">/month</span></span>
-                <span className="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">3 spots left</span>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
-              <p className="text-white/50 text-xs mb-2 uppercase tracking-wider font-semibold">Universities Covered</p>
-              <div className="flex flex-wrap gap-2">
-                {universities?.map((u) => (
-                  <span key={`hero-badge-${u}`} className="text-xs bg-white/10 text-white/80 border border-white/20 px-2.5 py-1 rounded-full">{u}</span>
-                ))}
-              </div>
-            </div>
-            <div className="bg-amber-500/10 backdrop-blur-sm border border-amber-500/20 rounded-2xl p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Star size={14} className="text-amber-400 fill-amber-400" />
-                <span className="text-white font-semibold text-sm">4.9 / 5</span>
-              </div>
-              <p className="text-white/60 text-xs">&ldquo;Found my room in 2 days. The verification badge gave me real confidence.&rdquo;</p>
-              <p className="text-white/40 text-xs mt-1">— Chipo M., UNZA 2nd Year</p>
+          {/* Mobile image (below text) */}
+          <div className="lg:hidden relative mt-10">
+            <div className="w-full relative h-[360px] rounded-[28px] overflow-hidden shadow-2xl">
+
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none opacity-35"
+                style={{
+                  backgroundImage:
+                    'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
+                  backgroundSize: '22px 22px',
+                }}
+              />
+              <AppImage
+                src="/assets/images/UniBoard home page image .jpeg"
+                alt="UniBoard student accommodation"
+                fill
+                unoptimized
+                sizes="100vw"
+                className="object-cover"
+              />
             </div>
           </div>
         </div>

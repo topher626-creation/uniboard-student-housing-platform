@@ -265,7 +265,7 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Create a strong password"
                   className={`input-base pl-9 pr-10 ${errors.password ? 'border-red-400' : ''}`}
-                  {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
+                  {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

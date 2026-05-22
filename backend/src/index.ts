@@ -6,7 +6,9 @@ import propertyRoutes from './routes/properties';
 import adminRoutes from './routes/admin';
 import searchRoutes from './routes/search';
 import landlordRoutes from './routes/landlord';
+import uploadRoutes from './routes/upload';
 import path from 'path';
+
 
 dotenv.config();
 
@@ -27,8 +29,10 @@ app.use('/api/properties', propertyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/landlord', landlordRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/health', (req, res) => {
+
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 

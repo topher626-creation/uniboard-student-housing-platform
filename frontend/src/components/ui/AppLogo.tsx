@@ -13,9 +13,11 @@ interface AppLogoProps {
 }
 
 const AppLogo = memo(function AppLogo({
+  // Default to official logo asset.
+  // Prefer PNG for maximum crispness; fallback handled by AppImage.
   src = '/assets/images/app_logo.png',
   iconName = 'SparklesIcon',
-  size = 64,
+  size = 70,
   className = '',
   onClick,
 }: AppLogoProps) {
@@ -33,7 +35,7 @@ const AppLogo = memo(function AppLogo({
       {src ? (
         <AppImage
           src={src}
-          alt="Logo" 
+          alt="UniBoard logo"
           width={size}
           height={size}
           className="flex-shrink-0"

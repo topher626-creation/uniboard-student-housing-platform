@@ -1,24 +1,25 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 @layer base {
+
+
   :root {
-    --primary: 221 83% 53%;
+    --primary: 145 63% 38%;
     --primary-foreground: 0 0% 100%;
-    --accent: 263 70% 50%;
+    --accent: 160 70% 45%;
     --accent-foreground: 0 0% 100%;
-    --background: 220 20% 97%;
-    --foreground: 222 47% 11%;
+    --background: 142 45% 98%;
+    --foreground: 173 20% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --border: 220 13% 91%;
-    --ring: 221 83% 53%;
-    --success: 142 71% 45%;
+    --card-foreground: 173 20% 15%;
+    --muted: 142 40% 92%;
+    --muted-foreground: 142 20% 36%;
+    --border: 142 40% 88%;
+    --ring: 145 63% 38%;
+    --success: 145 63% 38%;
     --warning: 38 92% 50%;
     --danger: 0 84% 60%;
     --radius: 0.75rem;
@@ -55,11 +56,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md;
+    @apply bg-green-700 hover:bg-green-800 active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md;
   }
 
   .btn-outline {
-    @apply border border-blue-600 text-blue-600 hover:bg-blue-50 active:scale-95 font-semibold px-5 py-2.5 rounded-xl transition-all duration-150;
+    @apply border border-green-700 text-green-700 hover:bg-green-50 active:scale-95 font-semibold px-5 py-2.5 rounded-xl transition-all duration-150;
   }
 
   .card-base {
@@ -98,7 +99,7 @@
   }
 
   .section-label {
-    @apply text-xs font-semibold tracking-widest uppercase text-blue-600;
+    @apply text-xs font-semibold tracking-widest uppercase text-green-700;
   }
 
   .price-display {
@@ -109,11 +110,11 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-green-700 via-emerald-600 to-teal-500 bg-clip-text text-transparent;
   }
 
   .hero-gradient {
-    background: linear-gradient(135deg, #0a2e1a 0%, #1B4332 50%, #2d6a4f 100%);
+    background: linear-gradient(135deg, #14532d 0%, #16a34a 50%, #22c55e 100%);
   }
 
   .card-hover {

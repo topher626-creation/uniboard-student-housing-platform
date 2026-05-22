@@ -96,15 +96,15 @@ export default function AuthPageClient() {
             <button
               onClick={() => setActiveTab('login')}
               className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                activeTab === 'login' ?'bg-blue-600 text-white shadow-sm' :'text-gray-500 hover:text-gray-700'
+                activeTab === 'login' ? 'bg-green-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Log In
+              Sign In
             </button>
             <button
               onClick={() => setActiveTab('signup')}
               className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                activeTab === 'signup' ?'bg-blue-600 text-white shadow-sm' :'text-gray-500 hover:text-gray-700'
+                activeTab === 'signup' ? 'bg-green-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               Create Account

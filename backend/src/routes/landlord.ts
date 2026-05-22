@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import type { RoomType } from '@prisma/client';
 import authMiddleware, { isLandlord, isLandlordOrManager } from '../middleware/auth';
 import { prisma } from '../lib/db';
@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // POST /api/landlord/compounds - Create compound
-router.post('/compounds', isLandlord, upload.array('nrcImages', 2), async (req, res) => {
+router.post('/compounds', isLandlord, upload.array('nrcImages', 2), async (req: Request & { user?: { id: string } }, res: Response) => {
   try {
     const { name, description, location } = req.body;
     const userId = req.user!.id;
@@ -41,7 +41,7 @@ router.post('/compounds', isLandlord, upload.array('nrcImages', 2), async (req, 
 });
 
 // GET /api/landlord/compounds
-router.get('/compounds', isLandlord, async (req, res) => {
+router.get('/compounds', isLandlord, async (req: Request & { user?: { id: string } }, res: Response) => {
   try {
     const compounds = await prisma.compound.findMany({
       where: { userId: req.user!.id },

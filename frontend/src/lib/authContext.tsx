@@ -34,7 +34,9 @@ export interface SignupData {
   compoundName?: string;
   nrcFront?: File;
   nrcBack?: File;
+  verificationImages?: string[];
 }
+
 
 // Backend auth - http://localhost:5000/api/auth
 const API_BASE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
@@ -90,6 +92,11 @@ export function AuthProvider({ children }: {children: ReactNode;}) {
       if (data.compoundName) formData.append('compoundName', data.compoundName);
       if (data.nrcFront) formData.append('nrcFront', data.nrcFront);
       if (data.nrcBack) formData.append('nrcBack', data.nrcBack);
+      if (data.verificationImages && data.verificationImages.length) {
+        // send as JSON string so backend can parse it from multipart
+        formData.append('verificationImages', JSON.stringify(data.verificationImages));
+      }
+
 
       const response = await fetch(`${API_BASE}/auth/signup`, {
         method: 'POST',

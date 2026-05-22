@@ -75,6 +75,7 @@ router.post('/signup', signupUpload.fields([
   { name: 'nrcFront', maxCount: 1 },
   { name: 'nrcBack', maxCount: 1 }
 ]), async (req, res) => {
+
   try {
     const {
       fullName,
@@ -83,8 +84,10 @@ router.post('/signup', signupUpload.fields([
       role,
       phone,
       university,
-      compoundName
+      compoundName,
+      verificationImages
     } = req.body;
+
 
     const isLandlord = role?.toUpperCase() === 'LANDLORD';
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -112,6 +115,17 @@ router.post('/signup', signupUpload.fields([
       nrcBackUrl = filePath;
     }
 
+    // Landlord verification uploads (optional)
+    // frontend sends verificationImages as an array of public URLs
+    let verificationUrls: string[] = [];
+    if (Array.isArray(verificationImages)) {
+      verificationUrls = verificationImages.filter(Boolean);
+    } else if (typeof verificationImages === 'string') {
+      // If only one url is sent as a string, accept it.
+      verificationUrls = verificationImages ? [verificationImages] : [];
+    }
+
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
@@ -123,11 +137,15 @@ router.post('/signup', signupUpload.fields([
         phone,
         university,
         compoundName,
-        nrcImages: [nrcFrontUrl, nrcBackUrl].filter(Boolean),
+        nrcImages: (verificationUrls.length
+          ? verificationUrls.map((url) => ({ url }))
+          : [nrcFrontUrl, nrcBackUrl]
+        ).filter(Boolean),
         status: isLandlord ? 'PENDING' : 'ACTIVE',
         phoneVerified: false
       }
     });
+
 
     // OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();

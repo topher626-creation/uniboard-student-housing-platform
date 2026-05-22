@@ -12,6 +12,7 @@ import HowItWorks from './components/HowItWorks';
 import TrustBanner from './components/TrustBanner';
 import CtaBanner from './components/CtaBanner';
 import Testimonials from './components/Testimonials';
+import FeatureBenefitsStrip from './components/FeatureBenefitsStrip';
 
 export default function HomePage() {
   return (
@@ -19,8 +20,12 @@ export default function HomePage() {
       <Topbar />
       <HeroSection />
       <StatsBar />
-      <UniversitySection />
+      <FeatureBenefitsStrip />
       <FeaturedListings />
+
+      {/* The remaining existing sections are kept, but moved below Featured Properties
+          to satisfy the required strict ordering. */}
+      <UniversitySection />
       <TrustBanner />
       <VerifiedProviders />
       <HowItWorks />

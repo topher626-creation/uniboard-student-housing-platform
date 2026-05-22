@@ -1,0 +1,1 @@
+{"version":3,"file":"favoriteService.d.ts","sourceRoot":"","sources":["../../src/services/favoriteService.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,uBAAuB,CAAC;AAG7C,qBAAa,eAAe;IACpB,WAAW,CAAC,SAAS,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM;IAYjD,cAAc,CAAC,SAAS,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM;IAUpD,YAAY,CAAC,SAAS,EAAE,MAAM;CAMrC;;AAED,wBAAqC"}

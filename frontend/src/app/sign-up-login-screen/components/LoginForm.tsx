@@ -51,8 +51,8 @@ export default function LoginForm({ onSwitchToSignup }: Props) {
   return (
     <div>
       <div className="mb-7">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Welcome back</h1>
-        <p className="text-gray-500 text-sm">Log in to your UniBoard Zambia account</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Sign In</h1>
+        <p className="text-gray-500 text-sm">Access your UniBoard account and continue your search.</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -62,7 +62,7 @@ export default function LoginForm({ onSwitchToSignup }: Props) {
             <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
             <input
               type="email"
-              placeholder="you@university.zm"
+              placeholder="name@university.edu.zm"
               className={`input-base pl-9 ${errors.email ? 'border-red-400' : ''}`}
               {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email' } })}
             />
@@ -107,13 +107,28 @@ export default function LoginForm({ onSwitchToSignup }: Props) {
           className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-xl transition-all duration-150 active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2"
           style={{ minHeight: '48px' }}
         >
-          {isSubmitting ? <><Loader2 size={18} className="animate-spin" />Signing in...</> : 'Log In to UniBoard'}
+          {isSubmitting ? <><Loader2 size={18} className="animate-spin" />Signing in...</> : 'Sign In'}
         </button>
       </form>
 
+      <div className="mt-5">
+        <div className="relative py-3">
+          <div className="absolute inset-x-0 top-1/2 h-px bg-gray-200" />
+          <p className="relative bg-gray-50 text-center text-xs uppercase tracking-[0.24em] text-gray-500 px-3">Or continue with</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => alert('Google sign in is not yet connected.')}
+          className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-150"
+        >
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-gray-100 text-green-600 font-bold">G</span>
+          Sign in with Google
+        </button>
+      </div>
+
       <p className="text-center text-sm text-gray-500 mt-5">
         Don&apos;t have an account?{' '}
-        <button onClick={onSwitchToSignup} className="text-green-700 font-semibold hover:underline">Create one free</button>
+        <button onClick={onSwitchToSignup} className="text-green-700 font-semibold hover:underline">Create an account</button>
       </p>
 
       {/* Demo Credentials */}
