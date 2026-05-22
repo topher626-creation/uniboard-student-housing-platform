@@ -1,4 +1,4 @@
-﻿src/config/database.ts(1,27): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
+src/config/database.ts(1,27): error TS2307: Cannot find module 'sequelize' or its corresponding type declarations.
 src/config/database.ts(8,7): error TS6133: '__dirname' is declared but its value is never read.
 src/controllers/adminController.ts(3,1): error TS6133: 'AppError' is declared but its value is never read.
 src/controllers/adminController.ts(42,29): error TS6133: 'req' is declared but its value is never read.

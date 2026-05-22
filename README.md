@@ -1,4 +1,4 @@
-﻿# UniBoard Student Housing Platform
+# UniBoard Student Housing Platform
 
 This repository contains the current `api/` and `web/` implementations for UniBoard.
 
