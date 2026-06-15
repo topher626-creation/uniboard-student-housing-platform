@@ -1,4 +1,3 @@
-
 # TODO: Implement Landlord Registration Form with Verification Upload
 
 ## Phase 1: Fix Prisma Schema & Setup
@@ -16,9 +15,9 @@
 
 
 ## Phase 3: Frontend Updates
+
 - [x] 8. Edit frontend/src/lib/authContext.tsx: signup accept verificationImages?: string[]
 - [ ] 9. Edit frontend/src/app/sign-up-login-screen/components/SignupForm.tsx: Landlord upload UI + logic
-
 - [ ] 10. Add UI warning/helper text
 
 

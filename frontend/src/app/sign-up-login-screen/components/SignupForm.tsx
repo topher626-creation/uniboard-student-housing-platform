@@ -1,8 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Eye, EyeOff, Mail, Lock, User, Phone, GraduationCap, Loader2, Building2, Upload, ArrowLeft, ArrowRight } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  Phone,
+  GraduationCap,
+  Loader2,
+  Building2,
+  Upload,
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+} from 'lucide-react';
+
 import { useRouter } from 'next/navigation';
 import { useAuth, UserRole } from '@/lib/authContext';
 
@@ -42,12 +57,23 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
   const [step, setStep] = useState(1); // For landlord multi-step
   const [formStatus, setFormStatus] = useState<{ type: 'pending' | 'success' | 'error'; message: string } | null>(null);
 
+  const [uploadedVerificationUrls, setUploadedVerificationUrls] = useState<string[]>([]);
+  const [verificationUploadState, setVerificationUploadState] = useState<{
+    uploading: boolean;
+    error: string | null;
+    lastUploadCount: number;
+  }>({ uploading: false, error: null, lastUploadCount: 0 });
+
+
   const { register, handleSubmit, watch, formState: { errors, isSubmitting }, trigger } = useForm<SignupFormData>();
   const passwordValue = watch('password');
   const selectedNrcFront = watch('nrcFront')?.[0];
   const selectedNrcBack = watch('nrcBack')?.[0];
 
+  const API_BASE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
+
   const onSubmit = async (data: SignupFormData) => {
+
     if (role === 'landlord' && step < 3) {
       // For landlords, handle step progression
       if (step === 1) {
@@ -116,7 +142,63 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
     if (step > 1) setStep(step - 1);
   };
 
+  const resetVerificationUploadState = () => {
+    setVerificationUploadState({ uploading: false, error: null, lastUploadCount: 0 });
+  };
+
+  const uploadVerificationDocs = async (files: File[]) => {
+    if (!files.length) return;
+
+    resetVerificationUploadState();
+    setVerificationUploadState((s) => ({ ...s, uploading: true, error: null }));
+
+    try {
+      const formData = new FormData();
+      for (const file of files.slice(0, 5)) {
+        formData.append('files', file);
+      }
+
+      const resp = await fetch(`${API_BASE}/upload/verification-docs`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!resp.ok) {
+        let msg = 'Upload failed';
+        try {
+          const err = await resp.json();
+          msg = err?.error || msg;
+        } catch {
+          // ignore
+        }
+        throw new Error(msg);
+      }
+
+      const payload = (await resp.json()) as Array<{ url: string }>;
+      const urls = payload.map((p) => p.url).filter(Boolean);
+
+      setUploadedVerificationUrls((prev) => {
+        // de-dup
+        const set = new Set([...prev, ...urls]);
+        return Array.from(set);
+      });
+
+      setVerificationUploadState({ uploading: false, error: null, lastUploadCount: urls.length });
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Upload failed';
+      setVerificationUploadState({ uploading: false, error: message, lastUploadCount: 0 });
+    }
+  };
+
+  const verificationHelpText = useMemo(() => {
+    if (verificationUploadState.uploading) return 'Uploading...';
+    if (verificationUploadState.error) return verificationUploadState.error;
+    if (uploadedVerificationUrls.length) return `Uploaded documents: ${uploadedVerificationUrls.length}`;
+    return 'Upload additional documents for admin verification (optional but recommended).';
+  }, [uploadedVerificationUrls.length, verificationUploadState.error, verificationUploadState.uploading]);
+
   return (
+
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Create your account</h1>
