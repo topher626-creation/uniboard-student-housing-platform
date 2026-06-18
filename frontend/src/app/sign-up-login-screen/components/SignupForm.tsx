@@ -15,11 +15,12 @@ import {
   Upload,
   ArrowLeft,
   ArrowRight,
-  FileText,
+  Shield,
 } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import { useAuth, UserRole } from '@/lib/authContext';
+import { API_BASE } from '@/lib/config';
 
 type SignupFormData = {
   fullName: string;
@@ -70,7 +71,7 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
   const selectedNrcFront = watch('nrcFront')?.[0];
   const selectedNrcBack = watch('nrcBack')?.[0];
 
-  const API_BASE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
+  const API_BASE_URL = API_BASE;
 
   const onSubmit = async (data: SignupFormData) => {
 
@@ -97,6 +98,7 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
       compoundName: role === 'landlord' ? data.compoundName : undefined,
       nrcFront: data.nrcFront?.[0],
       nrcBack: data.nrcBack?.[0],
+      verificationImages: role === 'landlord' ? uploadedVerificationUrls : undefined,
     });
 
     if (!result.success) {
@@ -110,6 +112,10 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
         message: result.message || 'Your landlord account is pending admin approval. You will receive an email once approved.'
       });
       return;
+    }
+
+    if (role === 'landlord' && uploadedVerificationUrls.length) {
+      // Keep helper state; actual URLs are included in signup request below.
     }
 
     if (role === 'student') {
@@ -158,7 +164,7 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
         formData.append('files', file);
       }
 
-      const resp = await fetch(`${API_BASE}/upload/verification-docs`, {
+      const resp = await fetch(`${API_BASE_URL}/upload/verification-docs`, {
         method: 'POST',
         body: formData,
       });
@@ -264,8 +270,14 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
       )}
 
       {formStatus && (
-        <div className={`mb-6 rounded-2xl p-4 border ${formStatus.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-emerald-50 border-emerald-200 text-emerald-800'}`}>
-          <p>{formStatus.message}</p>
+        <div className={`mb-6 rounded-2xl p-4 border ${
+          formStatus.type === 'error'
+            ? 'bg-red-50 border-red-200 text-red-700'
+            : formStatus.type === 'pending'
+              ? 'bg-amber-50 border-amber-200 text-amber-900'
+              : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+        }`}>
+          <p className="text-sm font-medium">{formStatus.message}</p>
         </div>
       )}
 
@@ -380,7 +392,12 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
             {/* Terms */}
             <label className="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" className="w-4 h-4 accent-green-600 rounded cursor-pointer mt-0.5" {...register('agreeTerms', { required: 'You must agree to the terms' })} />
-              <span className="text-sm text-gray-600">I agree to UniBoard&apos;s <span className="text-green-700 font-semibold">Terms of Service</span> and <span className="text-green-700 font-semibold">Privacy Policy</span></span>
+              <span className="text-sm text-gray-600">
+                I agree to UniBoard&apos;s{' '}
+                <a href="/terms" className="text-green-700 font-semibold hover:underline">Terms of Service</a>
+                {' '}and{' '}
+                <a href="/privacy-policy" className="text-green-700 font-semibold hover:underline">Privacy Policy</a>
+              </span>
             </label>
             {errors.agreeTerms && <p className="text-red-500 text-xs font-medium">{errors.agreeTerms.message}</p>}
           </>
@@ -456,12 +473,78 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
               </div>
               {errors.nrcBack && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.nrcBack.message}</p>}
             </div>
+
+            {/* Optional Additional Verification Docs */}
+            <div className="mt-3">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                Additional verification documents
+                <span className="text-amber-600 font-semibold"> (optional)</span>
+              </label>
+              <p className="text-xs text-gray-400 mb-2">Upload any extra documents (e.g. business registration, tenancy proof). Up to 5 files.</p>
+
+              <div className="flex gap-3 items-start">
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  multiple
+                  className="hidden"
+                  id="verification-docs"
+                  disabled={verificationUploadState.uploading}
+                  onChange={(e) => {
+                    const list = e.target.files;
+                    if (!list) return;
+                    uploadVerificationDocs(Array.from(list));
+                    // allow re-uploading same file names
+                    e.currentTarget.value = '';
+                  }}
+                />
+
+                <label
+                  htmlFor="verification-docs"
+                  className="flex-1 flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-amber-400 transition-colors"
+                >
+                  <Upload size={20} className="text-gray-400" />
+                  <span className="text-sm text-gray-600">Upload verification docs</span>
+                </label>
+
+                <div className="w-44">
+                  <div className="text-xs text-gray-500 mb-1">Status</div>
+                  <div className={verificationUploadState.error ? 'text-red-600 text-xs font-medium' : 'text-amber-800 text-xs font-medium'}>
+                    {verificationHelpText}
+                  </div>
+                </div>
+              </div>
+
+              {uploadedVerificationUrls.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-xs text-slate-600 font-medium mb-2">Uploaded (for admin verification)</p>
+                  <div className="text-xs text-slate-500 space-y-1">
+                    {uploadedVerificationUrls.slice(0, 3).map((u, idx) => (
+                      <div key={`${u}-${idx}`} className="truncate">
+                        • {u}
+                      </div>
+                    ))}
+                    {uploadedVerificationUrls.length > 3 && (
+                      <div className="truncate">• +{uploadedVerificationUrls.length - 3} more</div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </>
         )}
 
         {role === 'landlord' && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
-            <p className="text-amber-800 text-xs font-medium">⚠️ Provider accounts require admin verification before listings go live. Our team will review your documents within 24-48 hours.</p>
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center">
+                <Shield size={18} className="text-amber-700" />
+              </div>
+              <div>
+                <p className="text-amber-900 text-sm font-semibold">Verified Landlord required</p>
+                <p className="text-amber-700 text-xs mt-1">Provider accounts are reviewed by UniBoard before listings go live. Expect approval within 24–48 hours.</p>
+              </div>
+            </div>
           </div>
         )}
 

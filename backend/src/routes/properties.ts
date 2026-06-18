@@ -3,37 +3,42 @@ import { prisma } from '../lib/db';
 
 const router = express.Router();
 
-/* =========================
-   GET ALL AVAILABLE PROPERTIES
-========================= */
-router.get('/', async (req, res) => {
+const propertyInclude = {
+  building: {
+    include: {
+      compound: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+              phone: true,
+              avatar: true,
+              status: true,
+            },
+          },
+        },
+      },
+      images: true,
+    },
+  },
+  university: true,
+  images: true,
+  features: { include: { feature: true } },
+  reviews: true,
+} as const;
+
+/* GET ALL AVAILABLE PROPERTIES */
+router.get('/', async (_req, res) => {
   try {
     const allProperties = await prisma.property.findMany({
-      include: {
-        building: {
-          include: {
-            compound: {
-              include: {
-                user: {
-                  select: {
-                    fullName: true,
-                    phone: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
+      include: propertyInclude,
       orderBy: { createdAt: 'desc' },
-      take: 50
+      take: 50,
     });
 
-    // filter available properties (business logic layer)
-    const properties = allProperties.filter(
-      (p) => p.occupiedBeds < p.totalBeds
-    );
-
+    const properties = allProperties.filter((p) => p.occupiedBeds < p.totalBeds);
     res.json(properties);
   } catch (error) {
     console.error(error);
@@ -41,20 +46,12 @@ router.get('/', async (req, res) => {
   }
 });
 
-/* =========================
-   GET PROPERTY BY ID
-========================= */
+/* GET PROPERTY BY ID */
 router.get('/:id', async (req, res) => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: req.params.id },
-      include: {
-        building: {
-          include: {
-            compound: true
-          }
-        }
-      }
+      include: propertyInclude,
     });
 
     if (!property) {

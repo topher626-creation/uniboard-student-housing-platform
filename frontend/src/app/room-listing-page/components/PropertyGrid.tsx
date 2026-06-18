@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
 import { MapPin, Star, Shield, Wifi, Car, Coffee, Heart, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Property } from './mockProperties';
+import type { ListingProperty } from '@/lib/types/listing';
 import { toast } from 'sonner';
 
 
 type Props = {
-  properties: Property[];
+  properties: ListingProperty[];
   totalCount: number;
   page: number;
   totalPages: number;
@@ -24,7 +24,7 @@ const roomTypeBadge: Record<string, string> = {
   Apartment: 'bg-pink-100 text-pink-700',
 };
 
-const amenityIcons: Record<string, React.FC<{ size: number; className?: string }>> = {
+const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi,
   parking: Car,
   kitchen: Coffee,
@@ -217,7 +217,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <span className="price-display text-lg font-bold text-gray-900">
-                    R{prop.price.toLocaleString()}
+                    K{prop.price.toLocaleString()}
                   </span>
                   <span className="text-gray-400 text-xs">/mo</span>
                   {prop.available && (

@@ -1,9 +1,13 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AppImage from '@/components/ui/AppImage';
 import { MapPin, Star, Shield, Heart, Phone } from 'lucide-react';
-import { properties } from '@/lib/mockData';
+import { fetchProperties } from '@/lib/api';
+import { mapApiPropertiesToListings } from '@/lib/propertyMapper';
+import type { ListingProperty } from '@/lib/types/listing';
+import { PageLoader } from '@/components/ui/PageStates';
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -11,16 +15,28 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-const featuredProps = properties.filter((p) => p.featured).slice(0, 6);
-
 const typeColors: Record<string, string> = {
-  'en-suite': 'bg-green-100 text-green-700',
-  shared: 'bg-blue-100 text-blue-700',
-  private: 'bg-purple-100 text-purple-700',
-  studio: 'bg-amber-100 text-amber-700',
+  'Single Room': 'bg-green-100 text-green-700',
+  'Shared Room': 'bg-blue-100 text-blue-700',
+  'Self-Contained': 'bg-purple-100 text-purple-700',
+  Bedsitter: 'bg-amber-100 text-amber-700',
+  Bankers: 'bg-pink-100 text-pink-700',
 };
 
 export default function FeaturedListings() {
+  const [featured, setFeatured] = useState<ListingProperty[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProperties()
+      .then((data) => {
+        const mapped = mapApiPropertiesToListings(data);
+        setFeatured(mapped.slice(0, 6));
+      })
+      .catch(() => setFeatured([]))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section className="py-20 bg-white" id="featured">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
@@ -28,105 +44,93 @@ export default function FeaturedListings() {
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-green-700 mb-2">Curated for You</p>
             <h2 className="text-3xl xl:text-4xl font-bold text-gray-900">Featured Bedspaces</h2>
-            <p className="text-gray-500 mt-2 text-base">Hand-picked, verified properties near top Zambian universities</p>
+            <p className="text-gray-500 mt-2 text-base">Verified properties near top Zambian universities</p>
           </div>
-          <Link href="/room-listing-page" className="flex items-center gap-2 text-green-700 font-semibold text-sm hover:text-green-800 transition-colors flex-shrink-0">
+          <Link
+            href="/room-listing-page"
+            className="flex items-center gap-2 text-green-700 font-semibold text-sm hover:text-green-800 transition-colors flex-shrink-0"
+          >
             View all listings →
           </Link>
         </div>
 
-        {/* Bento-style grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProps.map((prop) => (
-            <Link
-              key={prop.id}
-              href={`/property/${prop.id}`}
-              className="group block bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-            >
-              {/* Image */}
-              <div className="relative h-52 overflow-hidden">
-                <AppImage
-                  src={prop.images[0].src}
-                  alt={prop.images[0].alt}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute top-3 left-3 flex gap-2">
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${typeColors[prop.type] || 'bg-gray-100 text-gray-700'}`}>
-                    {prop.type.charAt(0).toUpperCase() + prop.type.slice(1)}
-                  </span>
-                  {prop.verified && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                      <Shield size={10} />
-                      Verified
+        {loading ? (
+          <PageLoader message="Loading featured bedspaces..." />
+        ) : featured.length === 0 ? (
+          <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-100">
+            <p className="text-gray-500 text-sm">New listings are being added. Check back soon or browse all bedspaces.</p>
+            <Link href="/room-listing-page" className="inline-block mt-4 text-green-700 font-semibold text-sm hover:underline">
+              Browse all listings
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((prop) => (
+              <Link
+                key={prop.id}
+                href={`/property/${prop.id}`}
+                className="group block bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <AppImage
+                    src={prop.image}
+                    alt={prop.imageAlt}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute top-3 left-3 flex gap-2">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${typeColors[prop.roomType] || 'bg-gray-100 text-gray-700'}`}>
+                      {prop.roomType}
                     </span>
+                    {prop.verified && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        <Shield size={10} />
+                        Verified
+                      </span>
+                    )}
+                  </div>
+                  {!prop.available && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <span className="bg-white text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full">Fully Booked</span>
+                    </div>
                   )}
                 </div>
-                <button
-                  onClick={(e) => e.preventDefault()}
-                  className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-sm"
-                >
-                  <Heart size={14} className="text-gray-400 hover:text-red-500 transition-colors" />
-                </button>
-                {!prop.available && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="bg-red-500 text-white text-sm font-bold px-4 py-1.5 rounded-full">Fully Booked</span>
-                  </div>
-                )}
-              </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-semibold text-gray-900 text-base leading-snug group-hover:text-green-700 transition-colors line-clamp-1">
+                <div className="p-5">
+                  <h3 className="font-bold text-gray-900 text-base mb-1 line-clamp-1 group-hover:text-green-700 transition-colors">
                     {prop.title}
                   </h3>
-                  <div className="flex items-center gap-1 flex-shrink-0">
-                    <Star size={13} className="text-amber-400 fill-amber-400" />
-                    <span className="text-sm font-semibold text-gray-700">{prop.rating}</span>
-                    <span className="text-xs text-gray-400">({prop.reviewCount})</span>
+                  <div className="flex items-center gap-1.5 text-gray-400 text-xs mb-3">
+                    <MapPin size={12} className="flex-shrink-0" />
+                    <span className="truncate">{prop.location} · {prop.university}</span>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-1">
-                  <MapPin size={13} className="text-green-600 flex-shrink-0" />
-                  <span className="truncate">{prop.location}</span>
-                </div>
-                <div className="text-xs text-green-700 font-medium mb-3">{prop.distanceFromCampus} to {prop.campus}</div>
-
-                <div className="flex items-center gap-1.5 mb-4">
-                  {prop.amenities.slice(0, 3).map((a) => (
-                    <span key={`${prop.id}-am-${a}`} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{a}</span>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-xl font-bold text-gray-900 font-mono">K{prop.price.toLocaleString()}</span>
-                    <span className="text-gray-400 text-sm">/month</span>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-lg font-bold text-gray-900">K{prop.price.toLocaleString()}</span>
+                      <span className="text-xs text-gray-400">/month</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Star size={13} className="fill-amber-400 text-amber-400" />
+                      <span className="text-sm font-semibold text-gray-700">{prop.rating}</span>
+                      <span className="text-xs text-gray-400">({prop.reviewCount})</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={(e) => { e.preventDefault(); window.open(`https://wa.me/${prop.provider.whatsapp}`, '_blank'); }}
-                      className="flex items-center gap-1 text-xs font-semibold text-white bg-green-600 hover:bg-green-700 px-2.5 py-1.5 rounded-lg transition-colors"
-                    >
+                  <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-50">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <Phone size={12} />
+                      <span>{prop.landlord}</span>
+                    </div>
+                    <div className="ml-auto flex items-center gap-1 text-green-600">
                       <WhatsAppIcon />
-                      WhatsApp
-                    </button>
-                    <button
-                      onClick={(e) => { e.preventDefault(); window.open(`tel:${prop.provider.phone}`, '_self'); }}
-                      className="flex items-center gap-1 text-xs font-semibold text-green-700 border border-green-300 hover:bg-green-50 px-2.5 py-1.5 rounded-lg transition-colors"
-                    >
-                      <Phone size={11} />
-                      Call
-                    </button>
+                      <Heart size={14} className="text-gray-300" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

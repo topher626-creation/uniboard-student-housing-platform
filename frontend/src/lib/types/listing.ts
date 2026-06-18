@@ -1,0 +1,28 @@
+export type ListingProperty = {
+  id: string;
+  title: string;
+  location: string;
+  university: string;
+  distanceKm: number;
+  price: number;
+  roomType: string;
+  rating: number;
+  reviewCount: number;
+  verified: boolean;
+  available: boolean;
+  furnished: boolean;
+  amenities: string[];
+  image: string;
+  imageAlt: string;
+  landlord: string;
+  landlordAvatar: string;
+  landlordAvatarAlt: string;
+  responseRate: number;
+  availableFrom: string;
+  listedDaysAgo: number;
+  bedrooms: number;
+  bathrooms: number;
+  description: string;
+  phone?: string;
+  whatsapp?: string;
+};

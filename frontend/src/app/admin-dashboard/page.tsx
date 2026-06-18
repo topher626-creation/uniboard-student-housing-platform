@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Topbar from '@/components/Topbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/authContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { properties, providers } from '@/lib/mockData';
 import { Users, Home, Shield, Star, BarChart2, CheckCircle, X, Lock, Flag, LogOut, Eye } from 'lucide-react';
 
@@ -30,14 +31,9 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminDashboard() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
-
-  if (!isAuthenticated || !user) {
-    if (typeof window !== 'undefined') router.push('/sign-up-login-screen');
-    return null;
-  }
 
   const tabs = [
     { id: 'overview' as Tab, label: 'Overview', icon: BarChart2 },
@@ -57,6 +53,8 @@ export default function AdminDashboard() {
   const pendingProviders = providers.filter((p) => p.verificationStatus === 'pending');
 
   return (
+    <ProtectedRoute allowedRoles={['admin']}>
+    {!user ? null : (
     <main className="min-h-screen bg-gray-50">
       <Topbar />
 
@@ -320,5 +318,7 @@ export default function AdminDashboard() {
 
       <Footer />
     </main>
+    )}
+    </ProtectedRoute>
   );
 }

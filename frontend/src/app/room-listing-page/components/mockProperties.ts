@@ -178,8 +178,6 @@ export const allProperties: Property[] = [
   landlordAvatarAlt: 'Blonde woman smiling in outdoor natural setting',
   responseRate: 99,
   availableFrom: '1 Feb 2026',
-  listedDaysAlt: 'Charming single room in cottage with warm lighting and wooden desk',
-  availableFrom: '1 Feb 2026',
   listedDaysAgo: 21,
   bedrooms: 1,
   bathrooms: 1,

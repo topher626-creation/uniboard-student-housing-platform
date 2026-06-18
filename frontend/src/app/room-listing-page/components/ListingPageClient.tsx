@@ -1,38 +1,17 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
 import PropertyGrid from './PropertyGrid';
 import ListingHeader from './ListingHeader';
 import ActiveFilterChips from './ActiveFilterChips';
+import { fetchProperties } from '@/lib/api';
+import { mapApiPropertiesToListings } from '@/lib/propertyMapper';
+import type { ListingProperty } from '@/lib/types/listing';
+import { PageLoader, PageError } from '@/components/ui/PageStates';
 
-
-export type Property = {
-  id: string;
-  title: string;
-  location: string;
-  university: string;
-  distanceKm: number;
-  price: number;
-  roomType: string;
-  rating: number;
-  reviewCount: number;
-  verified: boolean;
-  available: boolean;
-  furnished: boolean;
-  amenities: string[];
-  image: string;
-  imageAlt: string;
-  landlord: string;
-  landlordAvatar: string;
-  landlordAvatarAlt: string;
-  responseRate: number;
-  availableFrom: string;
-  listedDaysAgo: number;
-  bedrooms: number;
-  bathrooms: number;
-  description: string;
-};
+export type Property = ListingProperty;
 
 export type FilterState = {
   location: string;
@@ -45,7 +24,6 @@ export type FilterState = {
   maxDistance: number;
   available: boolean | null;
 };
-
 
 const defaultFilters: FilterState = {
   location: '',
@@ -62,38 +40,46 @@ const defaultFilters: FilterState = {
 export type SortOption = 'price-asc' | 'price-desc' | 'rating-desc' | 'distance-asc' | 'newest';
 
 export default function ListingPageClient() {
-  const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    ...defaultFilters,
+    location: searchParams.get('q') ?? searchParams.get('location') ?? '',
+  }));
   const [sort, setSort] = useState<SortOption>('rating-desc');
   const [page, setPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState<ListingProperty[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const ITEMS_PER_PAGE = 9;
 
-  const API_BASE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
+  const loadProperties = () => {
+    setLoading(true);
+    setError(null);
+    fetchProperties()
+      .then((data) => {
+        setProperties(mapApiPropertiesToListings(data));
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Failed to load properties');
+      })
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
-    fetch(`${API_BASE}/properties`)
-      .then(res => res.json())
-      .then(data => {
-        setProperties(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError('Failed to load properties');
-        setLoading(false);
-      });
+    loadProperties();
   }, []);
 
   const filteredAndSorted = useMemo(() => {
     let result = [...properties];
 
-
     if (filters.location) {
-      result = result.filter((p) =>
-        p.location.toLowerCase().includes(filters.location.toLowerCase()) ||
-        p.university.toLowerCase().includes(filters.location.toLowerCase())
+      const query = filters.location.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.location.toLowerCase().includes(query) ||
+          p.university.toLowerCase().includes(query) ||
+          p.title.toLowerCase().includes(query),
       );
     }
 
@@ -101,14 +87,10 @@ export default function ListingPageClient() {
       result = result.filter((p) => filters.roomTypes.includes(p.roomType));
     }
 
-    result = result.filter(
-      (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice
-    );
+    result = result.filter((p) => p.price >= filters.minPrice && p.price <= filters.maxPrice);
 
     if (filters.amenities.length > 0) {
-      result = result.filter((p) =>
-        filters.amenities.every((a) => p.amenities.includes(a))
-      );
+      result = result.filter((p) => filters.amenities.every((a) => p.amenities.includes(a)));
     }
 
     if (filters.furnished !== null) {
@@ -121,7 +103,6 @@ export default function ListingPageClient() {
       result = result.filter((p) => p.available);
     }
 
-    // Sort
     switch (sort) {
       case 'price-asc':
         result.sort((a, b) => a.price - b.price);
@@ -136,18 +117,15 @@ export default function ListingPageClient() {
         result.sort((a, b) => a.distanceKm - b.distanceKm);
         break;
       case 'newest':
-        result.sort((a, b) => b.listedDaysAgo - a.listedDaysAgo);
+        result.sort((a, b) => a.listedDaysAgo - b.listedDaysAgo);
         break;
     }
 
     return result;
-  }, [filters, sort]);
+  }, [filters, sort, properties]);
 
   const totalPages = Math.ceil(filteredAndSorted.length / ITEMS_PER_PAGE);
-  const paginated = filteredAndSorted.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  const paginated = filteredAndSorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -186,14 +164,9 @@ export default function ListingPageClient() {
       />
 
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
-        <ActiveFilterChips
-          filters={filters}
-          onClear={clearFilter}
-          onClearAll={clearAllFilters}
-        />
+        <ActiveFilterChips filters={filters} onClear={clearFilter} onClearAll={clearAllFilters} />
 
         <div className="flex gap-6 mt-4">
-          {/* Filter Sidebar */}
           <FilterSidebar
             filters={filters}
             onUpdate={updateFilter}
@@ -202,16 +175,21 @@ export default function ListingPageClient() {
             onClose={() => setSidebarOpen(false)}
           />
 
-          {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <PropertyGrid
-              properties={paginated}
-              totalCount={filteredAndSorted.length}
-              page={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              itemsPerPage={ITEMS_PER_PAGE}
-            />
+            {loading ? (
+              <PageLoader message="Loading available bedspaces..." />
+            ) : error ? (
+              <PageError message={error} onRetry={loadProperties} />
+            ) : (
+              <PropertyGrid
+                properties={paginated}
+                totalCount={filteredAndSorted.length}
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                itemsPerPage={ITEMS_PER_PAGE}
+              />
+            )}
           </div>
         </div>
       </div>

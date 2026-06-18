@@ -1,47 +1,53 @@
 'use client';
 
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import AppIcon from './AppIcon';
 import AppImage from './AppImage';
 
 interface AppLogoProps {
-  src?: string; // Image source (optional)
-  iconName?: string; // Icon name when no image
-  size?: number; // Size for icon/image
-  className?: string; // Additional classes
-  onClick?: () => void; // Click handler
+  src?: string;
+  iconName?: string;
+  size?: number;
+  className?: string;
+  onClick?: () => void;
+  showBackground?: boolean;
 }
 
 const AppLogo = memo(function AppLogo({
-  // Default to official logo asset.
-  // Prefer PNG for maximum crispness; fallback handled by AppImage.
-  src = '/assets/images/app_logo.png',
+  src = '/images/updated uniboard logo.jpeg',
   iconName = 'SparklesIcon',
   size = 70,
   className = '',
   onClick,
+  showBackground = false,
 }: AppLogoProps) {
-  // Memoize className calculation
-  const containerClassName = useMemo(() => {
-    const classes = ['flex items-center'];
-    if (onClick) classes.push('cursor-pointer hover:opacity-80 transition-opacity');
-    if (className) classes.push(className);
-    return classes.join(' ');
-  }, [onClick, className]);
+  const containerClassName = [
+    'flex items-center',
+    onClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const imageWrapperClass = showBackground
+    ? 'flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm p-1'
+    : 'flex items-center justify-center';
 
   return (
-    <div className={containerClassName} onClick={onClick}>
-      {/* Show image if src provided, otherwise show icon */}
+    <div className={containerClassName} onClick={onClick} role={onClick ? 'button' : undefined}>
       {src ? (
-        <AppImage
-          src={src}
-          alt="UniBoard logo"
-          width={size}
-          height={size}
-          className="flex-shrink-0"
-          priority={true}
-          unoptimized={src.endsWith('.svg')}
-        />
+        <div className={imageWrapperClass}>
+          <AppImage
+            src={src}
+            alt="UniBoard — student accommodation platform"
+            width={size}
+            height={size}
+            className="flex-shrink-0 rounded-lg object-contain"
+            style={{ maxHeight: size, maxWidth: size }}
+            priority
+            unoptimized
+          />
+        </div>
       ) : (
         <AppIcon name={iconName} size={size} className="flex-shrink-0" />
       )}

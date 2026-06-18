@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Topbar from '@/components/Topbar';
 import Footer from '@/components/Footer';
 import ListingPageClient from './components/ListingPageClient';
+import { PageLoader } from '@/components/ui/PageStates';
 
 export default function RoomListingPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       <Topbar />
-      <ListingPageClient />
+      <Suspense fallback={<PageLoader message="Loading listings..." />}>
+        <ListingPageClient />
+      </Suspense>
       <Footer />
     </main>
   );

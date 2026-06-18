@@ -8,10 +8,10 @@ import Link from 'next/link';
 import { Shield, Star, Users, Home } from 'lucide-react';
 
 const trustPoints = [
-  { key: 'tp-verified', icon: Shield, text: '2,400+ verified listings' },
-  { key: 'tp-students', icon: Users, text: '8,500+ students housed' },
-  { key: 'tp-rated', icon: Star, text: 'Rated 4.8/5 by students' },
-  { key: 'tp-rooms', icon: Home, text: 'Rooms near 50+ universities' },
+  { key: 'tp-verified', icon: Shield, text: 'Every provider is manually verified' },
+  { key: 'tp-students', icon: Users, text: 'Built for Zambian university students' },
+  { key: 'tp-rated', icon: Star, text: 'Transparent listings with real contact details' },
+  { key: 'tp-rooms', icon: Home, text: 'Bedspaces near UNZA, CBU, and more' },
 ];
 
 export default function AuthPageClient() {
@@ -65,12 +65,12 @@ export default function AuthPageClient() {
             completely. UniBoard saved my semester.&rdquo;
           </p>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center text-blue-900 font-bold text-sm">
-              N
+            <div className="w-8 h-8 rounded-full bg-green-300 flex items-center justify-center text-green-900 font-bold text-sm">
+              C
             </div>
             <div>
-              <p className="text-white font-semibold text-sm">Nomvula K.</p>
-              <p className="text-white/60 text-xs">UCT, 2nd Year</p>
+              <p className="text-white font-semibold text-sm">Chipo M.</p>
+              <p className="text-white/60 text-xs">UNZA, 2nd Year</p>
             </div>
             <div className="ml-auto flex gap-0.5">
               {Array.from({ length: 5 })?.map((_, i) => (

@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 
 const contactInfo = [
-  { icon: Mail, label: 'Email Us', value: 'hello@uniboard.zm', href: 'mailto:hello@uniboard.zm', color: 'bg-green-100 text-green-700' },
-  { icon: Phone, label: 'Call Us', value: '+260 97 000 1234', href: 'tel:+260970001234', color: 'bg-amber-100 text-amber-700' },
+  { icon: Mail, label: 'Email Us', value: 'uniboard.zm@gmail.com', href: 'mailto:uniboard.zm@gmail.com', color: 'bg-green-100 text-green-700' },
+  { icon: Phone, label: 'Call Us', value: '+260 976 449 402', href: 'tel:+260976449402', color: 'bg-amber-100 text-amber-700' },
   { icon: MapPin, label: 'Visit Us', value: 'Kitwe, Zambia', href: '#', color: 'bg-blue-100 text-blue-700' },
 ];
 

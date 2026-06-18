@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Topbar from '@/components/Topbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/authContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { properties } from '@/lib/mockData';
 import { Heart, BookOpen, User, MapPin, Star, Shield, LogOut, Home } from 'lucide-react';
 import Link from 'next/link';
@@ -27,15 +28,10 @@ const statusColors: Record<string, string> = {
 type Tab = 'saved' | 'bookings' | 'profile';
 
 export default function StudentDashboard() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('saved');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  if (!isAuthenticated || !user) {
-    if (typeof window !== 'undefined') router.push('/sign-up-login-screen');
-    return null;
-  }
 
   const tabs = [
     { id: 'saved' as Tab, label: 'Saved Listings', icon: Heart },
@@ -44,6 +40,8 @@ export default function StudentDashboard() {
   ];
 
   return (
+    <ProtectedRoute allowedRoles={['student']}>
+    {!user ? null : (
     <main className="min-h-screen bg-gray-50">
       <Topbar />
 
@@ -213,5 +211,7 @@ export default function StudentDashboard() {
 
       <Footer />
     </main>
+    )}
+    </ProtectedRoute>
   );
 }

@@ -2,16 +2,14 @@ import { imageHosts } from './image-hosts.config.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   distDir: process.env.DIST_DIR || '.next',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
 
   images: {
     remotePatterns: imageHosts,
     minimumCacheTTL: 60,
   },
+
   async redirects() {
     return [
       {
@@ -22,19 +20,7 @@ const nextConfig = {
     ];
   },
 
-  webpack(
-    config,
-    {
-      dev: dev
-    }
-  ) {
-    config.module.rules.push({
-      test: /\.(jsx|tsx)$/,
-      exclude: [/node_modules/],
-      use: [{
-        loader: '@dhiwise/component-tagger/nextLoader',
-      }],
-    });
+  webpack(config, { dev }) {
     if (dev) {
       const ignoredPaths = (process.env.WATCH_IGNORED_PATHS || '')
         .split(',')
@@ -48,6 +34,8 @@ const nextConfig = {
     }
     return config;
   },
+
   turbopack: {},
 };
+
 export default nextConfig;

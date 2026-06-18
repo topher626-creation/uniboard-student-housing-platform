@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Topbar from '@/components/Topbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/authContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { properties } from '@/lib/mockData';
 import { Home, BookOpen, BarChart2, Plus, Shield, LogOut, Edit, Trash2, Eye, CheckCircle, Clock, X } from 'lucide-react';
 
@@ -25,17 +26,12 @@ const statusColors: Record<string, string> = {
 };
 
 export default function LandlordDashboard() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
 
-  if (!isAuthenticated || !user) {
-    if (typeof window !== 'undefined') router.push('/sign-up-login-screen');
-    return null;
-  }
-
   const myListings = properties.filter((_, i) => i < 3);
-  const compoundName = user.compoundName || 'My Properties';
+  const compoundName = user?.compoundName || 'My Properties';
   const listingCap = 3;
   const listingCount = myListings.length;
 
@@ -53,6 +49,8 @@ export default function LandlordDashboard() {
   ];
 
   return (
+    <ProtectedRoute allowedRoles={['landlord']}>
+    {!user ? null : (
     <main className="min-h-screen bg-gray-50">
       <Topbar />
 
@@ -255,5 +253,7 @@ export default function LandlordDashboard() {
 
       <Footer />
     </main>
+    )}
+    </ProtectedRoute>
   );
 }

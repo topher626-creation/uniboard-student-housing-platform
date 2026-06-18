@@ -1,6 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { API_BASE } from './config';
+import { normalizeUser } from './authUtils';
 
 export type UserRole = 'student' | 'landlord' | 'admin';
 
@@ -18,7 +20,7 @@ export interface AuthUser {
 interface AuthContextType {
   user: AuthUser | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string; user?: AuthUser }>;
   signup: (data: SignupData) => Promise<{ success: boolean; pending?: boolean; message?: string }>;
   logout: () => void;
   isAuthenticated: boolean;
@@ -37,15 +39,14 @@ export interface SignupData {
   verificationImages?: string[];
 }
 
-
-// Backend auth - http://localhost:5000/api/auth
-const API_BASE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
-
-
-
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: {children: ReactNode;}) {
+function persistUser(user: AuthUser, token?: string) {
+  localStorage.setItem('uniboard_user', JSON.stringify(user));
+  if (token) localStorage.setItem('uniboard_token', token);
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,32 +54,41 @@ export function AuthProvider({ children }: {children: ReactNode;}) {
     const stored = localStorage.getItem('uniboard_user');
     if (stored) {
       try {
-        setUser(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        setUser(normalizeUser(parsed));
       } catch {
         localStorage.removeItem('uniboard_user');
+        localStorage.removeItem('uniboard_token');
       }
     }
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; message?: string; user?: AuthUser }> => {
     try {
       const response = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      if (!response.ok) return false;
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          message: errorData?.error ?? 'Invalid email or password. If you recently registered as a provider, your account may still be pending approval.',
+        };
+      }
+
       const data = await response.json();
-      localStorage.setItem('uniboard_token', data.token);
-      localStorage.setItem('uniboard_user', JSON.stringify(data.user));
-      setUser(data.user);
-      return true;
+      const normalized = normalizeUser(data.user);
+      persistUser(normalized, data.token);
+      setUser(normalized);
+      return { success: true, user: normalized };
     } catch {
-      return false;
+      return { success: false, message: 'Unable to connect to the server. Please try again.' };
     }
   };
-
 
   const signup = async (data: SignupData): Promise<{ success: boolean; pending?: boolean; message?: string }> => {
     try {
@@ -92,35 +102,34 @@ export function AuthProvider({ children }: {children: ReactNode;}) {
       if (data.compoundName) formData.append('compoundName', data.compoundName);
       if (data.nrcFront) formData.append('nrcFront', data.nrcFront);
       if (data.nrcBack) formData.append('nrcBack', data.nrcBack);
-      if (data.verificationImages && data.verificationImages.length) {
-        // send as JSON string so backend can parse it from multipart
+      if (data.verificationImages?.length) {
         formData.append('verificationImages', JSON.stringify(data.verificationImages));
       }
-
 
       const response = await fetch(`${API_BASE}/auth/signup`, {
         method: 'POST',
         body: formData,
       });
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        return { success: false, message: errorData?.error || 'Signup failed' };
+        return { success: false, message: errorData?.error ?? 'Signup failed. Please check your details and try again.' };
       }
 
       const result = await response.json();
+
       if (result.token && result.user) {
-        localStorage.setItem('uniboard_token', result.token);
-        localStorage.setItem('uniboard_user', JSON.stringify(result.user));
-        setUser(result.user);
+        const normalized = normalizeUser(result.user);
+        persistUser(normalized, result.token);
+        setUser(normalized);
         return { success: true, pending: false, message: result.message };
       }
 
       return { success: true, pending: true, message: result.message };
     } catch {
-      return { success: false, message: 'Signup failed' };
+      return { success: false, message: 'Unable to connect to the server. Please try again.' };
     }
   };
-
 
   const logout = () => {
     setUser(null);
@@ -128,12 +137,11 @@ export function AuthProvider({ children }: {children: ReactNode;}) {
     localStorage.removeItem('uniboard_user');
   };
 
-
   return (
     <AuthContext.Provider value={{ user, isLoading, login, signup, logout, isAuthenticated: !!user }}>
       {children}
-    </AuthContext.Provider>);
-
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

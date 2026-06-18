@@ -39,8 +39,8 @@ const footerLinks = {
   company: [
     { label: 'About UniBoard', href: '/about', key: 'footer-about' },
     { label: 'Contact Us', href: '/contact', key: 'footer-contact' },
-    { label: 'Privacy Policy', href: '#', key: 'footer-privacy' },
-    { label: 'Terms of Service', href: '#', key: 'footer-terms' },
+    { label: 'Privacy Policy', href: '/privacy-policy', key: 'footer-privacy' },
+    { label: 'Terms of Service', href: '/terms', key: 'footer-terms' },
   ],
 };
 
