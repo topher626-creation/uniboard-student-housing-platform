@@ -59,7 +59,8 @@ router.post('/login', async (req, res) => {
         phone: user.phone,
         university: user.university,
         avatar: user.avatar,
-        nrcImages: user.nrcImages
+        nrcImages: user.nrcImages,
+        compoundName: user.compoundName
       }
     });
   } catch (error) {
@@ -142,7 +143,16 @@ router.post('/signup', signupUpload.fields([
           : [nrcFrontUrl, nrcBackUrl]
         ).filter(Boolean),
         status: isLandlord ? 'PENDING' : 'ACTIVE',
-        phoneVerified: false
+        phoneVerified: false,
+        // Automatically create a compound for landlords
+        ...(isLandlord && compoundName ? {
+          compounds: {
+            create: {
+              name: compoundName,
+              location: 'Pending Update', // Default location, can be updated later
+            }
+          }
+        } : {})
       }
     });
 
@@ -241,7 +251,8 @@ router.post('/verify-otp', async (req, res) => {
         phone: true,
         university: true,
         avatar: true,
-        nrcImages: true
+        nrcImages: true,
+        compoundName: true
       }
     });
 

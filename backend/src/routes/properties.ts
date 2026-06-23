@@ -16,6 +16,7 @@ const propertyInclude = {
               phone: true,
               avatar: true,
               status: true,
+              compoundName: true,
             },
           },
         },
@@ -26,7 +27,16 @@ const propertyInclude = {
   university: true,
   images: true,
   features: { include: { feature: true } },
-  reviews: true,
+  reviews: {
+    include: {
+      user: {
+        select: {
+          fullName: true,
+          avatar: true
+        }
+      }
+    }
+  },
 } as const;
 
 /* GET ALL AVAILABLE PROPERTIES */
@@ -46,6 +56,8 @@ router.get('/', async (_req, res) => {
   }
 });
 
+import jwt from 'jsonwebtoken';
+
 /* GET PROPERTY BY ID */
 router.get('/:id', async (req, res) => {
   try {
@@ -56,6 +68,32 @@ router.get('/:id', async (req, res) => {
 
     if (!property) {
       return res.status(404).json({ error: 'Property not found' });
+    }
+
+    // Check if user is logged in to see full details
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    let isLoggedIn = false;
+    if (token) {
+      try {
+        jwt.verify(token, process.env.JWT_SECRET!);
+        isLoggedIn = true;
+      } catch (e) {
+        // Token invalid, treat as guest
+      }
+    }
+
+    if (!isLoggedIn) {
+      // Mask sensitive data for guests
+      const guestView = {
+        ...property,
+        phone: 'Hidden',
+        whatsapp: 'Hidden',
+        description: property.description.substring(0, 100) + '...',
+        images: property.images.slice(0, 1), // Only 1 image
+        features: property.features.slice(0, 3), // Only 3 amenities
+        isGuestView: true
+      };
+      return res.json(guestView);
     }
 
     res.json(property);

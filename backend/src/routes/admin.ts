@@ -20,6 +20,8 @@ router.get('/users', isAdmin, async (req, res) => {
         status: true,
         phoneVerified: true,
         createdAt: true,
+        nrcImages: true,
+        compoundName: true
       },
       orderBy: { createdAt: 'desc' }
     });
