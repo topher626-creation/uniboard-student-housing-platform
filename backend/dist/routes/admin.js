@@ -55,6 +55,8 @@ router.get('/users', auth_1.isAdmin, async (req, res) => {
                 status: true,
                 phoneVerified: true,
                 createdAt: true,
+                nrcImages: true,
+                compoundName: true
             },
             orderBy: { createdAt: 'desc' }
         });
@@ -107,7 +109,8 @@ router.post('/admins', auth_1.isSuperAdmin, async (req, res) => {
                 password: hashedPassword,
                 role: 'ADMIN',
                 status: 'ACTIVE',
-                adminLevel: 'ASSISTANT'
+                adminLevel: 'ASSISTANT',
+                nrcImages: []
             }
         });
         res.status(201).json({ message: 'Assistant admin created', admin });

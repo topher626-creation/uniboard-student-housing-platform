@@ -17,6 +17,18 @@ const transporter = nodemailer_1.default.createTransport({
         pass: process.env.EMAIL_PASS,
     },
 });
+async function sendMailSafe(mailOptions) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.warn('Email credentials not configured; skipping email send.');
+        return;
+    }
+    try {
+        await transporter.sendMail(mailOptions);
+    }
+    catch (error) {
+        console.warn('Email send failed, continuing without it:', error);
+    }
+}
 async function sendOTP(email, otp) {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -28,14 +40,14 @@ async function sendOTP(email, otp) {
       <p>Valid for 10 minutes.</p>
     `,
     };
-    return transporter.sendMail(mailOptions);
+    return sendMailSafe(mailOptions);
 }
 async function sendApprovalEmail(email, status, reason) {
     const subject = status === 'approved' ? 'Account Approved - Welcome to UniBoard!' : 'Account Review - UniBoard';
     const html = status === 'approved' ?
         '<h2>Congratulations! Your provider account is approved.</h2><p>You can now add compounds and buildings.</p>' :
         `<h2>Account ${status.toUpperCase()}</h2><p>Reason: ${reason}</p>`;
-    return transporter.sendMail({
+    return sendMailSafe({
         from: process.env.EMAIL_USER,
         to: email,
         subject,

@@ -39,7 +39,7 @@ export default function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           {/* Left — Text */}
           <div className="lg:col-span-3">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5 tracking-tight">
               <span className="block text-white/95">
                 Find{' '}
                 <span className="text-orange-500">Verified</span>{' '}
@@ -48,7 +48,7 @@ export default function HeroSection() {
               <span className="block text-white/95">Accommodation Near Your Campus</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-cream white-500 max-w-xl mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/80 max-w-xl mb-8 leading-relaxed">
               UniBoard connects students with <span className="text-green-600 font-semibold">verified landlords</span>, real-time availability, safer housing, and everything you need in one place.
             </p>
 
@@ -56,7 +56,7 @@ export default function HeroSection() {
 
 
             {/* Search system */}
-            <div className="bg-white/95 backdrop-blur-md rounded-[20px] p-4 shadow-2xl max-w-2xl">
+            <div className="bg-white/95 backdrop-blur-md rounded-[24px] p-4 shadow-[0_20px_60px_rgba(2,6,23,0.18)] max-w-2xl border border-white/80">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                 <div className="relative">
                   <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-700 pointer-events-none" />

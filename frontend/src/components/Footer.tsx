@@ -52,7 +52,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-slate-950 text-gray-300">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Column */}
@@ -142,7 +142,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-gray-800">
+      <div className="border-t border-white/10">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-5">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>

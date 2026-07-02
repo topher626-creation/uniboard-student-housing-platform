@@ -11,6 +11,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const db_1 = require("../lib/db");
 const emailService_1 = require("../services/emailService");
+const verification_1 = require("../utils/verification");
 const router = express_1.default.Router();
 const signupUpload = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
@@ -52,7 +53,8 @@ router.post('/login', async (req, res) => {
                 phone: user.phone,
                 university: user.university,
                 avatar: user.avatar,
-                nrcImages: user.nrcImages
+                nrcImages: user.nrcImages,
+                compoundName: user.compoundName
             }
         });
     }
@@ -69,7 +71,7 @@ router.post('/signup', signupUpload.fields([
     { name: 'nrcBack', maxCount: 1 }
 ]), async (req, res) => {
     try {
-        const { fullName, email, password, role, phone, university, compoundName } = req.body;
+        const { fullName, email, password, role, phone, university, compoundName, verificationImages } = req.body;
         const isLandlord = role?.toUpperCase() === 'LANDLORD';
         const files = req.files;
         let nrcFrontUrl = '';
@@ -93,6 +95,9 @@ router.post('/signup', signupUpload.fields([
             fs_1.default.writeFileSync(fullPath, file.buffer);
             nrcBackUrl = filePath;
         }
+        // Landlord verification uploads (optional)
+        // frontend sends verificationImages as an array of public URLs
+        const verificationUrls = (0, verification_1.parseVerificationImages)(verificationImages);
         const hashedPassword = await bcryptjs_1.default.hash(password, 12);
         const user = await db_1.prisma.user.create({
             data: {
@@ -103,9 +108,20 @@ router.post('/signup', signupUpload.fields([
                 phone,
                 university,
                 compoundName,
-                nrcImages: [nrcFrontUrl, nrcBackUrl].filter(Boolean),
+                nrcImages: (verificationUrls.length
+                    ? verificationUrls.map((url) => ({ url }))
+                    : [nrcFrontUrl, nrcBackUrl]).filter(Boolean),
                 status: isLandlord ? 'PENDING' : 'ACTIVE',
-                phoneVerified: false
+                phoneVerified: false,
+                // Automatically create a compound for landlords
+                ...(isLandlord && compoundName ? {
+                    compounds: {
+                        create: {
+                            name: compoundName,
+                            location: 'Pending Update', // Default location, can be updated later
+                        }
+                    }
+                } : {})
             }
         });
         // OTP
@@ -184,7 +200,8 @@ router.post('/verify-otp', async (req, res) => {
                 phone: true,
                 university: true,
                 avatar: true,
-                nrcImages: true
+                nrcImages: true,
+                compoundName: true
             }
         });
         return res.json({ token, user });

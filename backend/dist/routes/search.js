@@ -41,9 +41,21 @@ router.get('/properties', async (req, res) => {
             include: {
                 building: {
                     include: {
-                        compound: true
+                        compound: {
+                            include: {
+                                user: {
+                                    select: {
+                                        fullName: true,
+                                        compoundName: true,
+                                        status: true
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                images: { take: 1 }, // Only one image for guest/listing view
+                features: { include: { feature: true }, take: 3 } // Basic amenities preview
             },
             orderBy: { createdAt: 'desc' },
             take: 20

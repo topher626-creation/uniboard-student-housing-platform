@@ -48,7 +48,7 @@ export default function FeaturedListings() {
           </div>
           <Link
             href="/room-listing-page"
-            className="flex items-center gap-2 text-green-700 font-semibold text-sm hover:text-green-800 transition-colors flex-shrink-0"
+            className="inline-flex items-center gap-2 text-green-700 font-semibold text-sm hover:text-green-800 transition-colors flex-shrink-0"
           >
             View all listings →
           </Link>
@@ -69,7 +69,7 @@ export default function FeaturedListings() {
               <Link
                 key={prop.id}
                 href={`/property/${prop.id}`}
-                className="group block bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                className="group block bg-white rounded-[24px] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               >
                 <div className="relative h-52 overflow-hidden">
                   <AppImage

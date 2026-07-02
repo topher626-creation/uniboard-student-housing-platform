@@ -54,7 +54,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
 
   if (properties.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 bg-white rounded-2xl border border-gray-100">
+      <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[24px] border border-gray-100 shadow-sm">
         <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4">
           <MapPin size={28} className="text-blue-400" />
         </div>
@@ -85,7 +85,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
         {properties.map((prop) => (
           <div
             key={prop.id}
-            className="card-base group overflow-hidden flex flex-col"
+            className="group flex flex-col overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             {/* Image */}
             <div className="relative h-48 overflow-hidden">
@@ -111,7 +111,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
               {/* Save Button */}
               <button
                 onClick={() => toggleSave(prop.id, prop.title)}
-                className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors"
+                className="absolute top-3 right-3 w-8 h-8 rounded-full border border-gray-200 bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors"
                 aria-label="Save listing"
               >
                 <Heart
@@ -231,7 +231,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
                   disabled={!prop.available}
                   className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl transition-all duration-150 ${
                     prop.available
-                      ? 'bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-sm'
+                      ? 'bg-green-700 hover:bg-green-800 active:scale-95 text-white shadow-sm'
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}
                 >
@@ -263,7 +263,7 @@ export default function PropertyGrid({ properties, totalCount, page, totalPages,
                 onClick={() => onPageChange(pageNum)}
                 className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-150 ${
                   page === pageNum
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-green-700 text-white shadow-sm'
                     : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
                 }`}
               >

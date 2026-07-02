@@ -13,6 +13,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+async function sendMailSafe(mailOptions: nodemailer.SendMailOptions) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.warn('Email credentials not configured; skipping email send.');
+    return;
+  }
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.warn('Email send failed, continuing without it:', error);
+  }
+}
+
 export async function sendOTP(email: string, otp: string) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -25,7 +38,7 @@ export async function sendOTP(email: string, otp: string) {
     `,
   };
 
-  return transporter.sendMail(mailOptions);
+  return sendMailSafe(mailOptions);
 }
 
 export async function sendApprovalEmail(email: string, status: 'approved' | 'rejected', reason?: string) {
@@ -34,7 +47,7 @@ export async function sendApprovalEmail(email: string, status: 'approved' | 'rej
     '<h2>Congratulations! Your provider account is approved.</h2><p>You can now add compounds and buildings.</p>' :
     `<h2>Account ${status.toUpperCase()}</h2><p>Reason: ${reason}</p>`;
 
-  return transporter.sendMail({
+  return sendMailSafe({
     from: process.env.EMAIL_USER,
     to: email,
     subject,

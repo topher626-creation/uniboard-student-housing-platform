@@ -205,7 +205,7 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
 
   return (
 
-    <div>
+    <div className="bg-white rounded-[28px] border border-gray-200 shadow-sm p-6 sm:p-7">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Create your account</h1>
         <p className="text-gray-500 text-sm">Join UniBoard Zambia — it&apos;s free</p>

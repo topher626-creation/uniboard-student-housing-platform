@@ -12,10 +12,10 @@ export default function StatsBar() {
   return (
     <section className="bg-white border-b border-gray-100">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {stats?.map((stat) => (
-            <div key={stat?.key} className="flex items-center gap-4">
-                <div className={`w-12 h-12 ${stat?.bg} rounded-full flex items-center justify-center flex-shrink-0`}>
+            <div key={stat?.key} className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50/70 px-4 py-4">
+                <div className={`w-12 h-12 ${stat?.bg} rounded-2xl flex items-center justify-center flex-shrink-0`}>
                 <stat.icon size={22} className={stat?.color} />
               </div>
               <div>

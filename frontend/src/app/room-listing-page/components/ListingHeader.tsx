@@ -22,15 +22,15 @@ const sortOptions: { value: SortOption; label: string }[] = [
 
 export default function ListingHeader({ totalCount, sort, setSort, activeFilterCount, onToggleSidebar }: Props) {
   return (
-    <div className="bg-white border-b border-gray-100 sticky top-16 z-30">
+    <div className="bg-white/90 border-b border-gray-100 backdrop-blur-sm sticky top-16 z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 rounded-[20px] border border-gray-100 bg-gray-50/70 px-4 py-3 sm:px-5">
           {/* Left: Title + Count */}
           <div className="flex items-center gap-4">
             <div>
               <h1 className="text-lg font-bold text-gray-900">Student Rooms</h1>
               <p className="text-sm text-gray-500">
-                <span className="price-display font-semibold text-blue-600">{totalCount}</span>
+                <span className="price-display font-semibold text-green-700">{totalCount}</span>
                 {' '}properties found
               </p>
             </div>
@@ -41,12 +41,12 @@ export default function ListingHeader({ totalCount, sort, setSort, activeFilterC
             {/* Mobile filter toggle */}
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors"
+              className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white hover:bg-green-50 hover:border-green-200 text-sm font-medium text-gray-700 transition-colors"
             >
               <SlidersHorizontal size={16} />
               Filters
               {activeFilterCount > 0 && (
-                <span className="w-5 h-5 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                <span className="w-5 h-5 bg-green-700 text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {activeFilterCount}
                 </span>
               )}
@@ -57,7 +57,7 @@ export default function ListingHeader({ totalCount, sort, setSort, activeFilterC
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortOption)}
-                className="appearance-none input-base pr-8 text-sm cursor-pointer w-48"
+                className="appearance-none input-base pr-8 text-sm cursor-pointer w-48 bg-white"
               >
                 {sortOptions.map((opt) => (
                   <option key={`sort-${opt.value}`} value={opt.value}>

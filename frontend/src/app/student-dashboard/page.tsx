@@ -49,7 +49,7 @@ export default function StudentDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-20">
+            <div className="sticky top-20 rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-gray-100">
                 <div className="w-12 h-12 rounded-2xl bg-green-700 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                   {user.fullName.charAt(0)}
@@ -103,7 +103,7 @@ export default function StudentDashboard() {
               <div>
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Saved Bedspaces ({savedProperties.length})</h2>
                 {savedProperties.length === 0 ? (
-                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
+                  <div className="rounded-[24px] border border-gray-100 bg-white p-12 text-center shadow-sm">
                     <Heart size={40} className="text-gray-200 mx-auto mb-3" />
                     <p className="text-gray-500">No saved listings yet. Browse and save bedspaces you like.</p>
                     <Link href="/room-listing-page" className="mt-4 inline-flex items-center gap-2 bg-green-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm">
@@ -113,7 +113,7 @@ export default function StudentDashboard() {
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {savedProperties.map((prop) => (
-                      <Link key={prop.id} href={`/property/${prop.id}`} className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden block">
+                      <Link key={prop.id} href={`/property/${prop.id}`} className="group block overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
                         <div className="relative h-40 overflow-hidden">
                           <AppImage src={prop.images[0].src} alt={prop.images[0].alt} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 100vw, 50vw" />
                           {prop.verified && (
@@ -148,7 +148,7 @@ export default function StudentDashboard() {
             {activeTab === 'bookings' && (
               <div>
                 <h2 className="text-lg font-bold text-gray-900 mb-4">My Bookings</h2>
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
@@ -185,7 +185,7 @@ export default function StudentDashboard() {
             {activeTab === 'profile' && (
               <div>
                 <h2 className="text-lg font-bold text-gray-900 mb-4">My Profile</h2>
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div className="rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {[
                       { label: 'Full Name', value: user.fullName },

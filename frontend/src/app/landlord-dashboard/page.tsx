@@ -108,7 +108,7 @@ export default function LandlordDashboard() {
             
             {/* Sidebar */}
             <aside className="lg:col-span-1">
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
+              <div className="sticky top-24 rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="mb-6 pb-6 border-b border-gray-100">
                   <div className="w-14 h-14 rounded-2xl bg-green-700 flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg shadow-green-100">
                     {businessName.charAt(0)}
@@ -161,7 +161,7 @@ export default function LandlordDashboard() {
             <div className="lg:col-span-3 space-y-6">
               
               {/* Header Card */}
-              <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 relative overflow-hidden">
+              <div className="relative overflow-hidden rounded-[28px] border border-gray-100 bg-white p-8 shadow-sm">
                 <div className="relative z-10">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
@@ -245,7 +245,7 @@ export default function LandlordDashboard() {
                     ) : (
                       <div className="space-y-4">
                         {properties.slice(0, 3).map((prop) => (
-                          <div key={prop.id} className="flex items-center gap-4 p-4 rounded-2xl border border-gray-50 hover:bg-gray-50 transition-colors">
+                          <div key={prop.id} className="flex items-center gap-4 rounded-2xl border border-gray-100 p-4 transition-colors hover:bg-gray-50">
                             <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
                               {prop.images?.[0] ? (
                                 <img src={`${API_BASE.replace('/api', '')}${prop.images[0].url}`} alt={prop.name} className="w-full h-full object-cover" />
@@ -295,7 +295,7 @@ export default function LandlordDashboard() {
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {properties.map((prop) => (
-                          <div key={prop.id} className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:shadow-green-100/20 transition-all border-hover">
+                          <div key={prop.id} className="group overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
                             <div className="relative aspect-[16/10] overflow-hidden">
                               {prop.images?.[0] ? (
                                 <img src={`${API_BASE.replace('/api', '')}${prop.images[0].url}`} alt={prop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

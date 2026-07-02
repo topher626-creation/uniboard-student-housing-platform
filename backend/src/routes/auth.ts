@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { prisma } from '../lib/db';
 import { sendOTP } from '../services/emailService';
+import { parseVerificationImages } from '../utils/verification';
 
 const router = express.Router();
 
@@ -118,13 +119,7 @@ router.post('/signup', signupUpload.fields([
 
     // Landlord verification uploads (optional)
     // frontend sends verificationImages as an array of public URLs
-    let verificationUrls: string[] = [];
-    if (Array.isArray(verificationImages)) {
-      verificationUrls = verificationImages.filter(Boolean);
-    } else if (typeof verificationImages === 'string') {
-      // If only one url is sent as a string, accept it.
-      verificationUrls = verificationImages ? [verificationImages] : [];
-    }
+    const verificationUrls = parseVerificationImages(verificationImages);
 
 
     const hashedPassword = await bcrypt.hash(password, 12);

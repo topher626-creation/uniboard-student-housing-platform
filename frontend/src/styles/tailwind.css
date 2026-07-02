@@ -56,25 +56,26 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-green-700 hover:bg-green-800 active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md;
+    @apply bg-green-700 hover:bg-green-800 active:scale-95 text-white font-semibold px-5 py-3 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md;
   }
 
   .btn-outline {
-    @apply border border-green-700 text-green-700 hover:bg-green-50 active:scale-95 font-semibold px-5 py-2.5 rounded-xl transition-all duration-150;
+    @apply border border-green-700 text-green-700 hover:bg-green-50 active:scale-95 font-semibold px-5 py-3 rounded-xl transition-all duration-150;
   }
 
   .card-base {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200;
+    @apply bg-white rounded-[24px] shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200;
   }
 
   .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/60 rounded-2xl shadow-lg;
+    @apply bg-white/80 backdrop-blur-md border border-white/60 rounded-[24px] shadow-lg;
   }
 
   .input-base {
-    @apply w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-600 transition-all duration-150;
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-600 transition-all duration-150;
   }
-.badge  {
+
+  .badge {
     @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs tracking-wide;
   }
 

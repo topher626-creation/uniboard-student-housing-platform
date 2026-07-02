@@ -114,7 +114,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+            <div className="overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm">
               <div className="relative h-72 sm:h-96">
                 <AppImage
                   src={property.images[activeImage]?.src || property.images[0].src}
@@ -170,7 +170,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
               )}
             </div>
 
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <div className="rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{property.title}</h1>
@@ -192,17 +192,21 @@ export default function PropertyDetailClient({ id }: { id: string }) {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="mb-6 flex flex-wrap gap-2">
                 <span className="badge-green">{typeLabel[property.type] ?? property.type}</span>
                 <span className="badge-blue">{genderLabel[property.genderPreference]}</span>
                 <span className="badge-violet">{property.availableSpots} of {property.totalSpots} spots available</span>
               </div>
 
-              <p className="text-gray-600 leading-relaxed">{property.description}</p>
+              <div className="rounded-2xl border border-green-100 bg-green-50/70 p-4 text-sm text-gray-700">
+                <p className="font-semibold text-green-800">Why students like this place</p>
+                <p className="mt-1 leading-relaxed">A well-located, verified option with flexible availability and a straightforward booking experience.</p>
+              </div>
+              <p className="mt-5 leading-relaxed text-gray-600">{property.description}</p>
             </div>
 
             {property.amenities.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+              <div className="rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Amenities</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {property.amenities.map((amenity) => {
@@ -219,7 +223,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
             )}
 
             {property.reviews.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+              <div className="rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Student Reviews</h2>
                 <div className="space-y-4">
                   {property.reviews.slice(0, 5).map((review) => (
@@ -246,7 +250,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
+            <div className="sticky top-24 rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="mb-6">
                 <p className="text-sm text-gray-400 mb-1">Monthly rent</p>
                 <p className="text-3xl font-bold text-gray-900">
@@ -260,7 +264,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
                   href={`https://wa.me/${property.whatsapp?.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi, I'm interested in ${property.title} on UniBoard.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition-colors"
+                  className="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-xl transition-colors"
                 >
                   <WhatsAppIcon />
                   WhatsApp Provider
