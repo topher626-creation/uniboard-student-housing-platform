@@ -87,6 +87,7 @@ router.post('/signup', signupUpload.fields([
       phone,
       university,
       compoundName,
+      businessName,
       verificationImages
     } = req.body;
 
@@ -132,7 +133,7 @@ router.post('/signup', signupUpload.fields([
         role: role.toUpperCase(),
         phone,
         university,
-        compoundName,
+        compoundName: businessName || compoundName,
         nrcImages: (verificationUrls.length
           ? verificationUrls.map((url) => ({ url }))
           : [nrcFrontUrl, nrcBackUrl]
@@ -182,6 +183,7 @@ router.post('/signup', signupUpload.fields([
           role: user.role,
           phone: user.phone,
           university: user.university,
+          businessName: user.compoundName,
           compoundName: user.compoundName,
           nrcImages: user.nrcImages
         }

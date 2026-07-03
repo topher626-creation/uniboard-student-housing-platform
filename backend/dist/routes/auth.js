@@ -71,7 +71,7 @@ router.post('/signup', signupUpload.fields([
     { name: 'nrcBack', maxCount: 1 }
 ]), async (req, res) => {
     try {
-        const { fullName, email, password, role, phone, university, compoundName, verificationImages } = req.body;
+        const { fullName, email, password, role, phone, university, compoundName, businessName, verificationImages } = req.body;
         const isLandlord = role?.toUpperCase() === 'LANDLORD';
         const files = req.files;
         let nrcFrontUrl = '';
@@ -107,7 +107,7 @@ router.post('/signup', signupUpload.fields([
                 role: role.toUpperCase(),
                 phone,
                 university,
-                compoundName,
+                compoundName: businessName || compoundName,
                 nrcImages: (verificationUrls.length
                     ? verificationUrls.map((url) => ({ url }))
                     : [nrcFrontUrl, nrcBackUrl]).filter(Boolean),
@@ -146,6 +146,7 @@ router.post('/signup', signupUpload.fields([
                     role: user.role,
                     phone: user.phone,
                     university: user.university,
+                    businessName: user.compoundName,
                     compoundName: user.compoundName,
                     nrcImages: user.nrcImages
                 }

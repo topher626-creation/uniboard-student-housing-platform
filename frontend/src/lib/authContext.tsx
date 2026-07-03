@@ -11,6 +11,7 @@ export interface AuthUser {
   fullName: string;
   email: string;
   role: UserRole;
+  businessName?: string;
   compoundName?: string;
   university?: string;
   phone?: string;
@@ -34,6 +35,7 @@ export interface SignupData {
   phone?: string;
   university?: string;
   compoundName?: string;
+  businessName?: string;
   nrcFront?: File;
   nrcBack?: File;
   verificationImages?: string[];
@@ -99,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       formData.append('role', data.role);
       if (data.phone) formData.append('phone', data.phone);
       if (data.university) formData.append('university', data.university);
+      if (data.businessName) formData.append('businessName', data.businessName);
       if (data.compoundName) formData.append('compoundName', data.compoundName);
       if (data.nrcFront) formData.append('nrcFront', data.nrcFront);
       if (data.nrcBack) formData.append('nrcBack', data.nrcBack);

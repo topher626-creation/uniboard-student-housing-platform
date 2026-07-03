@@ -22,6 +22,7 @@ export function normalizeUser(raw: Record<string, unknown>): AuthUser {
     fullName: String(raw.fullName ?? ''),
     email: String(raw.email ?? ''),
     role: normalizeRole(String(raw.role ?? 'student')),
+    businessName: raw.businessName ? String(raw.businessName) : raw.compoundName ? String(raw.compoundName) : undefined,
     compoundName: raw.compoundName ? String(raw.compoundName) : undefined,
     university: raw.university ? String(raw.university) : undefined,
     phone: raw.phone ? String(raw.phone) : undefined,

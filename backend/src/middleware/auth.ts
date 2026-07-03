@@ -20,7 +20,7 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
     });
 
     if (!user || user.status !== 'ACTIVE') {
-      return res.status(401).json({ error: 'User inactive or not found' });
+      return res.status(401).json({ error: 'Account pending approval or inactive' });
     }
 
     req.user = user;

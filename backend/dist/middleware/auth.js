@@ -18,7 +18,7 @@ const authMiddleware = async (req, res, next) => {
             select: { id: true, role: true, status: true, adminLevel: true }
         });
         if (!user || user.status !== 'ACTIVE') {
-            return res.status(401).json({ error: 'User inactive or not found' });
+            return res.status(401).json({ error: 'Account pending approval or inactive' });
         }
         req.user = user;
         next();

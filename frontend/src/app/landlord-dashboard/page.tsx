@@ -56,8 +56,9 @@ export default function LandlordDashboard() {
     if (user) fetchData();
   }, [user]);
 
-  const businessName = dashboardData?.businessName || user?.compoundName || 'My Residence';
+  const businessName = dashboardData?.businessName || user?.businessName || user?.compoundName || 'My Residence';
   const isVerified = dashboardData?.status === 'ACTIVE';
+  const approvalState = dashboardData?.status === 'ACTIVE' ? 'approved' : dashboardData?.status === 'PENDING' ? 'pending' : 'restricted';
 
   const sidebarItems = [
     { id: 'overview' as Tab, label: 'Dashboard', icon: LayoutDashboard },
@@ -115,15 +116,20 @@ export default function LandlordDashboard() {
                   </div>
                   <h2 className="font-bold text-gray-900 text-lg truncate">{businessName}</h2>
                   <div className="mt-2">
-                    {isVerified ? (
+                    {approvalState === 'approved' ? (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
                         <CheckCircle size={12} />
-                        Verified Landlord
+                        Active access
                       </span>
-                    ) : (
+                    ) : approvalState === 'pending' ? (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
                         <Clock size={12} />
-                        Pending Approval
+                        Pending approval
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                        <AlertCircle size={12} />
+                        Access restricted
                       </span>
                     )}
                   </div>
@@ -169,7 +175,7 @@ export default function LandlordDashboard() {
                         <span className="text-2xl">🏢</span>
                         <h1 className="text-3xl font-black text-gray-900">{businessName}</h1>
                       </div>
-                      <p className="text-gray-500 font-medium text-lg">Verified Landlord Dashboard</p>
+                      <p className="text-gray-500 font-medium text-lg">Business dashboard</p>
                       <p className="text-gray-400 text-sm mt-1 max-w-md">
                         Manage your accommodation listings and bedspaces from one place.
                       </p>
@@ -197,7 +203,7 @@ export default function LandlordDashboard() {
                       <div>
                         <p className="text-amber-900 font-bold">Account Verification Pending</p>
                         <p className="text-amber-700 text-sm mt-0.5">
-                          Your account is currently being reviewed. You will be able to add properties and manage listings once our team approves your documents.
+                          Your business identity is currently being reviewed. Once your account is approved and active, you will be able to add properties and manage listings.
                         </p>
                       </div>
                     </div>

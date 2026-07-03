@@ -90,11 +90,49 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
       roomType, 
       totalBeds, 
       occupiedBeds,
+      distanceMinutes,
       distanceFromCampus,
       phone,
       whatsapp,
       amenities 
     } = req.body;
+
+    const parsedTotalBeds = parseInt(totalBeds, 10);
+    const parsedOccupiedBeds = parseInt(occupiedBeds || 0, 10);
+    const parsedPrice = parseFloat(price);
+    const parsedDistanceMinutes = parseInt(distanceMinutes, 10);
+    const travelTime = Number.isFinite(parsedDistanceMinutes) && parsedDistanceMinutes > 0
+      ? `${parsedDistanceMinutes} minutes`
+      : distanceFromCampus;
+
+    if (!name || !description || !location || !roomType || !phone || !whatsapp) {
+      return res.status(400).json({ error: 'Missing required property details' });
+    }
+
+    if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
+      return res.status(400).json({ error: 'Price must be greater than zero' });
+    }
+
+    if (!Number.isInteger(parsedTotalBeds) || parsedTotalBeds < 1) {
+      return res.status(400).json({ error: 'Total bedspaces must be at least 1' });
+    }
+
+    if (!Number.isInteger(parsedOccupiedBeds) || parsedOccupiedBeds < 0) {
+      return res.status(400).json({ error: 'Occupied bedspaces cannot be negative' });
+    }
+
+    if (parsedOccupiedBeds > parsedTotalBeds) {
+      return res.status(400).json({ error: 'Occupied bedspaces cannot exceed total bedspaces' });
+    }
+
+    if (!travelTime) {
+      return res.status(400).json({ error: 'Distance from campus is required' });
+    }
+
+    const files = (req.files ?? []) as Express.Multer.File[];
+    if (files.length < 5 || files.length > 12) {
+      return res.status(400).json({ error: 'Upload between 5 and 12 property images' });
+    }
 
     // 1. Create a Building (acting as a container for this property type)
     const building = await prisma.building.create({
@@ -103,14 +141,13 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
         description,
         location,
         roomType: roomType as RoomType,
-        totalBeds: parseInt(totalBeds, 10),
-        occupiedBeds: parseInt(occupiedBeds || 0, 10),
+        totalBeds: parsedTotalBeds,
+        occupiedBeds: parsedOccupiedBeds,
         compoundId: compound.id
       }
     });
 
     // 2. Handle images
-    const files = (req.files ?? []) as Express.Multer.File[];
     const images = files.map((file) => ({ url: `/uploads/buildings/${file.filename}` }));
 
     // 3. Handle features/amenities
@@ -125,9 +162,9 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
         roomType: roomType as RoomType,
         phone,
         whatsapp,
-        totalBeds: parseInt(totalBeds, 10),
-        occupiedBeds: parseInt(occupiedBeds || 0, 10),
-        travelTime: distanceFromCampus, // "5 minutes"
+        totalBeds: parsedTotalBeds,
+        occupiedBeds: parsedOccupiedBeds,
+        travelTime,
         buildingId: building.id,
         images: images.length ? { create: images } : undefined,
         features: amenityNames.length
