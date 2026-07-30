@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Topbar from '@/components/Topbar';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
+import { submitContactForm } from '@/lib/api';
+import { toast } from 'sonner';
 
 const contactInfo = [
   { icon: Mail, label: 'Email Us', value: 'uniboard.zm@gmail.com', href: 'mailto:uniboard.zm@gmail.com', color: 'bg-green-100 text-green-700' },
@@ -15,14 +17,25 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState('');
+
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    setError('');
+    try {
+      const result = await submitContactForm(form);
+      toast.success(result.message);
+      setSubmitted(true);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to send message';
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -136,6 +149,11 @@ export default function ContactPage() {
                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all resize-none"
                       />
                     </div>
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 rounded-xl p-3">
+                        <p className="text-red-600 text-sm">{error}</p>
+                      </div>
+                    )}
                     <button
                       type="submit"
                       disabled={loading}

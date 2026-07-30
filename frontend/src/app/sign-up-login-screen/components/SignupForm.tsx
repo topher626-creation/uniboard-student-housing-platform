@@ -119,6 +119,10 @@ export default function SignupForm({ onSwitchToLogin }: Props) {
     }
 
     if (role === 'student') {
+      if (result.needsOtp && result.userId) {
+        router.push(`/verify-email?userId=${result.userId}`);
+        return;
+      }
       router.push('/student-dashboard');
       return;
     }

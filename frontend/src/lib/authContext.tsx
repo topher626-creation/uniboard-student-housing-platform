@@ -22,7 +22,13 @@ interface AuthContextType {
   user: AuthUser | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string; user?: AuthUser }>;
-  signup: (data: SignupData) => Promise<{ success: boolean; pending?: boolean; message?: string }>;
+  signup: (data: SignupData) => Promise<{
+    success: boolean;
+    pending?: boolean;
+    message?: string;
+    userId?: string;
+    needsOtp?: boolean;
+  }>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -92,7 +98,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signup = async (data: SignupData): Promise<{ success: boolean; pending?: boolean; message?: string }> => {
+  const signup = async (data: SignupData): Promise<{
+    success: boolean;
+    pending?: boolean;
+    message?: string;
+    userId?: string;
+    needsOtp?: boolean;
+  }> => {
     try {
       const formData = new FormData();
       formData.append('fullName', data.fullName);
@@ -125,10 +137,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const normalized = normalizeUser(result.user);
         persistUser(normalized, result.token);
         setUser(normalized);
-        return { success: true, pending: false, message: result.message };
+        return {
+          success: true,
+          pending: false,
+          message: result.message,
+          userId: normalized.id,
+          needsOtp: true,
+        };
       }
 
-      return { success: true, pending: true, message: result.message };
+      return {
+        success: true,
+        pending: true,
+        message: result.message,
+        userId: result.userId,
+      };
     } catch {
       return { success: false, message: 'Unable to connect to the server. Please try again.' };
     }

@@ -45,12 +45,30 @@ export async function sendApprovalEmail(email: string, status: 'approved' | 'rej
   const subject = status === 'approved' ? 'Account Approved - Welcome to UniBoard!' : 'Account Review - UniBoard';
   const html = status === 'approved' ? 
     '<h2>Congratulations! Your provider account is approved.</h2><p>You can now add compounds and buildings.</p>' :
-    `<h2>Account ${status.toUpperCase()}</h2><p>Reason: ${reason}</p>`;
+    `<h2>Account ${status.toUpperCase()}</h2><p>Reason: ${reason || 'Documents did not meet verification requirements.'}</p>`;
 
   return sendMailSafe({
     from: process.env.EMAIL_USER,
     to: email,
     subject,
     html,
+  });
+}
+
+export async function sendContactEmail(data: { name: string; email: string; subject: string; message: string }) {
+  const adminEmail = process.env.CONTACT_EMAIL || process.env.EMAIL_USER || 'uniboard.zm@gmail.com';
+
+  return sendMailSafe({
+    from: process.env.EMAIL_USER,
+    to: adminEmail,
+    replyTo: data.email,
+    subject: `[UniBoard Contact] ${data.subject}`,
+    html: `
+      <h2>New contact form submission</h2>
+      <p><strong>From:</strong> ${data.name} (${data.email})</p>
+      <p><strong>Subject:</strong> ${data.subject}</p>
+      <p><strong>Message:</strong></p>
+      <p>${data.message.replace(/\n/g, '<br>')}</p>
+    `,
   });
 }

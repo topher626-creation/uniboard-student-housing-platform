@@ -14,11 +14,6 @@ import AppImage from '@/components/ui/AppImage';
 const savedPropertyIds = ['prop-001', 'prop-006', 'prop-012'];
 const savedProperties = properties.filter((p) => savedPropertyIds.includes(p.id));
 
-const bookings = [
-  { id: 'book-001', property: 'Northmead Student Lodge', campus: 'UNZA', status: 'confirmed', checkIn: '2025-02-01', price: 2800 },
-  { id: 'book-002', property: 'UNILUS Garden Flats', campus: 'UNILUS', status: 'pending', checkIn: '2025-05-01', price: 4200 },
-];
-
 const statusColors: Record<string, string> = {
   confirmed: 'bg-green-100 text-green-700',
   pending: 'bg-amber-100 text-amber-700',
@@ -146,38 +141,15 @@ export default function StudentDashboard() {
 
             {/* Bookings */}
             {activeTab === 'bookings' && (
-              <div>
-                <h2 className="text-lg font-bold text-gray-900 mb-4">My Bookings</h2>
-                <div className="overflow-hidden rounded-[24px] border border-gray-100 bg-white shadow-sm">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-gray-100 bg-gray-50">
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Property</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Campus</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Check-In</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {bookings.map((booking) => (
-                          <tr key={booking.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                            <td className="px-5 py-4 font-medium text-gray-900">{booking.property}</td>
-                            <td className="px-5 py-4 text-gray-500">{booking.campus}</td>
-                            <td className="px-5 py-4 text-gray-500">{booking.checkIn}</td>
-                            <td className="px-5 py-4 font-mono font-semibold text-gray-900">K{booking.price.toLocaleString()}</td>
-                            <td className="px-5 py-4">
-                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusColors[booking.status]}`}>
-                                {booking.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div className="rounded-[24px] border border-gray-100 bg-white p-10 shadow-sm text-center">
+                <BookOpen size={36} className="mx-auto text-green-600 mb-4" />
+                <h2 className="text-lg font-bold text-gray-900 mb-2">Bookings — Coming Soon</h2>
+                <p className="text-gray-500 text-sm max-w-md mx-auto mb-4">
+                  Online booking and reservation tracking is on our roadmap. For now, contact providers directly via WhatsApp or phone from any listing.
+                </p>
+                <Link href="/room-listing-page" className="inline-flex items-center gap-2 text-green-700 font-semibold text-sm hover:underline">
+                  Browse available bedspaces →
+                </Link>
               </div>
             )}
 

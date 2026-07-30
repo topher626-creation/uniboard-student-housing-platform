@@ -122,8 +122,11 @@ uniboard/
 | `/api/properties` | Property listings |
 | `/api/search/properties` | Search properties |
 | `/api/landlord/properties` | Landlord property management |
-| `/api/admin/users` | Admin user management |
-| `/api/upload/verification-docs` | Document uploads |
+| `/api/admin/stats` | Admin dashboard metrics |
+| `/api/admin/users/:id/approve` | Approve provider account |
+| `/api/admin/users/:id/reject` | Reject provider application |
+| `/api/admin/users/:id/ban` | Disable user account |
+| `/api/contact` | Contact form submission |
 
 ## Migration Status
 

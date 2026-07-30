@@ -7,6 +7,7 @@ import adminRoutes from './routes/admin';
 import searchRoutes from './routes/search';
 import landlordRoutes from './routes/landlord';
 import uploadRoutes from './routes/upload';
+import contactRoutes from './routes/contact';
 import path from 'path';
 
 
@@ -43,6 +44,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/landlord', landlordRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.get('/api/health', (req, res) => {
 
