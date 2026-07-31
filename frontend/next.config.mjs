@@ -3,11 +3,17 @@ import { imageHosts } from './image-hosts.config.mjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: false,
-  distDir: process.env.DIST_DIR || '.next',
+
+  // Optimize for faster dev startup
+  reactStrictMode: true,
+  compress: true,
 
   images: {
     remotePatterns: imageHosts,
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 86400,
+    deviceSizes: [640, 768, 1024, 1280, 1536],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/webp'],
   },
 
   async redirects() {
@@ -20,22 +26,12 @@ const nextConfig = {
     ];
   },
 
-  webpack(config, { dev }) {
-    if (dev) {
-      const ignoredPaths = (process.env.WATCH_IGNORED_PATHS || '')
-        .split(',')
-        .map((p) => p.trim())
-        .filter(Boolean);
-      config.watchOptions = {
-        ignored: ignoredPaths.length
-          ? ignoredPaths.map((p) => `**/${p.replace(/^\/+|\/+$/g, '')}/**`)
-          : undefined,
-      };
-    }
-    return config;
-  },
+  // Disable telemetry
+  serverExternalPackages: [],
 
-  turbopack: {},
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@heroicons/react', 'recharts'],
+  },
 };
 
 export default nextConfig;

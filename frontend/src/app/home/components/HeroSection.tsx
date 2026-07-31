@@ -1,11 +1,26 @@
- 'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { ArrowRight, MapPin, Search, Shield, Users, Star, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import AppImage from '@/components/ui/AppImage';
 
 const propertyFilters = ['All Properties', 'En-Suite', 'Shared Room', 'Private Room', 'Studio'];
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function HeroSection() {
   const router = useRouter();
@@ -38,25 +53,36 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-24 pb-16 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           {/* Left — Text */}
-          <div className="lg:col-span-3">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5 tracking-tight">
+          <motion.div
+            className="lg:col-span-3"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            <motion.h1
+              variants={fadeInUp}
+              className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-5 tracking-tight"
+            >
               <span className="block text-white/95">
                 Find{' '}
-                <span className="text-orange-500">Verified</span>{' '}
+                <span className="text-amber-400">Verified</span>{' '}
                 Student
               </span>
               <span className="block text-white/95">Accommodation Near Your Campus</span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-base sm:text-lg text-white/80 max-w-xl mb-8 leading-relaxed">
-              UniBoard connects students with <span className="text-green-600 font-semibold">verified landlords</span>, real-time availability, safer housing, and everything you need in one place.
-            </p>
-
-            {/* subtle “card” behind the title for better visual hierarchy */}
-
+            <motion.p
+              variants={fadeInUp}
+              className="text-base sm:text-lg text-white/80 max-w-xl mb-8 leading-relaxed"
+            >
+              UniBoard connects students with <span className="text-green-400 font-semibold">verified landlords</span>, real-time availability, safer housing, and everything you need in one place.
+            </motion.p>
 
             {/* Search system */}
-            <div className="bg-white/95 backdrop-blur-md rounded-[24px] p-4 shadow-[0_20px_60px_rgba(2,6,23,0.18)] max-w-2xl border border-white/80">
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white/95 backdrop-blur-md rounded-[24px] p-4 shadow-[0_20px_60px_rgba(2,6,23,0.18)] max-w-2xl border border-white/80"
+            >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                 <div className="relative">
                   <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-700 pointer-events-none" />
@@ -103,10 +129,13 @@ export default function HeroSection() {
                   Register as Landlord
                 </button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-5 mt-7">
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-wrap items-center gap-5 mt-7"
+            >
               <div className="flex items-center gap-2 text-white/75">
                 <Shield size={15} className="text-green-400" />
                 <span className="text-sm font-medium">340+ Verified Providers</span>
@@ -119,21 +148,23 @@ export default function HeroSection() {
                 <Star size={15} className="text-green-400" />
                 <span className="text-sm font-medium">4.8/5 Average Rating</span>
               </div>
-            </div>
+            </motion.div>
+          </motion.div>
 
-          </div>
-
-          {/* Right — Premium image */}
-          <div className="lg:col-span-2 hidden lg:flex">
-            <div className="w-full relative h-[460px] rounded-[28px] overflow-hidden shadow-2xl">
-
+          {/* Right — Premium image (desktop + mobile combined) */}
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="w-full relative h-[360px] lg:h-[460px] rounded-[28px] overflow-hidden shadow-2xl">
               {/* Dotted grid decoration */}
               <div
                 aria-hidden
                 className="absolute inset-0 pointer-events-none opacity-40"
                 style={{
-                  backgroundImage:
-                    'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
+                  backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
                   backgroundSize: '22px 22px',
                 }}
               />
@@ -142,8 +173,7 @@ export default function HeroSection() {
                 aria-hidden
                 className="absolute inset-0 pointer-events-none opacity-20"
                 style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.25) 1px, transparent 1px)',
+                  backgroundImage: 'linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.25) 1px, transparent 1px)',
                   backgroundSize: '28px 28px',
                 }}
               />
@@ -166,31 +196,7 @@ export default function HeroSection() {
               {/* Soft vignette */}
               <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 -120px 180px rgba(0,0,0,0.10)' }} />
             </div>
-          </div>
-
-          {/* Mobile image (below text) */}
-          <div className="lg:hidden relative mt-10">
-            <div className="w-full relative h-[360px] rounded-[28px] overflow-hidden shadow-2xl">
-
-              <div
-                aria-hidden
-                className="absolute inset-0 pointer-events-none opacity-35"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
-                  backgroundSize: '22px 22px',
-                }}
-              />
-              <AppImage
-                src="/assets/images/UniBoard home page image .jpeg"
-                alt="UniBoard student accommodation"
-                fill
-                unoptimized
-                sizes="100vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
       {/* Wave */}

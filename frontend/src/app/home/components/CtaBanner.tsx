@@ -1,18 +1,33 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { ArrowRight, Home, Building2, Shield } from 'lucide-react';
 
 export default function CtaBanner() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="relative overflow-hidden rounded-3xl p-10 lg:p-16" style={{ background: 'linear-gradient(135deg, #0a2e1a 0%, #1B4332 50%, #2d6a4f 100%)' }}>
+        <motion.div
+          className="relative overflow-hidden rounded-3xl p-10 lg:p-16"
+          style={{ background: 'linear-gradient(135deg, #0a2e1a 0%, #1B4332 50%, #2d6a4f 100%)' }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Students CTA */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 rounded-full px-4 py-1.5 mb-5">
                 <Home size={14} className="text-green-300" />
                 <span className="text-white/90 text-sm font-medium">For Students</span>
@@ -32,10 +47,16 @@ export default function CtaBanner() {
                 Browse Bedspaces
                 <ArrowRight size={17} />
               </Link>
-            </div>
+            </motion.div>
 
             {/* Providers CTA */}
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+            <motion.div
+              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 rounded-full px-4 py-1.5 mb-5">
                 <Building2 size={14} className="text-amber-300" />
                 <span className="text-white/90 text-sm font-medium">For Providers</span>
@@ -65,9 +86,9 @@ export default function CtaBanner() {
                 List My Bedspace
                 <ArrowRight size={17} />
               </Link>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

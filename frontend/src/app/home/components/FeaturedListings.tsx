@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import AppImage from '@/components/ui/AppImage';
 import { MapPin, Star, Shield, Heart, Phone } from 'lucide-react';
 import { fetchProperties } from '@/lib/api';
 import { mapApiPropertiesToListings } from '@/lib/propertyMapper';
 import type { ListingProperty } from '@/lib/types/listing';
-import { PageLoader } from '@/components/ui/PageStates';
+import { FeaturedListingsSkeleton } from '@/components/ui/Skeleton';
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -16,120 +18,142 @@ const WhatsAppIcon = () => (
 );
 
 const typeColors: Record<string, string> = {
-  'Single Room': 'bg-green-100 text-green-700',
-  'Shared Room': 'bg-blue-100 text-blue-700',
-  'Self-Contained': 'bg-purple-100 text-purple-700',
-  Bedsitter: 'bg-amber-100 text-amber-700',
-  Bankers: 'bg-pink-100 text-pink-700',
+  'Single Room': 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
+  'Shared Room': 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
+  'Self-Contained': 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
+  Bedsitter: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
+  Bankers: 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300',
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function FeaturedListings() {
-  const [featured, setFeatured] = useState<ListingProperty[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchProperties()
-      .then((data) => {
-        const mapped = mapApiPropertiesToListings(data);
-        setFeatured(mapped.slice(0, 6));
-      })
-      .catch(() => setFeatured([]))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: featured, isLoading } = useQuery({
+    queryKey: ['featured-properties'],
+    queryFn: async () => {
+      const data = await fetchProperties();
+      const mapped = mapApiPropertiesToListings(data);
+      return mapped.slice(0, 6);
+    },
+  });
 
   return (
-    <section className="py-20 bg-white" id="featured">
+    <section className="py-20 bg-white dark:bg-gray-900" id="featured">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <motion.div
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-green-700 mb-2">Curated for You</p>
-            <h2 className="text-3xl xl:text-4xl font-bold text-gray-900">Featured Bedspaces</h2>
-            <p className="text-gray-500 mt-2 text-base">Verified properties near top Zambian universities</p>
+            <p className="text-xs font-semibold tracking-widest uppercase text-green-700 dark:text-green-400 mb-2">Curated for You</p>
+            <h2 className="text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white">Featured Bedspaces</h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-2 text-base">Verified properties near top Zambian universities</p>
           </div>
           <Link
             href="/room-listing-page"
-            className="inline-flex items-center gap-2 text-green-700 font-semibold text-sm hover:text-green-800 transition-colors flex-shrink-0"
+            className="inline-flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold text-sm hover:text-green-800 dark:hover:text-green-300 transition-colors flex-shrink-0"
           >
             View all listings →
           </Link>
-        </div>
+        </motion.div>
 
-        {loading ? (
-          <PageLoader message="Loading featured bedspaces..." />
-        ) : featured.length === 0 ? (
-          <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-100">
-            <p className="text-gray-500 text-sm">New listings are being added. Check back soon or browse all bedspaces.</p>
-            <Link href="/room-listing-page" className="inline-block mt-4 text-green-700 font-semibold text-sm hover:underline">
+        {isLoading ? (
+          <FeaturedListingsSkeleton />
+        ) : !featured || featured.length === 0 ? (
+          <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
+            <p className="text-gray-500 dark:text-gray-400 text-sm">New listings are being added. Check back soon or browse all bedspaces.</p>
+            <Link href="/room-listing-page" className="inline-block mt-4 text-green-700 dark:text-green-400 font-semibold text-sm hover:underline">
               Browse all listings
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
             {featured.map((prop) => (
-              <Link
+              <motion.div
                 key={prop.id}
-                href={`/property/${prop.id}`}
-                className="group block bg-white rounded-[24px] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                variants={cardVariants}
               >
-                <div className="relative h-52 overflow-hidden">
-                  <AppImage
-                    src={prop.image}
-                    alt={prop.imageAlt}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${typeColors[prop.roomType] || 'bg-gray-100 text-gray-700'}`}>
-                      {prop.roomType}
-                    </span>
-                    {prop.verified && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                        <Shield size={10} />
-                        Verified
+                <Link
+                  href={`/property/${prop.id}`}
+                  className="group block bg-white dark:bg-gray-800 rounded-[24px] shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                >
+                  <div className="relative h-52 overflow-hidden">
+                    <AppImage
+                      src={prop.image}
+                      alt={prop.imageAlt}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${typeColors[prop.roomType] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}>
+                        {prop.roomType}
                       </span>
+                      {prop.verified && (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
+                          <Shield size={10} />
+                          Verified
+                        </span>
+                      )}
+                    </div>
+                    {!prop.available && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <span className="bg-white text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full">Fully Booked</span>
+                      </div>
                     )}
                   </div>
-                  {!prop.available && (
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <span className="bg-white text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full">Fully Booked</span>
-                    </div>
-                  )}
-                </div>
 
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 text-base mb-1 line-clamp-1 group-hover:text-green-700 transition-colors">
-                    {prop.title}
-                  </h3>
-                  <div className="flex items-center gap-1.5 text-gray-400 text-xs mb-3">
-                    <MapPin size={12} className="flex-shrink-0" />
-                    <span className="truncate">{prop.location} · {prop.university}</span>
+                  <div className="p-5">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-base mb-1 line-clamp-1 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                      {prop.title}
+                    </h3>
+                    <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-xs mb-3">
+                      <MapPin size={12} className="flex-shrink-0" />
+                      <span className="truncate">{prop.location} · {prop.university}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-lg font-bold text-gray-900 dark:text-white">K{prop.price.toLocaleString()}</span>
+                        <span className="text-xs text-gray-400">/month</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Star size={13} className="fill-amber-400 text-amber-400" />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{prop.rating}</span>
+                        <span className="text-xs text-gray-400">({prop.reviewCount})</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-50 dark:border-gray-700">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                        <Phone size={12} />
+                        <span>{prop.landlord}</span>
+                      </div>
+                      <div className="ml-auto flex items-center gap-1 text-green-600">
+                        <WhatsAppIcon />
+                        <Heart size={14} className="text-gray-300 dark:text-gray-600" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-lg font-bold text-gray-900">K{prop.price.toLocaleString()}</span>
-                      <span className="text-xs text-gray-400">/month</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star size={13} className="fill-amber-400 text-amber-400" />
-                      <span className="text-sm font-semibold text-gray-700">{prop.rating}</span>
-                      <span className="text-xs text-gray-400">({prop.reviewCount})</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-50">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                      <Phone size={12} />
-                      <span>{prop.landlord}</span>
-                    </div>
-                    <div className="ml-auto flex items-center gap-1 text-green-600">
-                      <WhatsAppIcon />
-                      <Heart size={14} className="text-gray-300" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

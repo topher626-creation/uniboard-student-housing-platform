@@ -35,4 +35,15 @@ jest-test-results.json
 
 # Optional: if using TurboRepo or monorepo
 turbo/
+
+# Environment variables
 .env
+.env.*
+frontend/.env.local
+
+# AI tool folders
+.blackbox/
+.claude/
+
+# Backup files
+*.backup

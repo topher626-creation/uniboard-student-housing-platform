@@ -3,25 +3,11 @@ import Link from 'next/link';
 import AppLogo from '@/components/ui/AppLogo';
 import { MapPin, Mail, Phone } from 'lucide-react';
 
-const FacebookIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-);
-
-const TwitterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-  </svg>
-);
-
-const InstagramIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" strokeWidth="2" />
-    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
-    <circle cx="17.5" cy="6.5" r="1" />
-  </svg>
-);
+const socialLinks = [
+  { name: 'facebook', href: '#', label: 'Facebook' },
+  { name: 'twitter', href: '#', label: 'Twitter' },
+  { name: 'instagram', href: '#', label: 'Instagram' },
+];
 
 const footerLinks = {
   students: [
@@ -43,12 +29,6 @@ const footerLinks = {
     { label: 'Terms of Service', href: '/terms', key: 'footer-terms' },
   ],
 };
-
-const socialLinks = [
-  { icon: FacebookIcon, href: '#', key: 'social-fb', label: 'Facebook' },
-  { icon: TwitterIcon, href: '#', key: 'social-tw', label: 'Twitter' },
-  { icon: InstagramIcon, href: '#', key: 'social-ig', label: 'Instagram' },
-];
 
 export default function Footer() {
   return (
@@ -81,19 +61,35 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2.5 text-sm text-gray-400">
                 <Phone size={15} className="text-green-500 flex-shrink-0" />
-                <span>+260 976449402 / 0764388122</span>
+                <span>+260 976 449 402 / 076 438 8122</span>
               </div>
             </div>
 
             <div className="flex items-center gap-3 mt-6">
               {socialLinks?.map((s) => (
                 <a
-                  key={s?.key}
+                  key={s?.name}
                   href={s?.href}
                   aria-label={s?.label}
                   className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-green-700 flex items-center justify-center transition-colors duration-200"
                 >
-                  <s.icon />
+                  {s?.name === 'facebook' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                    </svg>
+                  )}
+                  {s?.name === 'twitter' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  )}
+                  {s?.name === 'instagram' && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" strokeWidth="2" />
+                      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+                      <circle cx="17.5" cy="6.5" r="1" />
+                    </svg>
+                  )}
                 </a>
               ))}
             </div>
@@ -148,15 +144,11 @@ export default function Footer() {
             <div>
               <p className="text-xs text-gray-500">© 2026 UniBoard. All rights reserved.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <p className="text-sm font-semibold text-white mb-1">UniBoard</p>
-                <p className="text-xs text-gray-400">Siame Christopher</p>
-                <p className="text-xs text-gray-400">Founder, CEO &amp; CTO - UniBoard</p>
-                <p className="text-xs text-gray-400">Ngosa Lazarous</p>
-                <p className="text-xs text-gray-400">Chief Marketing Officer (CMO)</p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+              <div className="text-xs text-gray-400">
+                <span className="font-semibold text-white">UniBoard</span> — Siame Christopher (Founder, CEO & CTO) & Ngosa Lazarous (CMO)
               </div>
-              <div className="flex items-center gap-4 md:justify-end">
+              <div className="flex items-center gap-4">
                 <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Privacy</Link>
                 <Link href="/terms" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Terms</Link>
               </div>
@@ -164,7 +156,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
     </footer>
   );
 }
