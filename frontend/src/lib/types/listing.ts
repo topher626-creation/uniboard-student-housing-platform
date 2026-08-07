@@ -6,6 +6,7 @@ export type ListingProperty = {
   distanceKm: number;
   price: number;
   roomType: string;
+  genderPreference: 'male' | 'female' | 'mixed';
   rating: number;
   reviewCount: number;
   verified: boolean;
@@ -20,6 +21,7 @@ export type ListingProperty = {
   responseRate: number;
   availableFrom: string;
   listedDaysAgo: number;
+  distanceMinutes: number;
   bedrooms: number;
   bathrooms: number;
   description: string;

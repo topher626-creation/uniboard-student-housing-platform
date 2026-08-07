@@ -27,6 +27,15 @@ function parseDistanceKm(travelTime: string | undefined): number {
   return 2;
 }
 
+function parseDistanceMinutes(travelTime: string | undefined): number {
+  if (!travelTime) return 0;
+  const minMatch = travelTime.match(/([\d.]+)\s*min/i);
+  if (minMatch) return Math.round(parseFloat(minMatch[1]));
+  const kmMatch = travelTime.match(/([\d.]+)\s*km/i);
+  if (kmMatch) return Math.round(parseFloat(kmMatch[1]) * 12);
+  return 0;
+}
+
 function daysSince(dateStr: string | undefined): number {
   if (!dateStr) return 0;
   const created = new Date(dateStr);
@@ -56,6 +65,11 @@ export function mapApiPropertyToListing(raw: Record<string, unknown>): ListingPr
   const location = String(compound?.location ?? building?.location ?? 'Zambia');
   const roomTypeRaw = String(raw.roomType ?? building?.roomType ?? 'SINGLE');
 
+  const genderValue = String(raw.genderPreference ?? 'mixed').toLowerCase();
+  const genderPreference = ['male', 'female', 'mixed'].includes(genderValue)
+    ? (genderValue as 'male' | 'female' | 'mixed')
+    : 'mixed';
+
   return {
     id: String(raw.id),
     title: String(raw.name ?? building?.name ?? 'Student Accommodation'),
@@ -64,6 +78,7 @@ export function mapApiPropertyToListing(raw: Record<string, unknown>): ListingPr
     distanceKm: parseDistanceKm(String(raw.travelTime ?? '')),
     price: Number(raw.price ?? building?.price ?? 0),
     roomType: ROOM_TYPE_LABELS[roomTypeRaw] ?? roomTypeRaw,
+    genderPreference,
     rating: averageRating(reviews),
     reviewCount: reviews.length,
     verified: true,
@@ -83,14 +98,10 @@ export function mapApiPropertyToListing(raw: Record<string, unknown>): ListingPr
     description: String(raw.description ?? building?.description ?? ''),
     phone: raw.phone ? String(raw.phone) : undefined,
     whatsapp: raw.whatsapp ? String(raw.whatsapp) : undefined,
+    distanceMinutes: parseDistanceMinutes(String(raw.travelTime ?? '')),
   };
 }
 
-export function mapApiPropertiesToListings(items: unknown[]): ListingProperty[] {
-  return items.map((item) => mapApiPropertyToListing(item as Record<string, unknown>));
-}
-
-/** Maps API property to the detail page shape used by property/[id]. */
 export function mapApiPropertyToDetail(raw: Record<string, unknown>) {
   const listing = mapApiPropertyToListing(raw);
   const images = (raw.images as Array<{ url?: string }>) ?? [];
@@ -119,10 +130,10 @@ export function mapApiPropertyToDetail(raw: Record<string, unknown>) {
     price: listing.price,
     type: listing.roomType.toLowerCase().includes('shared')
       ? 'shared'
-      : listing.roomType.toLowerCase().includes('self')
+      : listing.roomType.toLowerCase().includes('en-suite')
         ? 'en-suite'
         : 'private',
-    genderPreference: 'mixed' as const,
+    genderPreference: listing.genderPreference,
     distanceFromCampus: String(raw.travelTime ?? `${listing.distanceKm} km`),
     available: listing.available,
     availableSpots: Number(raw.totalBeds ?? 1) - Number(raw.occupiedBeds ?? 0),
@@ -160,4 +171,8 @@ export function mapApiPropertyToDetail(raw: Record<string, unknown>) {
     phone: listing.phone,
     whatsapp: listing.whatsapp,
   };
+}
+
+export function mapApiPropertiesToListings(items: unknown[]): ListingProperty[] {
+  return items.map((item) => mapApiPropertyToListing(item as Record<string, unknown>));
 }

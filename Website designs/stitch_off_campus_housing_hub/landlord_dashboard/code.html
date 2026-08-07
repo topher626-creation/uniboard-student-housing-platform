@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UniBoard Landlord Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f1f3ff",
+                    "secondary-container": "#50dcff",
+                    "background": "#f9f9ff",
+                    "on-background": "#041b3c",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "tertiary-fixed": "#ffdbcf",
+                    "secondary": "#00687b",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#0052cc",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-primary-fixed": "#001848",
+                    "surface-dim": "#cadaff",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#1d3052",
+                    "on-primary-container": "#c4d2ff",
+                    "on-tertiary-fixed": "#380d00",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#edf0ff",
+                    "secondary-fixed-dim": "#48d7f9",
+                    "surface-bright": "#f9f9ff",
+                    "primary": "#003d9b",
+                    "on-surface-variant": "#434654",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#004e5d",
+                    "surface-tint": "#0c56d0",
+                    "surface": "#f9f9ff",
+                    "inverse-primary": "#b2c5ff",
+                    "tertiary-container": "#a33500",
+                    "on-secondary-fixed": "#001f27",
+                    "on-surface": "#041b3c",
+                    "surface-variant": "#d7e2ff",
+                    "on-secondary-container": "#005f71",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#7b2600",
+                    "surface-container": "#e8edff",
+                    "outline": "#737685",
+                    "surface-container-high": "#e0e8ff",
+                    "outline-variant": "#c3c6d6",
+                    "on-tertiary-container": "#ffc6b2",
+                    "surface-container-highest": "#d7e2ff",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "secondary-fixed": "#afecff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            width: 4px;
+            background-color: #003d9b;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar (Shared Component Identity) -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant p-base z-50">
+<div class="px-4 py-8 mb-8">
+<span class="text-headline-md font-headline-md font-black text-primary dark:text-inverse-primary block">UniBoard</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mt-1">Landlord Portal</span>
+</div>
+<nav class="flex-1 space-y-2 px-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed font-bold rounded-lg translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high transition-all group" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label-md text-label-md">My Listings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high transition-all group" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">Bookings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high transition-all group" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-md text-label-md">Inbox</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high transition-all group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="px-2 pb-4 pt-8 border-t border-outline-variant mt-4">
+<button class="w-full bg-primary text-on-primary font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 mb-6 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-label-md font-label-md">New Listing</span>
+</button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="text-label-sm font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-sm font-label-sm">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto">
+<!-- TopNavBar (Dashboard Variant) -->
+<header class="sticky top-0 bg-surface dark:bg-surface shadow-[0px_2px_8px_rgba(23,43,77,0.08)] z-40">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex flex-col">
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary">Silverstone Residences</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-label-sm font-label-sm text-secondary uppercase font-bold tracking-widest">Approved Landlord</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex flex-col text-right">
+<span class="text-label-md font-label-md text-on-surface">John Musonda</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Host since 2022</span>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged Zambian male entrepreneur in a modern office setting. He is wearing a crisp light blue shirt, smiling confidently at the camera. The background is softly blurred, showing architectural drawings of student housing. The lighting is warm and natural, suggesting a high-trust, premium business environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAagbgegWsSg8oq1sYg7N90AP5NAdYdk25wcIp5Pxk_XTYe_j-DxTz9o9l8S4L0sZH42zxhay9QWbkut8YaFt6udfaK8rLyBVeqY5sPBK_fEaq9Azq7Ph4XkLEOYnZsWI6YotVeqIATYv8LAA9L8OOvZKrucgs49PxC1WKVW0-sTEn20pZeVv0SMkubhHOWDONrVuHfFh0g0xg4a6Q6G3hYZrQDYqs0XNcsZpNLAnb1CPi_-KUR2Jbr"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Body -->
+<section class="flex-1 w-full px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto space-y-12">
+<!-- Quick Stats / Bento Grid Header -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-2 bg-primary-container text-on-primary-container p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<span class="text-label-md font-label-md opacity-80">Portfolio Health</span>
+<h2 class="text-display font-display mt-2">92%</h2>
+</div>
+<p class="text-body-md font-body-md mt-4">Your occupancy rate is 12% higher than the Kitwe average this semester.</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl flex flex-col justify-center text-center">
+<span class="text-on-surface-variant text-label-sm font-label-sm uppercase tracking-widest">Total Bedspaces</span>
+<span class="text-headline-lg font-headline-lg text-primary mt-1">124</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl flex flex-col justify-center text-center">
+<span class="text-on-surface-variant text-label-sm font-label-sm uppercase tracking-widest">Active Bookings</span>
+<span class="text-headline-lg font-headline-lg text-secondary mt-1">114</span>
+</div>
+</div>
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Manage Properties</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">You have 4 properties currently listed in the Kitwe area.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+<span>Add New Property</span>
+</button>
+</div>
+<!-- Property Grid (Asymmetric Layout / Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Property Card 1 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_2px_8px_rgba(23,43,77,0.08)] border border-transparent hover:border-primary-container transition-all flex flex-col">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5 z-10">
+<span class="material-symbols-outlined text-[14px] text-green-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Verified</span>
+</div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern student residence building in Kitwe, Zambia, featuring clean architectural lines and a bright facade. The building has large windows and a manicured small lawn in the foreground. The sunlight is bright and midday, casting crisp shadows. High-quality corporate photography style, evoking a premium yet accessible living experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGy9YpVY5qrQT3FSiKAi9KgTiFeFg-E6ob9mqBA21QDF2IzNkcfocgKQWtvz-n9pSqKvoOqJnz51T8moGIOuNeG_Bbb6Sc8yMUdSQCtF3MOx8kztCx0sBaceFsNiUM0pbzyEq-W-LFYv1yEAMo3XwOqrZcBAmMPOQ31LvJVSGgJ70O0AnwrtR4FwwrBUkZyQBtbnd99otO_vDIe0hBqR2AT3Qv76kH3rW0VkNt0_BEjKRCaJT63SLx"/>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start">
+<h4 class="text-headline-md font-headline-md text-on-surface">Silverstone East Wing</h4>
+<span class="text-label-sm font-label-sm bg-secondary-container/20 text-on-secondary-container px-2 py-0.5 rounded">Riverside</span>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Capacity</span>
+<span class="text-headline-md font-headline-md text-on-surface">40</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Occupied</span>
+<span class="text-headline-md font-headline-md text-primary">38</span>
+</div>
+</div>
+<div class="mt-4 w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[95%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-2">95% Occupancy</span>
+<div class="mt-8 flex gap-2">
+<button class="flex-1 bg-surface-container-high text-on-surface py-2 rounded-lg font-bold hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-md">edit</span>
+                                    Edit Listing
+                                </button>
+<button class="w-12 h-10 border border-outline-variant rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-all">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Property Card 2 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_2px_8px_rgba(23,43,77,0.08)] border border-transparent hover:border-primary-container transition-all flex flex-col">
+<div class="relative h-48 w-full overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A brightly lit, modern dormitory interior with minimalist white furniture and blue textile accents. The room features a bunk bed and two study desks with laptops. Large windows let in soft morning light. The environment is organized, clean, and perfectly suited for serious students in a premium Zambian off-campus hostel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQNnBgmDxcmnqiHcGEBGMmjWi61qGRmOHoMzQKU5AmVG8k9v5CLwDJwb4SuWWuTG2IR5tKrO2d5qcKtdz54nTjMvM_nMLgscF1VWXH5YimYdlkl7Mha22Kio9rAq0t1B0w_1w92bAb9NqhJ_1w21zZRkZQcbuaO__UIZTvEca8kQVbrC1pG3EumCTupu6diEW2ODVxXrDpTbbQyWTLOxITpPuT4TUvpl5bPQ_dFSQ9OWdPpib3obIY"/>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start">
+<h4 class="text-headline-md font-headline-md text-on-surface">Copperbelt Heights</h4>
+<span class="text-label-sm font-label-sm bg-secondary-container/20 text-on-secondary-container px-2 py-0.5 rounded">Parklands</span>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Capacity</span>
+<span class="text-headline-md font-headline-md text-on-surface">32</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Occupied</span>
+<span class="text-headline-md font-headline-md text-primary">24</span>
+</div>
+</div>
+<div class="mt-4 w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[75%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-2">75% Occupancy</span>
+<div class="mt-8 flex gap-2">
+<button class="flex-1 bg-surface-container-high text-on-surface py-2 rounded-lg font-bold hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-md">edit</span>
+                                    Edit Listing
+                                </button>
+<button class="w-12 h-10 border border-outline-variant rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-all">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Property Card 3 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_2px_8px_rgba(23,43,77,0.08)] border border-transparent hover:border-primary-container transition-all flex flex-col">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-white font-bold bg-primary/80 px-4 py-2 rounded-lg">Update Photos</span>
+</div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An exterior view of a secure student gated community in Kitwe at twilight. The perimeter wall has modern lighting and security cameras visible. The sky is a deep indigo with orange hints on the horizon. The aesthetic is extremely safe and professional, targeting the parents of university students seeking security and comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOXH6Sf35p0Ej-phva0iVDbDfJRc2erUTSjvwM5EE8E5ffye87xWOeNyqNumZuFw8Ay-qt8wY18W6Ti_PmOAiDwe3FxjgDMr_qZSvAz0qkqEBmNb0aySkRK24v3mYY5nJvTsV156mOTvS0ASAOwl5hmYPDkYDKxX3kEzW5koxgSH7zMMOkA0JERY5hMNqqUMaSP1E_BZMwm5BV8fCnpOb9SFegPuFdXu3n1Ig4ej9xsm21qhAIgB5L"/>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start">
+<h4 class="text-headline-md font-headline-md text-on-surface">The Annex</h4>
+<span class="text-label-sm font-label-sm bg-secondary-container/20 text-on-secondary-container px-2 py-0.5 rounded">Nkana East</span>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Capacity</span>
+<span class="text-headline-md font-headline-md text-on-surface">52</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="block text-label-sm font-label-sm text-on-surface-variant">Occupied</span>
+<span class="text-headline-md font-headline-md text-primary">52</span>
+</div>
+</div>
+<div class="mt-4 w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full w-[100%]"></div>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-label-sm font-label-sm text-green-600 font-bold">100% Fully Occupied</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Waitlist: 14</span>
+</div>
+<div class="mt-8 flex gap-2">
+<button class="flex-1 bg-surface-container-high text-on-surface py-2 rounded-lg font-bold hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-md">edit</span>
+                                    Edit Listing
+                                </button>
+<button class="w-12 h-10 border border-outline-variant rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-error transition-all">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Suggestion for New User UI testing -->
+<!-- <div class="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl py-16 flex flex-col items-center text-center px-6">
+                    <span class="material-symbols-outlined text-6xl text-primary/40 mb-4">home_pin</span>
+                    <h3 class="text-headline-md font-headline-md text-on-surface">No properties yet?</h3>
+                    <p class="text-body-md font-body-md text-on-surface-variant max-w-md mt-2">Start earning by listing your first property in Kitwe. It only takes a few minutes to get verified.</p>
+                    <button class="mt-8 bg-primary text-on-primary px-8 py-3 rounded-lg font-bold">Add Your First Property</button>
+                </div> -->
+</section>
+<!-- Footer (Shared Component) -->
+<footer class="mt-auto w-full py-16 px-margin-mobile md:px-margin-desktop bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+<div class="flex flex-col gap-2">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface">UniBoard</span>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-xs">© 2024 UniBoard Kitwe. Secure Student Housing. Empowering landlords and students across the Copperbelt.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-4">
+<div class="flex flex-col gap-2">
+<span class="text-label-md font-label-md text-primary uppercase">Quick Links</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-label-md font-label-md text-primary uppercase">Company</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Mobile Bottom NavBar (Shared Component Logic) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface shadow-[0px_-2px_10px_rgba(0,0,0,0.05)] flex justify-around items-center py-3 z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-bold">Dash</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-[10px]">Listings</span>
+</a>
+<button class="bg-primary text-on-primary w-12 h-12 rounded-full -mt-10 shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px]">Inbox</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for property card buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

@@ -121,6 +121,7 @@ async function main() {
       description: 'Private en-suite room with study desk',
       price: 2800,
       roomType: 'SELF_CONTAINED',
+      genderPreference: 'mixed',
       phone: '+260971234567',
       whatsapp: '+260971234567',
       images: [{url: '/demo/room101.jpg', alt: 'Room view'}],

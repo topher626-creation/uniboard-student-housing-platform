@@ -29,6 +29,7 @@ interface AuthContextType {
     userId?: string;
     needsOtp?: boolean;
   }>;
+  googleSignIn: (idToken: string) => Promise<{ success: boolean; message?: string; user?: AuthUser }>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -157,6 +158,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const googleSignIn = async (idToken: string): Promise<{ success: boolean; message?: string; user?: AuthUser }> => {
+    try {
+      const response = await fetch(`${API_BASE}/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return { success: false, message: errorData?.error ?? 'Google sign-in failed.' };
+      }
+
+      const data = await response.json();
+      const normalized = normalizeUser(data.user);
+      persistUser(normalized, data.token);
+      setUser(normalized);
+      return { success: true, user: normalized };
+    } catch {
+      return { success: false, message: 'Unable to connect to the server. Please try again.' };
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('uniboard_token');
@@ -164,7 +188,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, isLoading, login, signup, googleSignIn, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

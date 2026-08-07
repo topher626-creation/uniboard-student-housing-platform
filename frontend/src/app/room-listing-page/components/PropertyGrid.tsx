@@ -18,10 +18,11 @@ type Props = {
 
 const roomTypeBadge: Record<string, string> = {
   'En-Suite': 'badge-blue',
+  'Self-Contained': 'badge-blue',
   'Single Room': 'badge-violet',
   'Shared Room': 'badge-amber',
-  Studio: 'badge-green',
-  Apartment: 'bg-pink-100 text-pink-700',
+  'Bedsitter': 'badge-green',
+  'Bankers': 'badge-pink',
 };
 
 const amenityIcons: Record<string, React.ElementType> = {

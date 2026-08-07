@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
+import { randomBytes } from 'crypto';
 import { prisma } from '../lib/db';
 import { sendOTP } from '../services/emailService';
 import { parseVerificationImages } from '../utils/verification';
@@ -194,6 +195,80 @@ router.post('/signup', signupUpload.fields([
       message: 'Landlord account submitted and pending admin approval.',
       userId: user.id,
       status: user.status
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/* =========================
+   GOOGLE AUTH
+========================= */
+router.post('/google', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) {
+      return res.status(400).json({ error: 'Missing Google ID token' });
+    }
+
+    const tokenResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+    if (!tokenResponse.ok) {
+      return res.status(401).json({ error: 'Invalid Google token' });
+    }
+
+    const tokenInfo = await tokenResponse.json() as Record<string, unknown>;
+    const email = String(tokenInfo.email ?? '');
+    const fullName = String(tokenInfo.name ?? '');
+    const picture = String(tokenInfo.picture ?? '');
+    const emailVerified = String(tokenInfo.email_verified ?? 'false') === 'true';
+
+    if (!email || !emailVerified) {
+      return res.status(400).json({ error: 'Google account not verified' });
+    }
+
+    let user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      const randomPassword = randomBytes(24).toString('hex');
+      const hashedPassword = await bcrypt.hash(randomPassword, 12);
+
+      user = await prisma.user.create({
+        data: {
+          fullName: fullName || email.split('@')[0],
+          email,
+          password: hashedPassword,
+          role: 'STUDENT',
+          status: 'ACTIVE',
+          phoneVerified: true,
+          avatar: picture || undefined,
+          nrcImages: [],
+        }
+      });
+    }
+
+    if (user.status !== 'ACTIVE') {
+      return res.status(403).json({ error: 'Account not active yet. Please check your email or contact support.' });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET!,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        university: user.university,
+        avatar: user.avatar,
+        compoundName: user.compoundName,
+      }
     });
   } catch (error) {
     console.error(error);

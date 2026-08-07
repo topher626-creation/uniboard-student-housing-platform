@@ -15,8 +15,12 @@ export default function ActiveFilterChips({ filters, onClear, onClearAll }: Prop
 
   if (filters.location) chips.push({ key: 'location', label: `Campus: ${filters.location}` });
   if (filters.roomTypes.length > 0) chips.push({ key: 'roomTypes', label: `Type: ${filters.roomTypes.join(', ')}` });
-  if (filters.minPrice > 0) chips.push({ key: 'minPrice', label: `Min: R${filters.minPrice.toLocaleString()}` });
-  if (filters.maxPrice < 8000) chips.push({ key: 'maxPrice', label: `Max: R${filters.maxPrice.toLocaleString()}` });
+  if (filters.minPrice > 0) chips.push({ key: 'minPrice', label: `Min: K${filters.minPrice.toLocaleString()}` });
+  if (filters.maxPrice < 8000) chips.push({ key: 'maxPrice', label: `Max: K${filters.maxPrice.toLocaleString()}` });
+  if (filters.genderPreference !== null) {
+    const label = filters.genderPreference === 'male' ? 'Boys only' : filters.genderPreference === 'female' ? 'Girls only' : 'Both genders';
+    chips.push({ key: 'genderPreference', label: label });
+  }
   if (filters.amenities.length > 0) chips.push({ key: 'amenities', label: `${filters.amenities.length} Amenities` });
   if (filters.furnished !== null) chips.push({ key: 'furnished', label: filters.furnished ? 'Furnished' : 'Unfurnished' });
   if (filters.maxDistance < 10) chips.push({ key: 'maxDistance', label: `≤ ${filters.maxDistance}km` });

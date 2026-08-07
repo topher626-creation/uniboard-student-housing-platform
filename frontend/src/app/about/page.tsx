@@ -12,18 +12,11 @@ const team = [
     avatarAlt: 'Siame Christopher, Founder of UniBoard',
   },
   {
-    name: 'Natasha Phiri',
-    role: 'Co-Founder & CTO',
-    bio: 'Software engineer and CBU alumna. Passionate about using technology to solve real problems for Zambian students.',
+    name: 'Lazarous Ngosa',
+    role: 'Co-Founder, COO & CMO',
+    bio: 'Experienced growth and operations leader with a passion for building student-focused platforms. Leads strategy across operations, marketing, and student experience at UniBoard.',
     avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_11b3df0b3-1772952555612.png",
-    avatarAlt: 'Natasha Phiri, CTO of UniBoard Zambia',
-  },
-  {
-    name: 'Bupe Chanda',
-    role: 'Head of Operations',
-    bio: 'Manages provider verification and student support. Ensures every listing on UniBoard meets our quality standards.',
-    avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_1ec91ebef-1763301008266.png",
-    avatarAlt: 'Bupe Chanda, Head of Operations at UniBoard',
+    avatarAlt: 'Lazarous Ngosa, COO & CMO of UniBoard',
   },
 ];
 

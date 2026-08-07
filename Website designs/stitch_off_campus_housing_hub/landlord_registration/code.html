@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>UniBoard | Landlord Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f1f3ff",
+                      "secondary-container": "#50dcff",
+                      "background": "#f9f9ff",
+                      "on-background": "#041b3c",
+                      "on-tertiary-fixed-variant": "#812800",
+                      "tertiary-fixed": "#ffdbcf",
+                      "secondary": "#00687b",
+                      "on-error-container": "#93000a",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#0052cc",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-primary-fixed": "#001848",
+                      "surface-dim": "#cadaff",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#1d3052",
+                      "on-primary-container": "#c4d2ff",
+                      "on-tertiary-fixed": "#380d00",
+                      "primary-fixed": "#dae2ff",
+                      "on-primary-fixed-variant": "#0040a2",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#edf0ff",
+                      "secondary-fixed-dim": "#48d7f9",
+                      "surface-bright": "#f9f9ff",
+                      "primary": "#003d9b",
+                      "on-surface-variant": "#434654",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#004e5d",
+                      "surface-tint": "#0c56d0",
+                      "surface": "#f9f9ff",
+                      "inverse-primary": "#b2c5ff",
+                      "tertiary-container": "#a33500",
+                      "on-secondary-fixed": "#001f27",
+                      "on-surface": "#041b3c",
+                      "surface-variant": "#d7e2ff",
+                      "on-secondary-container": "#005f71",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#7b2600",
+                      "surface-container": "#e8edff",
+                      "outline": "#737685",
+                      "surface-container-high": "#e0e8ff",
+                      "outline-variant": "#c3c6d6",
+                      "on-tertiary-container": "#ffc6b2",
+                      "surface-container-highest": "#d7e2ff",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "secondary-fixed": "#afecff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Bar -->
+<header class="bg-surface shadow-[0px_2px_8px_rgba(23,43,77,0.08)] sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-base">
+<span class="text-headline-md font-headline-md font-bold text-primary">UniBoard</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Explore</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Saved</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Help</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded-lg">Sign In</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md active:scale-95 transition-transform">List Property</button>
+</div>
+</nav>
+</header>
+<main class="min-h-screen relative overflow-hidden flex flex-col items-center">
+<!-- Decorative Background Element -->
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-secondary-fixed opacity-20 blur-3xl rounded-full"></div>
+<div class="absolute -bottom-40 -left-40 w-96 h-96 bg-primary-fixed opacity-30 blur-3xl rounded-full"></div>
+<section class="w-full max-w-3xl px-margin-mobile py-16 z-10">
+<div class="text-center mb-12">
+<h1 class="text-headline-lg font-headline-lg text-primary mb-3">Landlord Registration</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Join the community of trusted housing providers</p>
+</div>
+<!-- Registration Form Container -->
+<form action="#" class="bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-[0px_2px_8px_rgba(23,43,77,0.08)] border border-outline-variant space-y-12" method="POST">
+<!-- Section 1: Personal Info -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Personal Information</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="full_name">Full Name</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="full_name" name="full_name" placeholder="John Mwape" required="" type="text">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Your legal name as it appears on your NRC.</p>
+</div>
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="phone">Phone Number</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="phone" name="phone" placeholder="+260 97x xxxxxx" required="" type="tel">
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="email">Email Address</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="email" name="email" placeholder="john@example.com" required="" type="email">
+</div>
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="password">Password</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="password" name="password" required="" type="password">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Min. 8 characters with numbers.</p>
+</div>
+</div>
+</div>
+<!-- Section 2: Business Info -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-primary">domain</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Business Information</h2>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="residence_name">Primary Residence/Hostel Name</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="residence_name" name="residence_name" placeholder="Copper Valley Student Housing" required="" type="text">
+</div>
+<div class="space-y-2">
+<label class="block text-label-md font-label-md text-on-surface" for="location">General Location in Kitwe</label>
+<select class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary-container focus:border-secondary transition-all outline-none" id="location" name="location" required="">
+<option disabled="" selected="" value="">Select an area</option>
+<option value="parklands">Parklands</option>
+<option value="riverside">Riverside</option>
+<option value="nkana_east">Nkana East</option>
+<option value="kwacha">Kwacha</option>
+<option value="central_town">Central Town</option>
+</select>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Select the main area where your properties are located.</p>
+</div>
+</div>
+</div>
+<!-- Section 3: Verification -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Verification Documents</h2>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">To maintain a secure environment, we require a clear photo of your National Registration Card (NRC).</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Front of NRC -->
+<div class="group relative">
+<label class="block text-label-md font-label-md text-on-surface mb-3">NRC Front Side</label>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center bg-surface-container-low group-hover:border-primary transition-colors cursor-pointer relative overflow-hidden">
+<input class="absolute inset-0 opacity-0 cursor-pointer z-20" type="file">
+<span class="material-symbols-outlined text-primary text-4xl mb-2">upload_file</span>
+<span class="text-label-md font-label-md text-primary">Click to upload</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-1">JPG, PNG or PDF</span>
+</div>
+</div>
+<!-- Back of NRC -->
+<div class="group relative">
+<label class="block text-label-md font-label-md text-on-surface mb-3">NRC Back Side</label>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center bg-surface-container-low group-hover:border-primary transition-colors cursor-pointer relative overflow-hidden">
+<input class="absolute inset-0 opacity-0 cursor-pointer z-20" type="file">
+<span class="material-symbols-outlined text-primary text-4xl mb-2">upload_file</span>
+<span class="text-label-md font-label-md text-primary">Click to upload</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-1">JPG, PNG or PDF</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Submit Button Area -->
+<div class="pt-8 border-t border-outline-variant">
+<div class="flex items-start gap-3 mb-6">
+<input class="mt-1 w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary-container" id="terms" name="terms" required="" type="checkbox">
+<label class="text-label-md font-label-md text-on-surface-variant" for="terms">
+                            I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>, and I confirm that all property information provided is accurate.
+                        </label>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-lg font-headline-md text-headline-md hover:bg-primary-container active:scale-[0.98] transition-all shadow-lg shadow-primary-container/20" type="submit">
+                        Register as Landlord
+                    </button>
+</div>
+</form>
+<div class="mt-8 text-center">
+<p class="text-body-md font-body-md text-on-surface-variant">
+                    Already have an account? <a class="text-primary font-bold hover:underline" href="#">Sign in here</a>
+</p>
+</div>
+</section>
+<!-- Informational Cards (Asymmetric Layout) -->
+<section class="w-full max-w-container-max px-margin-mobile pb-24 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-high p-8 rounded-xl flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">trending_up</span>
+<h3 class="text-headline-md font-headline-md text-on-surface">Reach 10k+ Students</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Get your properties in front of thousands of students from CBU, ZCAS, and other institutions across Kitwe.</p>
+</div>
+<div class="bg-primary text-on-primary p-8 rounded-xl md:translate-y-8 flex flex-col gap-4">
+<span class="material-symbols-outlined text-on-primary text-3xl">payments</span>
+<h3 class="text-headline-md font-headline-md">Secure Payments</h3>
+<p class="text-body-md font-body-md text-primary-fixed">Our automated platform ensures you get paid on time, every time, with transparent transaction logs.</p>
+</div>
+<div class="bg-surface-container-high p-8 rounded-xl flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">support_agent</span>
+<h3 class="text-headline-md font-headline-md text-on-surface">Landlord Support</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Dedicated account managers to help you optimize your listings and manage student inquiries efficiently.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant">
+<div class="w-full py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-base">
+<div class="flex flex-col gap-2 items-center md:items-start">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface">UniBoard</span>
+<p class="text-body-md font-body-md text-on-surface-variant dark:text-surface-variant">© 2024 UniBoard Kitwe. Secure Student Housing.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for file uploads
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const parent = this.parentElement;
+                const label = parent.querySelector('span:nth-of-type(2)');
+                const icon = parent.querySelector('.material-symbols-outlined');
+                
+                if (this.files && this.files.length > 0) {
+                    label.textContent = this.files[0].name;
+                    label.classList.add('text-secondary');
+                    icon.textContent = 'check_circle';
+                    icon.classList.remove('text-primary');
+                    icon.classList.add('text-secondary');
+                    parent.classList.add('border-secondary');
+                    parent.classList.remove('border-dashed');
+                }
+            });
+        });
+
+        // Form submission animation mock
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">progress_activity</span> Processing...';
+            
+            setTimeout(() => {
+                alert('Registration submitted! We will verify your NRC within 24 hours.');
+                btn.disabled = false;
+                btn.textContent = 'Register as Landlord';
+            }, 2000);
+        });
+    </script>
+
+
+</body></html>

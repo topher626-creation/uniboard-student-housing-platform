@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UniBoard Admin | Approval Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f1f3ff",
+                        "secondary-container": "#50dcff",
+                        "background": "#f9f9ff",
+                        "on-background": "#041b3c",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "tertiary-fixed": "#ffdbcf",
+                        "secondary": "#00687b",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0052cc",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "on-primary-fixed": "#001848",
+                        "surface-dim": "#cadaff",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#1d3052",
+                        "on-primary-container": "#c4d2ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "primary-fixed": "#dae2ff",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#edf0ff",
+                        "secondary-fixed-dim": "#48d7f9",
+                        "surface-bright": "#f9f9ff",
+                        "primary": "#003d9b",
+                        "on-surface-variant": "#434654",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#004e5d",
+                        "surface-tint": "#0c56d0",
+                        "surface": "#f9f9ff",
+                        "inverse-primary": "#b2c5ff",
+                        "tertiary-container": "#a33500",
+                        "on-secondary-fixed": "#001f27",
+                        "on-surface": "#041b3c",
+                        "surface-variant": "#d7e2ff",
+                        "on-secondary-container": "#005f71",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#7b2600",
+                        "surface-container": "#e8edff",
+                        "outline": "#737685",
+                        "surface-container-high": "#e0e8ff",
+                        "outline-variant": "#c3c6d6",
+                        "on-tertiary-container": "#ffc6b2",
+                        "surface-container-highest": "#d7e2ff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "secondary-fixed": "#afecff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #f9f9ff; font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- SideNavBar (Shared Component Anchor) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-surface-container-low border-r border-outline-variant p-base z-50">
+<div class="mb-10 px-4 pt-6">
+<h1 class="text-headline-md font-headline-md font-black text-primary">UniBoard</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Admin Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg transition-transform translate-x-1" href="#">
+<span class="material-symbols-outlined">pending_actions</span>
+<span class="text-label-md font-label-md">Pending Landlords</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="text-label-md font-label-md">Active Landlords</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-label-md font-label-md">Manage Properties</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-label-md font-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md font-label-md">Settings</span>
+</a>
+</nav>
+<div class="pt-6 border-t border-outline-variant mt-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="text-label-md font-label-md">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-md font-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 h-screen overflow-y-auto relative bg-background">
+<!-- Top Header Overlay -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md px-margin-mobile md:px-margin-desktop py-6 flex justify-between items-center shadow-sm">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-headline-md font-headline-md text-on-surface">Landlord Approvals</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 text-label-md w-64 focus:ring-2 focus:ring-primary" placeholder="Search application..." type="text"/>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate administrator in a modern office, featuring soft studio lighting and a clean, high-contrast corporate aesthetic with blue and white tones to represent authority and professionalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV1OfN_2JCV5770OYOLQ7Zo2aYRJq--h1hYORqV4Tp0mmrXsLm2iW4x8GzLDED29warRN_DVUC-lHhY04T97Sbu84qFd12dmWOLqvRzLMZoA5y2V5qmanuhGppS9PRKT-h1gfEe8s0wa-d5BbNhQxMyhR9eXjCj16wEueVnUTrqsUR9QbsrBMC_4sHuYbsNgxeHfUVONlGxEL4k6yU71T0PUpZwlrQA6XrUjqCjfY41fOcbkIy01k4"/>
+</div>
+</div>
+</header>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 space-y-10">
+<!-- Metrics Section: Bento Style -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_8px_rgba(23,43,77,0.08)] flex items-center justify-between group hover:translate-y-[-2px] transition-transform">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant">Total Landlords</p>
+<h3 class="text-display font-display text-primary mt-1">248</h3>
+</div>
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">groups</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_8px_rgba(23,43,77,0.08)] flex items-center justify-between group hover:translate-y-[-2px] transition-transform">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant">Pending Approvals</p>
+<h3 class="text-display font-display text-tertiary mt-1">14</h3>
+</div>
+<div class="w-12 h-12 bg-tertiary-fixed/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-tertiary text-3xl">pending</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_8px_rgba(23,43,77,0.08)] flex items-center justify-between group hover:translate-y-[-2px] transition-transform">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant">Total Listings</p>
+<h3 class="text-display font-display text-secondary mt-1">1.2k</h3>
+</div>
+<div class="w-12 h-12 bg-secondary-container/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl">home_work</span>
+</div>
+</div>
+</section>
+<!-- Main Approval Table Area -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_2px_8px_rgba(23,43,77,0.08)] overflow-hidden">
+<div class="px-6 py-5 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h4 class="text-headline-md font-headline-md text-on-background">Applications for Review</h4>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                        </button>
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low/50">
+<tr>
+<th class="px-6 py-4 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Landlord Details</th>
+<th class="px-6 py-4 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Business Name</th>
+<th class="px-6 py-4 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">NRC Documents</th>
+<th class="px-6 py-4 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Submission Date</th>
+<th class="px-6 py-4 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary font-bold">SM</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface">Sampa Mulenga</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">sampa.m@example.zm</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-body-md font-body-md text-on-surface">Riverside Student Villas</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex gap-2">
+<div class="w-12 h-12 rounded bg-surface-variant border border-outline-variant overflow-hidden cursor-pointer relative group/thumb">
+<img class="w-full h-full object-cover" data-alt="A clean, close-up photograph of a professional identification card lying on a white surface, mimicking a Zambian National Registration Card, with clear text and a secure watermark pattern, presented in high-fidelity studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL6xc8UcyXl_H4ICalDm6VMoq_POFMDbx8zkXogmQfw37i5MljKgfr5gVSkpwp8rAKbGsT6d8M-OAF6vYwrQJPIjUc9GAkR4zhgwX3wIsw3pxJw2ZnEvhkd6Bjn1eSeEeC0GCROobktdUEG3RmYm3Xba8w3hbptghdr9_7iJnl-q5_8Ly6F7z6qNibTUob0WjD28DzsJ_G3izoMB0ZNsYBm21Pzf5ZGa_HQG2MW6P0GZIjknln2fKP"/>
+<div class="absolute inset-0 bg-on-surface/40 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded bg-surface-variant border border-outline-variant overflow-hidden cursor-pointer relative group/thumb">
+<img class="w-full h-full object-cover" data-alt="A detailed photograph of the back of a national identification document, showing barcoded security features and official government seals on a subtle textured background, designed to evoke a high sense of security and trust." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxLYsACMOHchJYSWdY-p7hXt-Ajo9p2NIW0qNHfB1Se9rsEx_4o_D4mxsJwp_JpGuyWYADpJoAnqOVFn82Wez2cli-TUX-dhmBPQqDDa7xNs91NeH7z7slts8kw1KghiP6_BzJxbrQDZ9g7JL9A0CuT0vHfVt1ZFOwOWDTpyjwB7gw6-vSr8wdS-ja_kr6-7PmIotfB_bucAnsRfLVrnSYubz2NiLlnBPs3sDDXjLG6S6V6EKoQRwT"/>
+<div class="absolute inset-0 bg-on-surface/40 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-label-md font-label-md text-on-surface-variant">Oct 24, 2023</p>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 bg-error-container text-on-error-container text-label-sm font-label-sm rounded-lg hover:bg-error/10 transition-colors">Reject</button>
+<button class="px-4 py-2 bg-primary text-on-primary text-label-sm font-label-sm rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all">Approve</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary font-bold">KC</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface">Kelvin Chanda</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">k.chanda@propertymanage.zm</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-body-md font-body-md text-on-surface">Chanda &amp; Sons Rentals</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex gap-2">
+<div class="w-12 h-12 rounded bg-surface-variant border border-outline-variant overflow-hidden cursor-pointer relative group/thumb">
+<img class="w-full h-full object-cover" data-alt="Macro photography of a government-issued identification card, focusing on the embossed portrait area and high-security holographic elements, set against a pristine white background to maintain a professional administrative aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI8ZC9KwK0pJn6vCQUBQ8fA0YPD9GBEagK10og8kZDCOvg5BgygiqGj2nRw99M_hJ-mA8q2gn0WkHQuZQVaunrvUnk7ETQ-Uwrn-xIoU-Qj4KZd7kLVkPXlOMM9liJHaQImw8KSMRFlMlj1eGGnteZJ0Lu6Uq6wKd5MiSRRec44npSE1LIMiLWjw8kFx181b2uS2ynoiLKhFqRiYZzUc8yeLCBg_lyQlkz9DuMqK6K5xtGCpgwIhhE"/>
+<div class="absolute inset-0 bg-on-surface/40 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-label-md font-label-md text-on-surface-variant">Oct 25, 2023</p>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 bg-error-container text-on-error-container text-label-sm font-label-sm rounded-lg hover:bg-error/10 transition-colors">Reject</button>
+<button class="px-4 py-2 bg-primary text-on-primary text-label-sm font-label-sm rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all">Approve</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed/30 flex items-center justify-center text-tertiary font-bold">NM</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface">Nalucha Mweene</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">nalucha@studentpads.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-body-md font-body-md text-on-surface">Mweene Estates Ltd.</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex gap-2">
+<div class="w-12 h-12 rounded bg-surface-variant border border-outline-variant overflow-hidden cursor-pointer relative group/thumb">
+<img class="w-full h-full object-cover" data-alt="Professional flat lay of a digital scan of an official ID document, showcasing crisp black text on a security-patterned background, representing high-quality document verification for a corporate dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_rPVww8X7WPFgdZRxoWizPza906Uv2xYY-K2E6PjTncyav69yip4VK606tcK1auDgVovdmngG0-jpIeAbNNpELacpkRqQjK0h5RhvjbKbehj1qvm2W9tYOU1XiGqjYGLMXNPF7nbI4N03dB2xD5vITCP5jvnLLizOP3AT3Jk4rGxytrb4lGwfcJ2wJRQV0KoiAtTL5C098fp9rEMbf-87imltTrk-1K3H36kBWEKArJjxUvM1VD63"/>
+<div class="absolute inset-0 bg-on-surface/40 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded bg-surface-variant border border-outline-variant overflow-hidden cursor-pointer relative group/thumb">
+<img class="w-full h-full object-cover" data-alt="High resolution scan of official government documentation with visible official stamps and signature lines, depicted with a professional blue-tinted administrative color palette and soft diffuse lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYtLG47yFqPBJNc5yIEkPeWy27XnZZXynxX8deakSNFjQo-_zr214SQu_TqFbY-J5gxWPq3DXshXO0Lkz8DjBRVGATvnxhk44S6rU1ON2WETfcbXP85jouuoU8s7Ft0k9IiKn1suR-dap9Xtnb_7Jl6gabLoFHlv8viaIEpk4Xv6Ylp_TMSlL1Eue9Xjm2yWYFpqmJQDPXHkuf9W4K8nuACzDty_M2GZpeuRejVeLRIF9oO6d2O_U8"/>
+<div class="absolute inset-0 bg-on-surface/40 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">zoom_in</span>
+</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<p class="text-label-md font-label-md text-on-surface-variant">Oct 25, 2023</p>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 bg-error-container text-on-error-container text-label-sm font-label-sm rounded-lg hover:bg-error/10 transition-colors">Reject</button>
+<button class="px-4 py-2 bg-primary text-on-primary text-label-sm font-label-sm rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all">Approve</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-low/30 border-t border-outline-variant flex justify-between items-center">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Showing 1 to 3 of 14 applications</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary text-label-sm font-label-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors text-label-sm font-label-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors text-label-sm font-label-sm">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Shared Component Anchor) -->
+<footer class="w-full py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-base mt-20 border-t border-outline-variant">
+<div class="flex flex-col items-center md:items-start gap-2">
+<h5 class="text-headline-md font-headline-md font-bold text-on-surface">UniBoard Kitwe</h5>
+<p class="text-body-md font-body-md text-on-surface-variant">© 2024 UniBoard Kitwe. Secure Student Housing.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</footer>
+</main>
+<!-- Success Toast Notification (Hidden by default) -->
+<div class="fixed bottom-10 right-10 z-[100] transform translate-y-20 opacity-0 transition-all duration-300" id="toast">
+<div class="bg-inverse-surface text-inverse-on-surface px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed">check_circle</span>
+<p class="text-label-md font-label-md">Landlord application approved successfully</p>
+</div>
+</div>
+<!-- Image Modal Backdrop (Hidden) -->
+<div class="fixed inset-0 bg-on-background/80 backdrop-blur-sm z-[110] hidden flex items-center justify-center p-10 cursor-zoom-out" id="modal-backdrop">
+<img class="max-w-full max-h-full rounded-xl shadow-2xl" id="modal-image" src=""/>
+</div>
+<script>
+        // Micro-interactions for Approve buttons
+        const approveButtons = document.querySelectorAll('button:contains("Approve")');
+        const toast = document.getElementById('toast');
+
+        document.querySelectorAll('.group button').forEach(btn => {
+            if (btn.innerText === 'Approve') {
+                btn.addEventListener('click', (e) => {
+                    const row = e.target.closest('tr');
+                    
+                    // Visual feedback
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Processing';
+                    
+                    setTimeout(() => {
+                        // Success notification
+                        toast.classList.remove('translate-y-20', 'opacity-0');
+                        toast.classList.add('translate-y-0', 'opacity-100');
+                        
+                        // Fade out the row
+                        row.classList.add('opacity-50', 'bg-surface-variant');
+                        
+                        setTimeout(() => {
+                            toast.classList.add('translate-y-20', 'opacity-0');
+                            toast.classList.remove('translate-y-0', 'opacity-100');
+                        }, 3000);
+                    }, 800);
+                });
+            }
+        });
+
+        // Simple lightbox for NRC images
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalImage = document.getElementById('modal-image');
+        
+        document.querySelectorAll('img[data-alt*="ID card"], img[data-alt*="identification document"]').forEach(img => {
+            img.parentElement.addEventListener('click', () => {
+                modalImage.src = img.src;
+                modalBackdrop.classList.remove('hidden');
+            });
+        });
+
+        modalBackdrop.addEventListener('click', () => {
+            modalBackdrop.classList.add('hidden');
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.classList.add('w-80');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.classList.remove('w-80');
+        });
+    </script>
+</body></html>

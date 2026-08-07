@@ -17,6 +17,7 @@ export type FilterState = {
   location: string;
   roomTypes: string[];
   bedspaceTypes?: string[];
+  genderPreference: 'male' | 'female' | 'mixed' | null;
   minPrice: number;
   maxPrice: number;
   amenities: string[];
@@ -29,6 +30,7 @@ const defaultFilters: FilterState = {
   location: '',
   roomTypes: [],
   bedspaceTypes: [],
+  genderPreference: null,
   minPrice: 0,
   maxPrice: 8000,
   amenities: [],
@@ -87,7 +89,17 @@ export default function ListingPageClient() {
       result = result.filter((p) => filters.roomTypes.includes(p.roomType));
     }
 
+    if (filters.genderPreference && filters.genderPreference !== 'mixed') {
+      result = result.filter(
+        (p) => p.genderPreference === filters.genderPreference || p.genderPreference === 'mixed'
+      );
+    }
+
     result = result.filter((p) => p.price >= filters.minPrice && p.price <= filters.maxPrice);
+
+    if (filters.maxDistance !== null) {
+      result = result.filter((p) => p.distanceKm <= filters.maxDistance);
+    }
 
     if (filters.amenities.length > 0) {
       result = result.filter((p) => filters.amenities.every((a) => p.amenities.includes(a)));
@@ -97,7 +109,7 @@ export default function ListingPageClient() {
       result = result.filter((p) => p.furnished === filters.furnished);
     }
 
-    result = result.filter((p) => p.distanceKm <= filters.maxDistance);
+    result = result.filter((p) => p.distanceMinutes <= filters.maxDistance);
 
     if (filters.available === true) {
       result = result.filter((p) => p.available);
@@ -145,6 +157,7 @@ export default function ListingPageClient() {
   const activeFilterCount = [
     filters.location !== '',
     filters.roomTypes.length > 0,
+    filters.genderPreference !== null,
     filters.minPrice > 0,
     filters.maxPrice < 8000,
     filters.amenities.length > 0,

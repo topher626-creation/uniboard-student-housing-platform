@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Script from 'next/script';
 import { Eye, EyeOff, Loader2, Mail, Lock, User, Phone, GraduationCap, Building2, ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAuth, UserRole } from '@/lib/authContext';
@@ -9,9 +10,9 @@ import { useAuth, UserRole } from '@/lib/authContext';
 interface AuthFormValues {
   fullName: string;
   email: string;
-  phone: string;
-  university: string;
-  businessName: string;
+  phone?: string;
+  university?: string;
+  businessName?: string;
   password: string;
   confirmPassword: string;
   agreeTerms: boolean;
@@ -53,8 +54,65 @@ export default function UnifiedAuthForm() {
 
   const passwordValue = watch('password');
   const isLandlord = role === 'landlord';
+  const isStudent = role === 'student';
+  const [googleReady, setGoogleReady] = useState(false);
+  const [googleInitialized, setGoogleInitialized] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { googleSignIn } = useAuth();
 
-  const submitLabel = useMemo(() => (mode === 'login' ? 'Sign in' : role === 'landlord' ? 'Create landlord account' : 'Create student account'), [mode, role]);
+  const submitLabel = useMemo(
+    () => (mode === 'login' ? 'Sign in' : isLandlord ? 'Create landlord account' : 'Create student account'),
+    [mode, isLandlord]
+  );
+
+  const handleGoogleAuth = async () => {
+    setStatusMessage(null);
+
+    if (!googleReady) {
+      setStatusMessage('Loading Google sign-in, please wait...');
+      return;
+    }
+
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      setStatusMessage('Google sign-in is not configured. Please set NEXT_PUBLIC_GOOGLE_CLIENT_ID.');
+      return;
+    }
+
+    const googleAccounts = (window as any).google?.accounts;
+    if (!googleAccounts?.id) {
+      setStatusMessage('Google sign-in is unavailable in this browser.');
+      return;
+    }
+
+    if (!googleInitialized) {
+      googleAccounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleCredentialResponse,
+        ux_mode: 'popup',
+      });
+      setGoogleInitialized(true);
+    }
+
+    setGoogleLoading(true);
+    googleAccounts.id.prompt();
+  };
+
+  const handleGoogleCredentialResponse = async (response: { credential?: string }) => {
+    setGoogleLoading(false);
+    if (!response?.credential) {
+      setStatusMessage('Google sign-in failed. Please try again.');
+      return;
+    }
+
+    const result = await googleSignIn(response.credential);
+    if (!result.success) {
+      setStatusMessage(result.message ?? 'Google sign-in failed.');
+      return;
+    }
+
+    router.push('/student-dashboard');
+  };
 
   const onLoginSubmit = async (data: AuthFormValues) => {
     setStatusMessage(null);
@@ -75,7 +133,7 @@ export default function UnifiedAuthForm() {
       fullName: data.fullName,
       email: data.email,
       password: data.password,
-      phone: data.phone,
+      phone: isLandlord ? data.phone : undefined,
       role: isLandlord ? 'landlord' : 'student',
       university: isLandlord ? undefined : data.university,
       businessName: isLandlord ? data.businessName : undefined,
@@ -126,16 +184,34 @@ export default function UnifiedAuthForm() {
           </h1>
           <p className="mt-1.5 text-sm text-gray-500">
             {mode === 'login'
-              ? 'Access your UniBoard account in seconds.'
-              : 'Join students and verified landlords on one clean platform.'}
+              ? 'Sign in with email and password.'
+              : 'Students sign up with email or Google. Landlords register with business details.'}
           </p>
         </div>
+
+        {(mode === 'login' || (mode === 'signup' && isStudent)) ? (
+          <div className="mb-5">
+            <button
+              type="button"
+              onClick={handleGoogleAuth}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={googleLoading}
+            >
+              {googleLoading ? 'Signing in with Google...' : 'Continue with Google'}
+            </button>
+          </div>
+        ) : null}
 
         {statusMessage ? (
           <div className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
             {statusMessage}
           </div>
         ) : null}
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="afterInteractive"
+          onLoad={() => setGoogleReady(true)}
+        />
 
         {mode === 'signup' ? (
           <div className="mb-5 grid gap-3 sm:grid-cols-2">
@@ -195,46 +271,43 @@ export default function UnifiedAuthForm() {
                 {errors.email ? <p className="mt-1.5 text-xs font-medium text-red-500">{errors.email.message}</p> : null}
               </div>
 
-              <div>
-                <label className="mb-1.5 block text-sm font-semibold text-gray-700">Phone number</label>
-                <div className="relative">
-                  <Phone size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="tel"
-                    placeholder="e.g. 0977 123 456"
-                    className={`input-base pl-9 ${errors.phone ? 'border-red-400' : ''}`}
-                    {...register('phone', { required: 'Phone number is required', minLength: { value: 7, message: 'Phone number is too short' } })}
-                  />
-                </div>
-                {errors.phone ? <p className="mt-1.5 text-xs font-medium text-red-500">{errors.phone.message}</p> : null}
-              </div>
-
               {isLandlord ? (
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">Business name</label>
-                  <div className="relative">
-                    <ShieldCheck size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Mwale Residence"
-                      className={`input-base pl-9 ${errors.businessName ? 'border-red-400' : ''}`}
-                      {...register('businessName', { required: isLandlord ? 'Business name is required for landlords' : false })}
-                    />
+                <>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-semibold text-gray-700">Phone number</label>
+                    <div className="relative">
+                      <Phone size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="tel"
+                        placeholder="e.g. 0977 123 456"
+                        className={`input-base pl-9 ${errors.phone ? 'border-red-400' : ''}`}
+                        {...register('phone', { required: 'Phone number is required', minLength: { value: 7, message: 'Phone number is too short' } })}
+                      />
+                    </div>
+                    {errors.phone ? <p className="mt-1.5 text-xs font-medium text-red-500">{errors.phone.message}</p> : null}
                   </div>
-                  {errors.businessName ? <p className="mt-1.5 text-xs font-medium text-red-500">{errors.businessName.message}</p> : null}
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-semibold text-gray-700">Business name</label>
+                    <div className="relative">
+                      <ShieldCheck size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Mwale Residence"
+                        className={`input-base pl-9 ${errors.businessName ? 'border-red-400' : ''}`}
+                        {...register('businessName', { required: 'Business name is required for landlords' })}
+                      />
+                    </div>
+                    {errors.businessName ? <p className="mt-1.5 text-xs font-medium text-red-500">{errors.businessName.message}</p> : null}
+                  </div>
+                </>
+              ) : null}
+
+              {isStudent ? (
+                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                  Students can sign up with email and password or use Google when available.
                 </div>
-              ) : (
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">University</label>
-                  <select className="input-base" {...register('university')}>
-                    {universities.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              ) : null}
 
               <div>
                 <label className="mb-1.5 block text-sm font-semibold text-gray-700">Password</label>

@@ -4,15 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.upload = void 0;
-exports.optimizeImage = optimizeImage;
-exports.addImageToRecord = addImageToRecord;
 const multer_1 = __importDefault(require("multer"));
-const sharp_1 = __importDefault(require("sharp"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-const UPLOADS_DIR = 'd:/WEB PROJECTS/uniboard/backend/uploads';
+const UPLOADS_DIR = path_1.default.resolve(__dirname, '../../uploads');
 if (!fs_1.default.existsSync(UPLOADS_DIR)) {
     fs_1.default.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
@@ -40,20 +37,4 @@ const fileFilter = (_req, file, cb) => {
     }
 };
 exports.upload = (0, multer_1.default)({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
-async function optimizeImage(filePath) {
-    const optimizedPath = filePath.replace(path_1.default.extname(filePath), '.webp');
-    await (0, sharp_1.default)(filePath)
-        .webp({ quality: 80 })
-        .toFile(optimizedPath);
-    // Delete original
-    fs_1.default.unlinkSync(filePath);
-    return optimizedPath;
-}
-// Helper to add to Json field (nrcImages, images)
-async function addImageToRecord(recordId, field, imageUrl, side) {
-    const record = await prisma.user.findUnique({ where: { id: recordId } }); // adjust for model
-    // Logic to append to Json array
-    console.log(`Image added to ${field}: ${imageUrl}`);
-    return imageUrl;
-}
 //# sourceMappingURL=uploadService.js.map

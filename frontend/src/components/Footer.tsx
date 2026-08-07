@@ -145,9 +145,7 @@ export default function Footer() {
               <p className="text-xs text-gray-500">© 2026 UniBoard. All rights reserved.</p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-              <div className="text-xs text-gray-400">
-                <span className="font-semibold text-white">UniBoard</span> — Siame Christopher (Founder, CEO & CTO) & Ngosa Lazarous (CMO)
-              </div>
+              <div className="text-xs text-gray-500">© 2026 UniBoard. All rights reserved.</div>
               <div className="flex items-center gap-4">
                 <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Privacy</Link>
                 <Link href="/terms" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Terms</Link>

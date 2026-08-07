@@ -14,7 +14,7 @@ interface AppLogoProps {
 }
 
 const AppLogo = memo(function AppLogo({
-  src = '/images/updated uniboard logo.jpeg',
+  src = '/assets/images/app_logo.jpeg',
   iconName = 'SparklesIcon',
   size = 70,
   className = '',
@@ -39,7 +39,7 @@ const AppLogo = memo(function AppLogo({
         <div className={imageWrapperClass}>
           <AppImage
             src={src}
-            alt="UniBoard — student accommodation platform"
+            alt="UniBoard student accommodation platform"
             width={size}
             height={size}
             className="flex-shrink-0 rounded-lg object-contain"

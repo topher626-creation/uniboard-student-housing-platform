@@ -39,7 +39,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'UniBoard — Find Student Accommodation Near Your University',
+    default: 'UniBoard - Find Student Accommodation Near Your University',
     template: '%s | UniBoard',
   },
   description:
@@ -64,24 +64,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_ZM',
     siteName: 'UniBoard',
-    title: 'UniBoard — Find Student Accommodation Near Your University',
+    title: 'UniBoard - Find Student Accommodation Near Your University',
     description:
       'UniBoard connects students with verified boarding houses, hostels, and rental rooms near Zambian universities.',
     images: [
       {
-        url: '/assets/images/app_logo.png',
+        url: '/assets/images/app_logo.jpeg',
         width: 1200,
         height: 630,
-        alt: 'UniBoard — Student Accommodation Platform',
+        alt: 'UniBoard Student Accommodation Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'UniBoard — Student Accommodation',
+    title: 'UniBoard - Student Accommodation',
     description:
       'Find verified student accommodation near Zambian universities.',
-    images: ['/assets/images/app_logo.png'],
+    images: ['/assets/images/app_logo.jpeg'],
   },
   robots: {
     index: true,
@@ -97,10 +97,10 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/assets/images/app_logo.png', type: 'image/png', sizes: '32x32' },
+      { url: '/assets/images/app_logo.jpeg', type: 'image/jpeg', sizes: '32x32' },
     ],
     apple: [
-      { url: '/assets/images/app_logo.png', sizes: '180x180', type: 'image/png' },
+      { url: '/assets/images/app_logo.jpeg', sizes: '180x180', type: 'image/jpeg' },
     ],
   },
   manifest: '/manifest.json',

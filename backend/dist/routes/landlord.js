@@ -110,16 +110,24 @@ router.post('/properties', auth_1.isLandlord, uploadService_1.upload.array('imag
         if (!compound) {
             return res.status(400).json({ error: 'No compound found for this landlord' });
         }
-        const { name, description, location, price, roomType, totalBeds, occupiedBeds, distanceMinutes, distanceFromCampus, phone, whatsapp, amenities } = req.body;
+        const { name, description, location, price, roomType, genderPreference, totalBeds, occupiedBeds, distanceMinutes, distanceFromCampus, phone, whatsapp, amenities } = req.body;
         const parsedTotalBeds = parseInt(totalBeds, 10);
         const parsedOccupiedBeds = parseInt(occupiedBeds || 0, 10);
         const parsedPrice = parseFloat(price);
         const parsedDistanceMinutes = parseInt(distanceMinutes, 10);
+        const genderPrefValue = String(genderPreference ?? 'mixed').toLowerCase();
+        const allowedGenderPreferences = ['male', 'female', 'mixed'];
+        const parsedGenderPreference = allowedGenderPreferences.includes(genderPrefValue)
+            ? genderPrefValue
+            : 'mixed';
         const travelTime = Number.isFinite(parsedDistanceMinutes) && parsedDistanceMinutes > 0
             ? `${parsedDistanceMinutes} minutes`
             : distanceFromCampus;
         if (!name || !description || !location || !roomType || !phone || !whatsapp) {
             return res.status(400).json({ error: 'Missing required property details' });
+        }
+        if (!allowedGenderPreferences.includes(parsedGenderPreference)) {
+            return res.status(400).json({ error: 'Invalid gender preference' });
         }
         if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
             return res.status(400).json({ error: 'Price must be greater than zero' });
@@ -163,6 +171,7 @@ router.post('/properties', auth_1.isLandlord, uploadService_1.upload.array('imag
                 description,
                 price: parseFloat(price),
                 roomType: roomType,
+                genderPreference: parsedGenderPreference,
                 phone,
                 whatsapp,
                 totalBeds: parsedTotalBeds,

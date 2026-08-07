@@ -12,6 +12,7 @@ const admin_1 = __importDefault(require("./routes/admin"));
 const search_1 = __importDefault(require("./routes/search"));
 const landlord_1 = __importDefault(require("./routes/landlord"));
 const upload_1 = __importDefault(require("./routes/upload"));
+const contact_1 = __importDefault(require("./routes/contact"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -43,6 +44,7 @@ app.use('/api/admin', admin_1.default);
 app.use('/api/search', search_1.default);
 app.use('/api/landlord', landlord_1.default);
 app.use('/api/upload', upload_1.default);
+app.use('/api/contact', contact_1.default);
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });

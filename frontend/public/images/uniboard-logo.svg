@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <rect width="200" height="200" rx="40" fill="#15803D"/>
+  <path d="M100 40L60 70V100L100 130L140 100V70L100 40Z" fill="white" opacity="0.9"/>
+  <path d="M60 100V130L100 160L140 130V100" fill="white" opacity="0.6"/>
+  <text x="100" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">UniBoard</text>
+</svg>

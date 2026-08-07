@@ -88,6 +88,7 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
       location, 
       price, 
       roomType, 
+      genderPreference,
       totalBeds, 
       occupiedBeds,
       distanceMinutes,
@@ -101,12 +102,21 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
     const parsedOccupiedBeds = parseInt(occupiedBeds || 0, 10);
     const parsedPrice = parseFloat(price);
     const parsedDistanceMinutes = parseInt(distanceMinutes, 10);
+    const genderPrefValue = String(genderPreference ?? 'mixed').toLowerCase();
+    const allowedGenderPreferences = ['male', 'female', 'mixed'];
+    const parsedGenderPreference = allowedGenderPreferences.includes(genderPrefValue)
+      ? (genderPrefValue as string)
+      : 'mixed';
+
     const travelTime = Number.isFinite(parsedDistanceMinutes) && parsedDistanceMinutes > 0
       ? `${parsedDistanceMinutes} minutes`
       : distanceFromCampus;
 
     if (!name || !description || !location || !roomType || !phone || !whatsapp) {
       return res.status(400).json({ error: 'Missing required property details' });
+    }
+    if (!allowedGenderPreferences.includes(parsedGenderPreference)) {
+      return res.status(400).json({ error: 'Invalid gender preference' });
     }
 
     if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
@@ -160,6 +170,7 @@ router.post('/properties', isLandlord, upload.array('images', 12), async (req: a
         description,
         price: parseFloat(price),
         roomType: roomType as RoomType,
+        genderPreference: parsedGenderPreference,
         phone,
         whatsapp,
         totalBeds: parsedTotalBeds,

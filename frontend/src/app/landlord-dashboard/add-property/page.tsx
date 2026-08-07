@@ -32,6 +32,7 @@ import { API_BASE } from '@/lib/config';
 type PropertyFormData = {
   name: string;
   roomType: string;
+  genderPreference: 'male' | 'female' | 'mixed';
   totalBeds: number;
   occupiedBeds: number;
   price: number;
@@ -76,6 +77,7 @@ export default function AddPropertyPage() {
 
   const { register, handleSubmit, watch, setError, clearErrors, formState: { errors } } = useForm<PropertyFormData>({
     defaultValues: {
+      genderPreference: 'mixed',
       occupiedBeds: 0,
       distanceMinutes: 5
     }
@@ -217,7 +219,16 @@ export default function AddPropertyPage() {
                   </select>
                 </div>
                 <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Gender Preference *</label>
+                  <select {...register('genderPreference', { required: true })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition-all appearance-none bg-white">
+                    <option value="mixed">Both</option>
+                    <option value="male">Boys only</option>
+                    <option value="female">Girls only</option>
+                  </select>
+                </div>
+                <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Location *</label>
+
                   <div className="relative">
                     <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input {...register('location', { required: true })} placeholder="e.g. Northmead, Lusaka" className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition-all" />

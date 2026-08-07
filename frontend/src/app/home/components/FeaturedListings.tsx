@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import AppImage from '@/components/ui/AppImage';
-import { MapPin, Star, Shield, Heart, Phone } from 'lucide-react';
+import { ArrowRight, Heart, MapPin, Phone, Shield, Star } from 'lucide-react';
 import { fetchProperties } from '@/lib/api';
 import { mapApiPropertiesToListings } from '@/lib/propertyMapper';
 import type { ListingProperty } from '@/lib/types/listing';
@@ -64,14 +64,15 @@ export default function FeaturedListings() {
             href="/room-listing-page"
             className="inline-flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold text-sm hover:text-green-800 dark:hover:text-green-300 transition-colors flex-shrink-0"
           >
-            View all listings →
+            View all listings
+            <ArrowRight size={16} aria-hidden />
           </Link>
         </motion.div>
 
         {isLoading ? (
           <FeaturedListingsSkeleton />
         ) : !featured || featured.length === 0 ? (
-          <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
+          <div className="rounded-lg border border-gray-100 bg-gray-50 py-12 text-center dark:border-gray-700 dark:bg-gray-800">
             <p className="text-gray-500 dark:text-gray-400 text-sm">New listings are being added. Check back soon or browse all bedspaces.</p>
             <Link href="/room-listing-page" className="inline-block mt-4 text-green-700 dark:text-green-400 font-semibold text-sm hover:underline">
               Browse all listings
@@ -92,7 +93,7 @@ export default function FeaturedListings() {
               >
                 <Link
                   href={`/property/${prop.id}`}
-                  className="group block bg-white dark:bg-gray-800 rounded-[24px] shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                  className="group block overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
                 >
                   <div className="relative h-52 overflow-hidden">
                     <AppImage
@@ -126,7 +127,7 @@ export default function FeaturedListings() {
                     </h3>
                     <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-xs mb-3">
                       <MapPin size={12} className="flex-shrink-0" />
-                      <span className="truncate">{prop.location} · {prop.university}</span>
+                      <span className="truncate">{prop.location} - {prop.university}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>

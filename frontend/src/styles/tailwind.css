@@ -19,7 +19,7 @@
     --success: 145 63% 38%;
     --warning: 38 92% 50%;
     --danger: 0 84% 60%;
-    --radius: 0.75rem;
+    --radius: 0.5rem;
   }
 
   .dark {
@@ -84,23 +84,23 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-green-700 hover:bg-green-800 active:scale-95 text-white font-semibold px-5 py-3 rounded-xl transition-all duration-150 shadow-sm hover:shadow-md;
+    @apply bg-green-700 hover:bg-green-800 text-white font-semibold px-5 py-3 rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md;
   }
 
   .btn-outline {
-    @apply border border-green-700 text-green-700 hover:bg-green-50 active:scale-95 font-semibold px-5 py-3 rounded-xl transition-all duration-150;
+    @apply border border-green-700 text-green-700 hover:bg-green-50 font-semibold px-5 py-3 rounded-lg transition-colors duration-150;
   }
 
   .card-base {
-    @apply bg-white rounded-[24px] shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 dark:bg-gray-800 dark:border-gray-700;
+    @apply bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 dark:bg-gray-800 dark:border-gray-700;
   }
 
   .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/60 rounded-[24px] shadow-lg dark:bg-gray-900/80 dark:border-gray-700/60;
+    @apply bg-white/80 backdrop-blur-md border border-white/60 rounded-lg shadow-lg dark:bg-gray-900/80 dark:border-gray-700/60;
   }
 
   .input-base {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-600 transition-all duration-150 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-500;
+    @apply w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-600 transition-all duration-150 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-500;
   }
 
   .badge {

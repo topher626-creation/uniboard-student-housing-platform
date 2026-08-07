@@ -98,6 +98,7 @@ model Property {
   totalBeds    Int
   occupiedBeds Int      @default(0)
   travelTime   String
+  genderPreference String @default("mixed")
 
   buildingId String
   building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)

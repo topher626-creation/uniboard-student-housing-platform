@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UniBoard | Student Housing Kitwe</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "error-container": "#ffdad6",
+                "surface-container-low": "#f1f3ff",
+                "secondary-container": "#50dcff",
+                "background": "#f9f9ff",
+                "on-background": "#041b3c",
+                "on-tertiary-fixed-variant": "#812800",
+                "tertiary-fixed": "#ffdbcf",
+                "secondary": "#00687b",
+                "on-error-container": "#93000a",
+                "on-primary": "#ffffff",
+                "primary-container": "#0052cc",
+                "primary-fixed-dim": "#b2c5ff",
+                "on-primary-fixed": "#001848",
+                "surface-dim": "#cadaff",
+                "error": "#ba1a1a",
+                "inverse-surface": "#1d3052",
+                "on-primary-container": "#c4d2ff",
+                "on-tertiary-fixed": "#380d00",
+                "primary-fixed": "#dae2ff",
+                "on-primary-fixed-variant": "#0040a2",
+                "on-tertiary": "#ffffff",
+                "inverse-on-surface": "#edf0ff",
+                "secondary-fixed-dim": "#48d7f9",
+                "surface-bright": "#f9f9ff",
+                "primary": "#003d9b",
+                "on-surface-variant": "#434654",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary-fixed-variant": "#004e5d",
+                "surface-tint": "#0c56d0",
+                "surface": "#f9f9ff",
+                "inverse-primary": "#b2c5ff",
+                "tertiary-container": "#a33500",
+                "on-secondary-fixed": "#001f27",
+                "on-surface": "#041b3c",
+                "surface-variant": "#d7e2ff",
+                "on-secondary-container": "#005f71",
+                "on-error": "#ffffff",
+                "on-secondary": "#ffffff",
+                "tertiary": "#7b2600",
+                "surface-container": "#e8edff",
+                "outline": "#737685",
+                "surface-container-high": "#e0e8ff",
+                "outline-variant": "#c3c6d6",
+                "on-tertiary-container": "#ffc6b2",
+                "surface-container-highest": "#d7e2ff",
+                "tertiary-fixed-dim": "#ffb59b",
+                "secondary-fixed": "#afecff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-mobile": "16px",
+                "margin-desktop": "40px",
+                "gutter": "24px",
+                "container-max": "1200px",
+                "base": "8px"
+            },
+            "fontFamily": {
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "headline-md": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "display": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-lg": ["Inter"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff;
+            color: #041b3c;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(8px);
+            background-color: rgba(249, 249, 255, 0.8);
+        }
+        .property-card-shadow {
+            box-shadow: 0px 2px 8px rgba(23, 43, 77, 0.08);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-header shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-primary">UniBoard</span>
+</div>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-bold text-label-md font-label-md" href="#">Explore</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1 rounded text-label-md font-label-md" href="#">Saved</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1 rounded text-label-md font-label-md" href="#">Help</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden sm:block px-6 py-2 bg-primary text-on-primary rounded-lg font-bold text-label-md transition-transform active:scale-95">
+                    List Property
+                </button>
+<button class="px-4 py-2 border border-outline text-primary rounded-lg font-bold text-label-md hover:bg-surface-container-low transition-colors">
+                    Sign In
+                </button>
+<div class="md:hidden flex items-center">
+<span class="material-symbols-outlined text-on-surface text-2xl">menu</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-16">
+<!-- Hero Section -->
+<section class="relative px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-16 overflow-hidden rounded-3xl">
+<div class="relative z-10 py-16 md:py-24 flex flex-col items-center text-center max-w-3xl mx-auto">
+<h1 class="text-headline-lg-mobile md:text-display font-display text-on-background mb-6">
+                    Find your perfect home near Mukuba University.
+                </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-10">
+                    Premium off-campus student accommodation in Kitwe. Verified landlords, secure living, and modern amenities.
+                </p>
+<!-- Integrated Search & Filter Bar -->
+<div class="w-full bg-surface-container-lowest rounded-2xl shadow-xl p-2 md:p-4 flex flex-col md:flex-row gap-2 border border-outline-variant">
+<!-- Location / University -->
+<div class="flex-1 flex items-center gap-3 px-4 py-3 bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined text-primary">school</span>
+<div class="flex flex-col items-start">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">University</span>
+<input class="bg-transparent border-none p-0 text-on-surface font-bold focus:ring-0 w-full" type="text" value="Mukuba University"/>
+</div>
+</div>
+<!-- Distance Filter -->
+<div class="flex-1 flex items-center gap-3 px-4 py-3 hover:bg-surface-container-low transition-colors rounded-xl cursor-pointer">
+<span class="material-symbols-outlined text-secondary">distance</span>
+<div class="flex flex-col items-start">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Distance</span>
+<span class="text-on-surface font-bold">Within 10 mins</span>
+</div>
+</div>
+<!-- Room Type -->
+<div class="flex-1 flex items-center gap-3 px-4 py-3 hover:bg-surface-container-low transition-colors rounded-xl cursor-pointer">
+<span class="material-symbols-outlined text-secondary">bed</span>
+<div class="flex flex-col items-start">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Type</span>
+<span class="text-on-surface font-bold">Single Room</span>
+</div>
+</div>
+<!-- Search Action -->
+<button class="bg-primary text-on-primary p-4 rounded-xl flex items-center justify-center transition-transform active:scale-95 shadow-lg">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+</div>
+</div>
+<!-- Background Decorative element -->
+<div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary-container/20 to-secondary-container/10"></div>
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-3xl rounded-full"></div>
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 blur-3xl rounded-full"></div>
+</section>
+<!-- Main Content Area -->
+<section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Filter Pills & Sorting -->
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10 border-b border-outline-variant pb-6">
+<div class="flex gap-3 overflow-x-auto hide-scrollbar w-full md:w-auto pb-2 md:pb-0">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-label-md font-label-md whitespace-nowrap">
+                        Price Range <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors text-label-md font-label-md whitespace-nowrap">
+                        Amenities <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors text-label-md font-label-md whitespace-nowrap">
+                        Verified Only
+                    </button>
+</div>
+<div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+<span class="text-label-md font-label-md text-on-surface-variant">Sort by:</span>
+<select class="bg-transparent border-none text-on-surface font-bold text-label-md focus:ring-0 cursor-pointer">
+<option>Price (Low to High)</option>
+<option>Distance (Closest)</option>
+<option>Recently Added</option>
+</select>
+</div>
+</div>
+<!-- Property Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A bright and airy modern student room with large windows, minimalist wooden furniture, and a neat study desk. The interior is decorated in light blue and white tones, reflecting a clean corporate-modern aesthetic. Soft morning sunlight streams in, highlighting the high-quality finish and premium student lifestyle near Mukuba University." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNMPnKHPItg69wRYmrKfKl6owF-JxzszuRDCH5lfxPPwU54PDXUETkzO3sYK9ix21oq8lWnUrP5Bwiqlzr1MscBtnd98fK0Gn9wQkPq01nnDwS-RPI0Al0D5WULw0OSpwpCUUAWmyU3_lidhXTIcUmLTogoMyDGdPfshi65Dp3N8FRvuCAqpVS-F3gBDZsv-Dwmuri8D7fdLCJfNsTdANJQtbzgIvH4auTLXWt-KabJ3K46grIbRs6"/>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Verified</span>
+<span class="bg-surface-container-lowest text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Available</span>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">Zambezi Scholars Residence</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">4.9</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 5 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Single Room</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Free WiFi</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,500</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A spacious shared student apartment living area with contemporary furniture, a wall-mounted flat-screen TV, and high-speed internet routers visible. The design features cool blue accents and grey textures, conveying a startup-polished vibe. The lighting is balanced and professional, showcasing a luxury student housing option in Kitwe, Zambia." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNSr9UDpT-4MGwxjCMyI7FgTRMfT7GsUf5CJK2upe1-WlmBd2_jIfDzwD9s4-DW9gZ9xy4KQbPMMmocW0DO7n0TbV5pvfIGsxNYmPfCvqp0on_5qbcVmPDEFrRLYgFvct7gF0lUvtCkC2MtYIejE4Fx8i9YVJ4FIWR1jJqVjj3XQ2KSQdk5IpHKzsK2sfCH4Fek1maj9oszDrcUu77qZj0xheh_UlvEGZ2wCevPRkAdMFJf3FYxLNo"/>
+<div class="absolute top-3 left-3">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Verified</span>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">Mukuba Heights Luxury</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">4.7</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 8 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">En-suite</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Backup Power</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,800</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up of a modern student dormitory room featuring creative storage solutions and a cozy yet professional atmosphere. The color palette utilizes trust blue and student teal accents on a neutral backdrop. Large windows reveal a glimpse of the Kitwe cityscape, emphasizing proximity to university grounds and an aspirational student lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMvAEPw19qGp2-s5VbPorw7sO1IUeekQeVIIn7U76t3Rl57BB3hM-Gy3mDyB_J-r-ncTiPxB4-KQpYRz4zHXBwG7_z6NTpp1Tr_hRC01dKHrRV5B707HRB8QaTap3YFmTe7d-E41yBf7XOXp55CFdJdBi54M5pfb91MugG3bIh1kCtjRBYqIOS3qwWGqa3iNRzwVC4z3xL7BYNa-A8IiWE86uDy6sTHawC48sqH-MlZWnwrhxlENqt"/>
+<div class="absolute top-3 left-3">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Verified</span>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">Copperbelt Studio Hub</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">4.5</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 12 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Studio</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Borehole Water</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,200</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A high-end student apartment building exterior at dusk, featuring sleek architectural lines and well-lit secure entryways. The building is surrounded by neat landscaping and sits within a safe residential area in Kitwe. The lighting is warm and inviting, using a professional night-time photography style to evoke confidence and safety for students." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC0lH9GUf6d846d61EHI0I7FVUKAYkyy9bFQPZUgeEw-e61pV75GUEJyNEAfHUkMEbM3w0S6vZkXO9MQTatj8l0JrmxNt7kO3sMyhkei76l3KntklsxgSRKL9iFOu20l8CAjtjBJOOCbHWfO2Xzq9iSXAZMefz_oiipYpa5727UcYeFKYfq9LRyBUSZ8zuSe5R_g1IpWnVtCuYdLwZ77eUuV2O1n6pE-LSbJ-fo03MnI3twvqJ5SWL"/>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Verified</span>
+<span class="bg-surface-container-lowest text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Few Rooms Left</span>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">The Graduate Suites</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">5.0</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 3 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Luxury Shared</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">24/7 Security</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,650</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+<!-- Repeat some cards for grid fullness -->
+<!-- Card 5 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern kitchen area in a premium student boarding house, featuring stainless steel appliances and white cabinetry. The space is bright and spacious, designed for social interaction and clean living. The aesthetic is corporate yet comfortable, using Teal accents to brighten the functional space for students in Kitwe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZEgW3oqwHuR6inCjIDkN3Iym7WLYevpc_IKxoGdy0cdVJhNW1n9CNDDpA_DdbFazbY8oLYQe9qrNqWCMg61hBzuE3N4mj-KwupAw2SCrJbsxTZee9ydDI2VbH0beFr5aqAHWst5Jp39IxE0LNIF9MLEwG7Du-JL6mPP4ZUCNMoej0V79L3hTcFCOGo31a5HwYSlIKyDiIG1ACcUdZ91Lc6A_3dyagB0L2Tx4zGy3nb6y3ACykNrDM"/>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">Riverside Student Lodge</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">4.4</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 15 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Self Contained</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Secure Parking</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,100</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A clean, minimalist student bedroom with a focused study area, bookshelf, and comfortable bed. The room is decorated with subtle educational posters and a desk lamp, emphasizing a productive atmosphere. The blue and white palette provides a professional look, perfect for students seeking a high-quality home near their university." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv3o8QfRngrvbxcwGXk9lcP6Ztg-m7XmAWjTcwcSEQ3Y2mjPJiOAr7-pY5lziTFMoo_z96KVuuQLVw_8SpAIyzwbdVQCOZT9bd4JBBx7I2JKb7lMyaBQ11zguSJnDcWSVSPT-djsYGugW4v6paU5vCxorKbUuNLDc53Np4KZXq1QuG5Wd_f0OlUPRdmQp3UlLKFKihCcQMRXoP7iJOR15QtAKuNa9ZddzTh5gnqF_yOokVjLUqibdX"/>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">Verified Landlord</span>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-body-md font-bold text-on-surface">Elite Campus Residences</h3>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm text-on-surface">4.8</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 10 min walk to Campus
+                    </p>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Single Room</span>
+<span class="bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">Maid Service</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-md font-headline-md text-primary">K1,400</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ month</span>
+</div>
+</div>
+</div>
+<!-- Pagination / Show More -->
+<div class="mt-16 flex flex-col items-center gap-4">
+<p class="text-label-md font-label-md text-on-surface-variant">Showing 6 of 42 properties near Mukuba</p>
+<button class="px-8 py-3 bg-surface-container-highest text-on-surface font-bold rounded-xl hover:bg-outline-variant transition-colors active:scale-95">
+                    Show More Properties
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant">
+<div class="w-full py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="max-w-sm">
+<span class="text-headline-md font-headline-md font-bold text-on-surface block mb-4">UniBoard</span>
+<p class="text-body-md font-body-md text-on-surface-variant">
+                    Zambia's leading platform for student accommodation discovery. We simplify the search for the perfect university home in Kitwe and beyond.
+                </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-12">
+<div class="flex flex-col gap-4">
+<span class="text-label-md font-label-md text-on-surface font-bold uppercase tracking-widest">Platform</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">List Property</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">How it works</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="text-label-md font-label-md text-on-surface font-bold uppercase tracking-widest">Support</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Privacy Policy</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="text-label-md font-label-md text-on-surface font-bold uppercase tracking-widest">Connect</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Contact</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Careers</a>
+</div>
+</div>
+</div>
+<div class="w-full py-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-label-sm font-label-sm text-on-surface-variant">© 2024 UniBoard Kitwe. Secure Student Housing.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">qr_code_2</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">public</span>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Shell (Bottom Bar) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-[10px] font-bold">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-bold">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-bold">Inbox</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</div>
+</nav>
+<!-- Floating Action Button (Only on main Explore screen for mobile) -->
+<button class="md:hidden fixed bottom-20 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center z-40 transition-transform active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+<script>
+        // Simple scroll effect for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('py-2', 'shadow-md');
+                header.classList.remove('py-4', 'shadow-sm');
+            } else {
+                header.classList.remove('py-2', 'shadow-md');
+                header.classList.add('py-4', 'shadow-sm');
+            }
+        });
+
+        // Add ripple-like effect on property cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.1s ease';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

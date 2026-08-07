@@ -12,7 +12,12 @@ type Props = {
   onClose: () => void;
 };
 
-const roomTypeOptions = ['Single Room', 'Shared Room', 'En-Suite', 'Studio', 'Apartment'];
+const roomTypeOptions = ['Single Room', 'Shared Room', 'En-Suite'];
+const genderOptions = [
+  { value: 'mixed' as const, label: 'Both' },
+  { value: 'male' as const, label: 'Boys only' },
+  { value: 'female' as const, label: 'Girls only' },
+];
 const bedspaceTypeOptions = ['Standard', 'Bankers', 'Luxury', 'Economy'];
 const amenityOptions = [
   { value: 'wifi', label: 'Wi-Fi' },
@@ -85,7 +90,7 @@ export default function FilterSidebar({ filters, onUpdate, onClear, isOpen, onCl
             Monthly Price
           </label>
           <span className="price-display text-xs font-semibold text-green-700">
-            R{filters.minPrice.toLocaleString()} – R{filters.maxPrice.toLocaleString()}
+            K{filters.minPrice.toLocaleString()} – K{filters.maxPrice.toLocaleString()}
           </span>
         </div>
         <div className="space-y-3">
@@ -131,12 +136,44 @@ export default function FilterSidebar({ filters, onUpdate, onClear, isOpen, onCl
                 type="checkbox"
                 checked={filters.roomTypes.includes(rt)}
                 onChange={() => toggleRoomType(rt)}
-                className="w-4 h-4 accent-blue-600 cursor-pointer rounded"
+                className="w-4 h-4 accent-green-600 cursor-pointer rounded"
               />
-              <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors">
+              <span className="text-sm text-gray-700 group-hover:text-green-700 transition-colors">
                 {rt}
               </span>
             </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Gender Preference */}
+      <div>
+        <div className="flex items-center justify-between mb-2.5">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            Gender preference
+          </label>
+          <button
+            type="button"
+            onClick={() => onUpdate('genderPreference', null)}
+            className="text-xs font-semibold text-green-700 hover:underline"
+          >
+            Any
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {genderOptions.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onUpdate('genderPreference', option.value)}
+              className={`rounded-2xl border px-3 py-2 text-xs font-semibold transition-all ${
+                filters.genderPreference === option.value
+                  ? 'border-green-700 bg-green-700 text-white'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-green-200 hover:bg-green-50'
+              }`}
+            >
+              {option.label}
+            </button>
           ))}
         </div>
       </div>

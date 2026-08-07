@@ -36,9 +36,9 @@ export default function StatsBar() {
             <motion.div
               key={stat?.key}
               variants={itemVariants}
-              className="flex items-center gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-gray-50/70 dark:bg-gray-800/70 px-4 py-4"
+              className="flex items-center gap-4 rounded-lg border border-gray-100 bg-gray-50/70 px-4 py-4 dark:border-gray-700 dark:bg-gray-800/70"
             >
-              <div className={`w-12 h-12 ${stat?.bg} dark:bg-opacity-50 rounded-2xl flex items-center justify-center flex-shrink-0`}>
+              <div className={`h-12 w-12 ${stat?.bg} flex flex-shrink-0 items-center justify-center rounded-lg dark:bg-opacity-50`}>
                 <stat.icon size={22} className={stat?.color} />
               </div>
               <div>
