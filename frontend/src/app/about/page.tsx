@@ -7,14 +7,14 @@ const team = [
   {
     name: 'Siame Christopher',
     role: 'Founder, UniBoard',
-    bio: 'Started UniBoard after personally struggling to find safe student accommodation when joining Mukuba University. Driven to make housing easier and more transparent for every student.',
+    bio: 'Started UniBoard after personally struggling to find safe student accommodation when joining Mukuba University. He built the platform to make housing easier, safer, and more transparent for students across Zambia.',
     avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_14a5ca983-1763300171126.png",
     avatarAlt: 'Siame Christopher, Founder of UniBoard',
   },
   {
     name: 'Lazarous Ngosa',
     role: 'Co-Founder, COO & CMO',
-    bio: 'Experienced growth and operations leader with a passion for building student-focused platforms. Leads strategy across operations, marketing, and student experience at UniBoard.',
+    bio: 'Lazarous Ngosa leads operations, growth, and student experience at UniBoard. He helps shape the platform into a trusted, scalable product for students and landlords alike.',
     avatar: "https://img.rocket.new/generatedImages/rocket_gen_img_11b3df0b3-1772952555612.png",
     avatarAlt: 'Lazarous Ngosa, COO & CMO of UniBoard',
   },

@@ -6,7 +6,13 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import AppImage from '@/components/ui/AppImage';
 
-const propertyFilters = ['All Properties', 'En-Suite', 'Shared Room', 'Private Room'];
+const roomTypeOptions = ['All Types', 'Single Room', 'Shared Room', 'Bunkered Room', 'Self-Contained'];
+const genderOptions = [
+  { value: 'all', label: 'Any' },
+  { value: 'male', label: 'Boys only' },
+  { value: 'female', label: 'Girls only' },
+  { value: 'mixed', label: 'Both' },
+];
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -25,12 +31,14 @@ const staggerContainer = {
 export default function HeroSection() {
   const router = useRouter();
   const [location, setLocation] = useState('');
-  const [propertyFilter, setPropertyFilter] = useState('All Properties');
+  const [roomTypeFilter, setRoomTypeFilter] = useState('All Types');
+  const [genderFilter, setGenderFilter] = useState('all');
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (location.trim()) params.set('location', location.trim());
-    if (propertyFilter && propertyFilter !== 'All Properties') params.set('property', propertyFilter);
+    if (roomTypeFilter && roomTypeFilter !== 'All Types') params.set('roomType', roomTypeFilter);
+    if (genderFilter && genderFilter !== 'all') params.set('genderPreference', genderFilter);
     router.push(`/room-listing-page?${params.toString()}`);
   };
 
@@ -82,24 +90,35 @@ export default function HeroSection() {
             variants={fadeInUp}
             className="max-w-2xl rounded-lg border border-white/80 bg-white/95 p-3 shadow-[0_18px_50px_rgba(2,6,23,0.22)] backdrop-blur-md"
           >
-            <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mb-3 grid grid-cols-1 gap-3 lg:grid-cols-[1.2fr_0.8fr_0.8fr_auto]">
               <div className="relative">
                 <MapPin size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-green-700" />
                 <input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Search by location or compound"
+                  placeholder="Search by location or residence"
                   className="w-full rounded-lg border border-gray-200 bg-white py-3 pl-9 pr-3 text-sm font-medium text-gray-700 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
                 />
               </div>
               <div className="relative">
                 <select
-                  value={propertyFilter}
-                  onChange={(e) => setPropertyFilter(e.target.value)}
+                  value={roomTypeFilter}
+                  onChange={(e) => setRoomTypeFilter(e.target.value)}
                   className="w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-3 pl-3 pr-3 text-sm font-medium text-gray-700 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
                 >
-                  {propertyFilters.map((pf) => (
-                    <option key={`hero-pf-${pf}`} value={pf}>{pf}</option>
+                  {roomTypeOptions.map((option) => (
+                    <option key={`hero-room-${option}`} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="relative">
+                <select
+                  value={genderFilter}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                  className="w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-3 pl-3 pr-3 text-sm font-medium text-gray-700 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+                >
+                  {genderOptions.map((option) => (
+                    <option key={`hero-gender-${option.value}`} value={option.value}>{option.label}</option>
                   ))}
                 </select>
               </div>

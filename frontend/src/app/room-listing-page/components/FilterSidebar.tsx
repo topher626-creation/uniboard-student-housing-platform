@@ -12,7 +12,7 @@ type Props = {
   onClose: () => void;
 };
 
-const roomTypeOptions = ['Single Room', 'Shared Room', 'En-Suite'];
+const roomTypeOptions = ['Single Room', 'Shared Room', 'Bunkered Room', 'Self-Contained'];
 const genderOptions = [
   { value: 'mixed' as const, label: 'Both' },
   { value: 'male' as const, label: 'Boys only' },
@@ -87,7 +87,7 @@ export default function FilterSidebar({ filters, onUpdate, onClear, isOpen, onCl
       <div>
         <div className="flex items-center justify-between mb-2.5">
           <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Monthly Price
+            Monthly Price (Kwacha)
           </label>
           <span className="price-display text-xs font-semibold text-green-700">
             K{filters.minPrice.toLocaleString()} – K{filters.maxPrice.toLocaleString()}

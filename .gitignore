@@ -47,3 +47,8 @@ frontend/.env.local
 
 # Backup files
 *.backup
+
+# Next.js development logs
+*.err.log
+*.out.log
+frontend/.env.local

@@ -97,6 +97,7 @@ export default function AdminDashboard() {
   const [actionId, setActionId] = useState<string | null>(null);
   const [rejectTarget, setRejectTarget] = useState<AdminUser | null>(null);
   const [rejectReason, setRejectReason] = useState('');
+  const [showSubAdminModal, setShowSubAdminModal] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -251,10 +252,20 @@ export default function AdminDashboard() {
 
                 <div className="lg:col-span-3 space-y-6">
                   <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-1">Admin Dashboard</h1>
-                    <p className="text-gray-500 text-sm">
-                      Review provider applications, manage users, and monitor platform activity.
-                    </p>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <h1 className="text-2xl font-bold text-gray-900 mb-1">Admin Dashboard</h1>
+                        <p className="text-gray-500 text-sm">
+                          Review provider applications, manage users, and monitor platform activity.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setShowSubAdminModal(true)}
+                        className="rounded-2xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700"
+                      >
+                        Manage Sub-Admins
+                      </button>
+                    </div>
                   </div>
 
                   {activeTab === 'overview' && (
@@ -527,6 +538,22 @@ export default function AdminDashboard() {
                     {actionId === rejectTarget.id ? <Loader2 size={14} className="animate-spin" /> : null}
                     Confirm Reject
                   </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showSubAdminModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+              <div className="w-full max-w-md rounded-[24px] bg-white p-6 shadow-2xl">
+                <h3 className="text-xl font-bold text-gray-900">Sub-admin access</h3>
+                <p className="mt-2 text-sm text-gray-600">Add trusted staff to help moderate listings, review providers, and support student requests while the main admin stays in control.</p>
+                <div className="mt-5 rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-800">
+                  <p className="font-semibold">Role-based support</p>
+                  <p className="mt-1">Sub-admins can be assigned to moderation and support duties without changing the core platform permissions.</p>
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <button onClick={() => setShowSubAdminModal(false)} className="rounded-2xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white">Close</button>
                 </div>
               </div>
             </div>

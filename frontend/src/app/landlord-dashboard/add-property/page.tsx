@@ -58,11 +58,16 @@ const AMENITIES_LIST = [
 
 const ROOM_TYPES = [
   { value: 'SINGLE', label: 'Single Room' },
-  { value: 'BEDSITTER', label: 'Bedsitter' },
-  { value: 'SELF_CONTAINED', label: 'Self-Contained' },
   { value: 'SHARED', label: 'Shared Room' },
-  { value: 'BANKERS', label: 'Bankers Room' },
+  { value: 'BUNKERED', label: 'Bunkered Room' },
+  { value: 'SELF_CONTAINED', label: 'Self-Contained' },
 ];
+
+const GENDER_OPTIONS = [
+  { value: 'mixed', label: 'Both' },
+  { value: 'male', label: 'Boys only' },
+  { value: 'female', label: 'Girls only' },
+] as const;
 
 export default function AddPropertyPage() {
   const router = useRouter();
@@ -75,7 +80,7 @@ export default function AddPropertyPage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const replaceInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { register, handleSubmit, watch, setError, clearErrors, formState: { errors } } = useForm<PropertyFormData>({
+  const { register, handleSubmit, watch, setError, clearErrors, setValue, formState: { errors } } = useForm<PropertyFormData>({
     defaultValues: {
       genderPreference: 'mixed',
       occupiedBeds: 0,
@@ -220,11 +225,21 @@ export default function AddPropertyPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Gender Preference *</label>
-                  <select {...register('genderPreference', { required: true })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition-all appearance-none bg-white">
-                    <option value="mixed">Both</option>
-                    <option value="male">Boys only</option>
-                    <option value="female">Girls only</option>
-                  </select>
+                  <div className="flex flex-wrap gap-2">
+                    {GENDER_OPTIONS.map((option) => {
+                      const selected = watch('genderPreference') === option.value;
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => setValue('genderPreference', option.value)}
+                          className={`rounded-full px-3 py-2 text-sm font-semibold transition-all ${selected ? 'bg-green-700 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-green-50'}`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Location *</label>
@@ -256,7 +271,7 @@ export default function AddPropertyPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Price per Month (ZMW) *</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Price per Month (Kwacha) *</label>
                   <div className="relative">
                     <DollarSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input type="number" min={1} {...register('price', { required: true, min: 1, valueAsNumber: true })} placeholder="1200" className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition-all" />

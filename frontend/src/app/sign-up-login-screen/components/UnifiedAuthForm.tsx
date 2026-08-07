@@ -184,8 +184,8 @@ export default function UnifiedAuthForm() {
           </h1>
           <p className="mt-1.5 text-sm text-gray-500">
             {mode === 'login'
-              ? 'Sign in with email and password.'
-              : 'Students sign up with email or Google. Landlords register with business details.'}
+              ? 'Sign in to continue browsing verified student accommodation.'
+              : 'Join students and verified landlords on one clean, trusted platform.'}
           </p>
         </div>
 

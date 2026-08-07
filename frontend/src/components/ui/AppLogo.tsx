@@ -14,7 +14,7 @@ interface AppLogoProps {
 }
 
 const AppLogo = memo(function AppLogo({
-  src = '/assets/images/app_logo.jpeg',
+  src = '/assets/images/updated-uniboard-logo.jpeg',
   iconName = 'SparklesIcon',
   size = 70,
   className = '',

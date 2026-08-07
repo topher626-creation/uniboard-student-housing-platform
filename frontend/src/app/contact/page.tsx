@@ -45,13 +45,15 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="pt-24 pb-12 bg-white">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-          <p className="text-xs font-semibold tracking-widest uppercase text-green-700 mb-3">Get in Touch</p>
-          <h1 className="text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Contact UniBoard</h1>
-          <p className="text-lg text-gray-500 max-w-xl">Have a question, issue, or want to partner with us? We&apos;re here to help. Our team typically responds within 24 hours.</p>
+          <div className="max-w-3xl rounded-[28px] border border-green-100 bg-gradient-to-br from-green-50 via-white to-emerald-50 p-8 shadow-sm">
+            <p className="text-xs font-semibold tracking-widest uppercase text-green-700 mb-3">Get in Touch</p>
+            <h1 className="text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Contact UniBoard</h1>
+            <p className="text-lg text-gray-600 max-w-2xl">Have a question, issue, or want to partner with us? We are here to help with student housing support, provider verification, and platform enquiries.</p>
+          </div>
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Info */}
@@ -72,7 +74,7 @@ export default function ContactPage() {
                 </a>
               ))}
 
-              <div className="bg-green-50 border border-green-200 rounded-2xl p-5">
+              <div className="rounded-2xl border border-green-200 bg-green-50 p-5 shadow-sm">
                 <p className="font-semibold text-green-800 mb-2">Provider Verification</p>
                 <p className="text-green-700 text-sm leading-relaxed">
                   If you are a provider waiting for verification, email us at <strong>verify@uniboard.zm</strong> with your documents and we will process within 48 hours.

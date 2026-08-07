@@ -252,7 +252,7 @@ export default function PropertyDetailClient({ id }: { id: string }) {
           <div className="space-y-4">
             <div className="sticky top-24 rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm">
               <div className="mb-6">
-                <p className="text-sm text-gray-400 mb-1">Monthly rent</p>
+                <p className="text-sm text-gray-400 mb-1">Monthly rent (Kwacha)</p>
                 <p className="text-3xl font-bold text-gray-900">
                   K{property.price.toLocaleString()}
                   <span className="text-base font-normal text-gray-400">/mo</span>

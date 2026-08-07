@@ -43,10 +43,16 @@ export type SortOption = 'price-asc' | 'price-desc' | 'rating-desc' | 'distance-
 
 export default function ListingPageClient() {
   const searchParams = useSearchParams();
-  const [filters, setFilters] = useState<FilterState>(() => ({
-    ...defaultFilters,
-    location: searchParams.get('q') ?? searchParams.get('location') ?? '',
-  }));
+  const [filters, setFilters] = useState<FilterState>(() => {
+    const roomTypeParam = searchParams.get('roomType');
+    const genderParam = searchParams.get('genderPreference');
+    return {
+      ...defaultFilters,
+      location: searchParams.get('q') ?? searchParams.get('location') ?? '',
+      roomTypes: roomTypeParam ? [roomTypeParam] : [],
+      genderPreference: genderParam === 'male' || genderParam === 'female' || genderParam === 'mixed' ? genderParam : null,
+    };
+  });
   const [sort, setSort] = useState<SortOption>('rating-desc');
   const [page, setPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);

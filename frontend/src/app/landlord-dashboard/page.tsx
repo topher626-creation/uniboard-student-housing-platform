@@ -34,6 +34,7 @@ export default function LandlordDashboard() {
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [properties, setProperties] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showTeamAccess, setShowTeamAccess] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,34 +69,38 @@ export default function LandlordDashboard() {
     { id: 'settings' as Tab, label: 'Settings', icon: Settings },
   ];
 
+  const totalBedspaces = properties.reduce((sum, property) => sum + Number(property.totalBeds || 0), 0);
+  const occupiedBedspaces = properties.reduce((sum, property) => sum + Number(property.occupiedBeds || 0), 0);
+  const availableBedspaces = Math.max(0, totalBedspaces - occupiedBedspaces);
+
   const stats = [
-    { 
-      label: 'Total Properties', 
-      value: dashboardData?.stats?.totalProperties || 0, 
-      icon: Home, 
-      color: 'text-blue-600', 
-      bg: 'bg-blue-50' 
+    {
+      label: 'Total Properties',
+      value: properties.length || dashboardData?.stats?.totalProperties || 0,
+      icon: Home,
+      color: 'text-blue-600',
+      bg: 'bg-blue-50'
     },
-    { 
-      label: 'Total Bedspaces', 
-      value: dashboardData?.stats?.totalBedspaces || 0, 
-      icon: Bed, 
-      color: 'text-purple-600', 
-      bg: 'bg-purple-50' 
+    {
+      label: 'Total Bedspaces',
+      value: totalBedspaces || dashboardData?.stats?.totalBedspaces || 0,
+      icon: Bed,
+      color: 'text-purple-600',
+      bg: 'bg-purple-50'
     },
-    { 
-      label: 'Occupied', 
-      value: dashboardData?.stats?.occupiedBedspaces || 0, 
-      icon: Users, 
-      color: 'text-amber-600', 
-      bg: 'bg-amber-50' 
+    {
+      label: 'Occupied',
+      value: occupiedBedspaces || dashboardData?.stats?.occupiedBedspaces || 0,
+      icon: Users,
+      color: 'text-amber-600',
+      bg: 'bg-amber-50'
     },
-    { 
-      label: 'Available', 
-      value: dashboardData?.stats?.availableBedspaces || 0, 
-      icon: CheckCircle, 
-      color: 'text-green-600', 
-      bg: 'bg-green-50' 
+    {
+      label: 'Available',
+      value: availableBedspaces || dashboardData?.stats?.availableBedspaces || 0,
+      icon: CheckCircle,
+      color: 'text-green-600',
+      bg: 'bg-green-50'
     },
   ];
 
@@ -175,9 +180,9 @@ export default function LandlordDashboard() {
                         <span className="text-2xl">🏢</span>
                         <h1 className="text-3xl font-black text-gray-900">{businessName}</h1>
                       </div>
-                      <p className="text-gray-500 font-medium text-lg">Business dashboard</p>
+                      <p className="text-gray-500 font-medium text-lg">Verified Landlord Dashboard</p>
                       <p className="text-gray-400 text-sm mt-1 max-w-md">
-                        Manage your accommodation listings and bedspaces from one place.
+                        Manage your accommodation listings, bedspaces, and team access from one place.
                       </p>
                     </div>
                     
@@ -208,6 +213,21 @@ export default function LandlordDashboard() {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+
+              <div className="rounded-[24px] border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-green-700">Team Access</p>
+                    <p className="mt-1 text-sm text-gray-600">Add up to two sub-managers to help run operations, and keep full control from this dashboard.</p>
+                  </div>
+                  <button
+                    onClick={() => setShowTeamAccess(true)}
+                    className="inline-flex items-center justify-center rounded-2xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800"
+                  >
+                    Manage Team Access
+                  </button>
                 </div>
               </div>
 
@@ -340,6 +360,22 @@ export default function LandlordDashboard() {
             </div>
           </div>
         </div>
+
+        {showTeamAccess && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+            <div className="w-full max-w-md rounded-[24px] bg-white p-6 shadow-2xl">
+              <h3 className="text-xl font-bold text-gray-900">Team access is ready</h3>
+              <p className="mt-2 text-sm text-gray-600">Share the main dashboard with up to two trusted sub-managers. They can help manage properties and bookings while the main manager keeps oversight.</p>
+              <div className="mt-5 rounded-2xl border border-green-100 bg-green-50 p-4 text-sm text-green-800">
+                <p className="font-semibold">Coming soon</p>
+                <p className="mt-1">This release adds the management entry point while preserving the current authentication and property workflow.</p>
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button onClick={() => setShowTeamAccess(false)} className="rounded-2xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white">Close</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <Footer />
       </main>
